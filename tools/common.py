@@ -1,14 +1,38 @@
 """Shared page chrome for the static generators."""
 import html
+import os
 
 e = html.escape
 
-FONTS = '''  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/css/normalize.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles.css">'''
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_REPO = os.path.dirname(_HERE)
+
+
+def _read(path):
+    return open(path, encoding='utf-8').read().strip()
+
+
+def _assets():
+    """Everything needed to paint, inlined: fonts CSS + normalize + site CSS.
+    One HTML response renders the page; only the woff2 files load after."""
+    fontfaces = _read(os.path.join(_HERE, 'fontfaces.css'))
+    normalize = _read(os.path.join(_REPO, 'public', 'css', 'normalize.css'))
+    styles = _read(os.path.join(_REPO, 'public', 'css', 'styles.css'))
+    preloads = '\n'.join(
+        f'  <link rel="preload" href="/fonts/{f}" as="font" type="font/woff2" crossorigin>'
+        for f in ('alfa-slab-one-400-latin.woff2', 'archivo-400-latin.woff2',
+                  'bricolage-grotesque-400-latin.woff2'))
+    return f'''  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+{preloads}
+  <style>
+{fontfaces}
+{normalize}
+{styles}
+  </style>'''
+
+
+FONTS = _assets()
+JS = '<script>' + _read(os.path.join(_REPO, 'public', 'js', 'main.js')) + '</script>'
 
 
 def head(title, description, canonical=None, og_type='website', jsonld=None):
@@ -72,7 +96,7 @@ FOOTER = '''  <footer class="footer">
     <span>Part of the Lepida family</span>
   </footer>
 </div>
-<script src="/js/main.js"></script>
+''' + JS + '''
 </body>
 </html>'''
 

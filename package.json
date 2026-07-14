@@ -2,7 +2,7 @@
   "name": "hurbs.io-website",
   "private": true,
   "scripts": {
-    "build": "python3 tools/gen_blog.py && python3 tools/gen_services.py",
+    "build": "python3 tools/gen_blog.py && python3 tools/gen_services.py && python3 tools/gen_static.py",
     "dev": "wrangler dev",
     "deploy": "npm run build && wrangler deploy"
   },
