@@ -90,7 +90,6 @@ def index_page(live_slugs):
 {rows}
   </section>''')
     sections_html = '\n\n'.join(sections)
-    count = len(live_slugs)
 
     return head('Blog | Hurbs LLC',
                 'Plain-English explainers and step-by-step guides on IT, cloud, security, software, networks, and data. Written by the people who do the work.',
@@ -101,7 +100,7 @@ def index_page(live_slugs):
   <header class="about-hero">
     <div class="kicker">THE BLOG</div>
     <h1>Notes from the shop.</h1>
-    <p class="about-intro">{count} posts: plain-English explainers for owners, step-by-step guides for doers. No fluff, no gate, no popup asking for your email.</p>
+    <p class="about-intro">Plain-English explainers for owners, step-by-step guides for doers. No fluff, no gate, no popup asking for your email.</p>
   </header>
 
 {sections_html}
