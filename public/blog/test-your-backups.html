@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to actually test your backups: a restore drill | Hurbs LLC</title>
+  <meta name="description" content="Pick a file, a folder, and a full system. Restore all three, time it, and write down what broke.">
+  <link rel="canonical" href="https://hurbs.io/blog/test-your-backups">
+  <meta property="og:title" content="How to actually test your backups: a restore drill | Hurbs LLC">
+  <meta property="og:description" content="Pick a file, a folder, and a full system. Restore all three, time it, and write down what broke.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/test-your-backups">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-green"></div>
+      <a href="/services/cybersecurity" class="post-lane-link">CYBERSECURITY</a>
+      <span class="post-type">STEP-BY-STEP GUIDE</span>
+    </div>
+    <h1>How to actually test your backups: a restore drill</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>A backup you have never restored is a guess. The green checkmark in your backup console means a job ran, not that the data comes back, and we have watched businesses discover the difference in the worst possible week. This guide walks you through a restore drill: a scheduled, timed exercise where you actually pull data back and prove it works. By the end you'll have three successful test restores, real numbers for how long recovery takes, a written list of what broke, and the next drill on the calendar.</p>
+
+<h2>Prerequisites</h2>
+<ul>
+<li>Admin access to your backup system, whatever it is: Veeam, Datto, Acronis, Synology Active Backup, Microsoft 365 backup, or even an external drive rotation.</li>
+<li>A restore target that is not your production system: a spare folder on another machine, a spare PC or server, or a temporary cloud VM.</li>
+<li>Two to three hours blocked off, ideally during a quiet part of the week.</li>
+<li>A rough recovery time objective (RTO): how long the business can function without its files and systems before real damage. If you've never picked one, write down your gut answer now, even if it's just "one business day." You'll test against it.</li>
+<li>A notes document open the whole time. The notes are half the value of the drill.</li>
+</ul>
+
+<h2>Step 1: Pick your three test subjects</h2>
+<p>You'll restore three things of increasing size:</p>
+<ol>
+<li><strong>One file.</strong> Pick something real and recently changed, like this month's invoicing spreadsheet. Not a test file you created for the drill; part of the point is proving the backup covers what people actually work on.</li>
+<li><strong>One folder.</strong> Pick a working directory a team depends on, a few GB with a mix of file types. A project folder or a shared department drive is ideal.</li>
+<li><strong>One full system.</strong> Your most important server or, if you're fully cloud, your most important workstation build or your Microsoft 365 site/mailbox. This is the test almost nobody runs and the one that matters most.</li>
+</ol>
+<p>Write down each item's name, location, and size before you start.</p>
+
+<h2>Step 2: Restore the single file to an alternate location</h2>
+<p>Never restore over the live copy during a drill. Always restore to an alternate location, then compare. In your backup console, find the file-level restore option, select yesterday's (or the most recent) recovery point, and point the restore somewhere new, for example:</p>
+<pre><code>C:\RestoreTest\2026-07-13\invoices-june.xlsx</code></pre>
+<p>Start a timer when you begin and stop it when the file is open on screen. Then verify the content, not just the file's existence: open it, check it has current data, check it isn't zero bytes or corrupted. Note the recovery point's age too. If the newest available backup of a daily-use file is nine days old, your backup schedule has a problem the green checkmarks never mentioned.</p>
+
+<h2>Step 3: Restore the folder</h2>
+<p>Same idea, bigger scope. Restore the whole folder to an alternate path and time it. When it finishes, compare against the original. On Windows, a quick structural check from PowerShell:</p>
+<pre><code>Get-ChildItem -Recurse C:\Shares\Projects | Measure-Object -Property Length -Sum
+Get-ChildItem -Recurse C:\RestoreTest\Projects | Measure-Object -Property Length -Sum</code></pre>
+<p>On macOS or Linux:</p>
+<pre><code>diff -rq /Volumes/Shares/Projects /Volumes/RestoreTest/Projects</code></pre>
+<p>Matching file counts and sizes is the floor. Also spot-open a handful of files of different types, including at least one that's password-protected or unusual, and confirm permissions came back sanely if the folder had restricted access. Note anything that didn't restore: some products silently skip locked or in-use files, and you want to know that today.</p>
+
+<h2>Step 4: Restore the full system</h2>
+<p>This is the drill's main event. Restore the full server or workstation image to an alternate target: a spare physical box, a VM on your hypervisor, or your backup vendor's cloud recovery option if you pay for one. Do not touch the production machine.</p>
+<p>Keep the restored system off your production network (an isolated VM network or an unplugged cable is fine) so it can't fight the live machine over names and addresses. Then start the timer and note three separate durations:</p>
+<ol>
+<li>Time until the restore job completes.</li>
+<li>Time until the system boots to a login screen.</li>
+<li>Time until it's actually usable: the key application opens, the database mounts, the data is there.</li>
+</ol>
+<p>That third number is the real one, and it's routinely hours longer than the first. Log in, launch the line-of-business app, open recent records, and confirm services started. A server that boots but whose database won't mount is a failed restore that most drills would have marked as a pass.</p>
+
+<h2>Step 5: Compare your times against your RTO</h2>
+<p>Now put the numbers side by side. Say your gut RTO was one business day, and the full system restore took 14 hours of restore plus 3 hours of fixing before it was usable. That's a fail, and a cheap one, because you found it on a calm Tuesday instead of during an incident. Also multiply honestly: if one server took 14 hours and you have four servers and one restore pipeline, your real recovery is days, not hours.</p>
+<p>If you missed the target, your options are ordered by cost: schedule more frequent backups (shrinks data loss, not restore time), add local backup copies so restores don't pull from the cloud over your internet line, or move to a backup product with instant-boot virtualization, where the backup itself runs as a temporary VM in minutes while the full restore happens behind it.</p>
+
+<h2>Step 6: Write down what broke, then calendar the next drill</h2>
+<p>Everything that surprised you goes in the notes: the admin password nobody remembered, the restore that needed a license key, the skipped locked files, the recovery agent that had to be reinstalled, the 3-hour gap between "booted" and "usable." Turn each into a to-do with an owner. This document, updated each drill, becomes the first draft of your actual disaster recovery runbook, and it's worth more than any template you could download.</p>
+<p>Then put the next drill on the calendar before you close the console. Quarterly for the file and folder tests, at least twice a year for the full system. A recurring calendar invite with the checklist pasted in is enough. Drills that live in someone's head happen exactly once.</p>
+
+<h2>Verify it</h2>
+<p>You're done when you can point to all of these:</p>
+<ul>
+<li>Three restores completed to alternate locations, with contents verified by opening real files and apps, not just seeing filenames.</li>
+<li>Timed results for each, written down, including the boot-to-usable gap on the full system.</li>
+<li>A pass/fail call against your RTO, and a plan if it failed.</li>
+<li>A dated notes file listing everything that broke, with owners for the fixes.</li>
+<li>The next drill on the calendar with a named person responsible.</li>
+</ul>
+<p>Do this twice and it stops being scary and starts taking an hour. That's the goal: recovery as a practiced routine instead of a hail mary.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cybersecurity" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/what-is-edr" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">EDR, XDR, antivirus: what actually protects endpoints now</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/who-watches-at-3am" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Who’s watching your network at 3 a.m.?</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/ransomware-defense-layers" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Ransomware defense: the five layers that matter</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

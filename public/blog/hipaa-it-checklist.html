@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HIPAA IT compliance: the checklist without the lawyer bill | Hurbs LLC</title>
+  <meta name="description" content="Access controls, encryption, audit logs, and BAAs. The technical safeguards, in plain English.">
+  <link rel="canonical" href="https://hurbs.io/blog/hipaa-it-checklist">
+  <meta property="og:title" content="HIPAA IT compliance: the checklist without the lawyer bill | Hurbs LLC">
+  <meta property="og:description" content="Access controls, encryption, audit logs, and BAAs. The technical safeguards, in plain English.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/hipaa-it-checklist">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-green"></div>
+      <a href="/services/cybersecurity" class="post-lane-link">CYBERSECURITY</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>HIPAA IT compliance: the checklist without the lawyer bill</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>If your business touches patient health information (you're a clinic, a dental office, a therapy practice, a billing company, or you provide services to any of those), HIPAA applies to you. The frustrating part is that HIPAA's Security Rule doesn't hand you a checklist. It hands you legal language like "implement reasonable and appropriate safeguards," and then a lawyer offers to interpret it at $400 an hour. The lawyer has a place, especially for policies and contracts. But the technical side of HIPAA is concrete IT work, and you can understand it without a retainer.</p>
+
+<p>One disclaimer up front: we're an IT shop, not a law firm, and this covers the technical safeguards, not your full compliance program. Here's the work itself.</p>
+
+<h2>Start with the risk assessment, because everything hangs off it</h2>
+
+<p>The Security Rule's first real requirement is a risk analysis: a documented inventory of where electronic protected health information (ePHI) lives, how it moves, and what could go wrong. This is also the first thing an auditor or investigator asks for, and "we don't have one" is the most common finding in enforcement actions.</p>
+
+<p>Practically, it means answering on paper: What systems hold ePHI? Our EHR, the practice management system, email, that shared drive, the front-desk scanner's memory, someone's laptop? Who can access each one? What happens if each one is stolen, encrypted by ransomware, or emailed to the wrong person? The federal government publishes a free Security Risk Assessment tool through HealthIT.gov that walks small practices through this. It's tedious and it works.</p>
+
+<h2>Access controls: unique logins and the minimum necessary</h2>
+
+<p>Every person gets their own account, on every system that touches ePHI. The shared "frontdesk" login that four people use is one of the most common problems we find in medical offices, and it fails HIPAA on its face because you can't tell who did what.</p>
+
+<ul>
+<li>Unique user accounts everywhere, tied to real names.</li>
+<li>Access scoped to job role. The billing person doesn't need clinical notes; the hygienist doesn't need the accounting share.</li>
+<li>Automatic screen locks after a few minutes of inactivity, because exam-room computers sit unattended.</li>
+<li>MFA on email and any remote access. The rule predates MFA, but regulators now treat it as a baseline expectation, and proposed updates to the Security Rule make it explicit.</li>
+<li>A same-day offboarding step: when someone leaves, their access dies that day, and there's a record of it.</li>
+</ul>
+
+<h2>Encryption at rest and in transit</h2>
+
+<p>Encryption is technically "addressable" under the rule, which people misread as optional. It isn't, in practice. If an unencrypted laptop with patient data is stolen, that's a reportable breach with notification duties and potential fines. If the same laptop was encrypted, it's generally not a reportable breach at all. Encryption is the cheapest breach you'll never have to report.</p>
+
+<ul>
+<li><strong>At rest:</strong> BitLocker on every Windows machine, FileVault on Macs, encryption enabled on phones (it is by default on anything modern). Verify server and backup encryption too, and keep records proving it was on.</li>
+<li><strong>In transit:</strong> ePHI moves only over encrypted channels. Your EHR handles its own. The gap is almost always email: sending patient information requires an encrypted email service or your platform's encryption feature (Microsoft 365 and Google Workspace both offer one). Regular email to an outside address doesn't qualify.</li>
+</ul>
+
+<h2>Audit logs: someone has to be able to answer "who looked at this?"</h2>
+
+<p>The rule requires mechanisms that record activity in systems containing ePHI. Your EHR almost certainly has audit logging built in; the requirement is that it's turned on, retained, and that access is reviewed occasionally, not just collected. Same for Microsoft 365 or Google Workspace audit logs. When a patient complains that a staff member snooped their chart, the log is how you answer, and reviewing logs periodically is how you catch it before the complaint.</p>
+
+<h2>Business associate agreements</h2>
+
+<p>Any vendor that touches ePHI on your behalf (your EHR vendor, your IT provider, your cloud email, your billing service, your online backup, sometimes your shredding company) needs a signed business associate agreement, a BAA. Microsoft and Google will sign one for their business plans; consumer plans, no. This is the item that catches people using free Gmail or personal Dropbox for anything patient-related. Make a list of every vendor with ePHI access and confirm a BAA exists for each. Missing BAAs have driven six-figure settlements on their own.</p>
+
+<h2>The rest of the technical list</h2>
+
+<ul>
+<li><strong>Backups</strong> that are automatic, encrypted, kept separate from the network, and restore-tested. Ransomware against clinics is common, and an encrypted EHR you can't restore is both an outage and a breach investigation.</li>
+<li><strong>Patching and endpoint protection</strong> on every device that touches ePHI.</li>
+<li><strong>Disposal:</strong> drives get wiped or destroyed, with a certificate, before computers or copiers leave the building. Copiers have hard drives. People forget.</li>
+<li><strong>Training records:</strong> staff security training happens and is documented, because undocumented training didn't happen as far as an investigator is concerned.</li>
+</ul>
+
+<h2>How to know it's done right</h2>
+
+<p>You have a written risk assessment less than a year old. Every account is individual, MFA is on, and offboarding is same-day. Every laptop would be a shrug, not a breach, if stolen tonight. You can produce a signed BAA for every vendor on your list. And your backups restored successfully the last time someone tested them, on a date you can name. That's the technical core. Get those in writing and the lawyer conversation gets a lot shorter and cheaper.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cybersecurity" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/what-is-edr" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">EDR, XDR, antivirus: what actually protects endpoints now</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/who-watches-at-3am" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Who’s watching your network at 3 a.m.?</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/ransomware-defense-layers" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Ransomware defense: the five layers that matter</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

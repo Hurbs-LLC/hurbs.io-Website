@@ -1,0 +1,40 @@
+<p>Ten years ago the answer was automatic. If your people needed to reach the office file server from home, you stood up a VPN, handed out credentials, and called it done. Today we get asked the question in two very different forms: "do we need a VPN for security?" and "should our remote staff connect over VPN?" The answers have drifted apart, so let's take them separately.</p>
+
+<h2>First, which VPN are we talking about?</h2>
+
+<p>Two different products share the name.</p>
+
+<p><strong>Consumer privacy VPNs</strong> (NordVPN, Mullvad, and the rest you hear advertised on podcasts) encrypt your traffic to the VPN provider's servers so your ISP or a coffee shop network can't see it. For a business, these do almost nothing. Nearly every service your staff uses is already encrypted with HTTPS. A privacy VPN doesn't protect your accounts, your email, or your data. If an employee travels a lot and works from hotel Wi-Fi, fine, it's a modest extra layer. It is not a security program.</p>
+
+<p><strong>Remote-access VPNs</strong> are the business kind: software on a laptop that builds an encrypted tunnel into your office network, so the laptop behaves like it's plugged in at a desk. That's the one worth a real conversation.</p>
+
+<h2>The problem with the traditional remote-access VPN</h2>
+
+<p>A classic VPN grants network access, not application access. Once the tunnel is up, that laptop can usually reach everything on the office network: the file server, the printers, the accounting workstation, the security camera system. If the laptop is compromised, or the VPN password is stolen, the attacker gets the same all-access pass. Stolen VPN credentials without multi-factor authentication have been the opening move in a large share of the ransomware cases that make the news.</p>
+
+<p>VPN appliances themselves have also had a rough few years. Several major vendors have shipped serious vulnerabilities in their VPN gateways, and attackers actively scan for unpatched ones because a VPN box is, by design, exposed to the internet. A VPN you don't patch promptly becomes the front door you left open.</p>
+
+<h2>The zero-trust alternative</h2>
+
+<p>The newer model goes by "zero-trust network access" or ZTNA. Strip away the marketing and the idea is simple: instead of joining the whole network, each user gets access to specific applications, and every connection checks who you are and what device you're on. Practical versions we deploy for small teams include Cloudflare Zero Trust, Tailscale, and Twingate. Microsoft's Entra Private Access plays in the same space for shops already deep in Microsoft 365.</p>
+
+<p>What this looks like in practice: your bookkeeper can reach the accounting server and nothing else. Your web developer can reach the staging box and nothing else. Access ties to their company login with MFA, so when someone leaves, disabling one account cuts everything. And several of these tools need no inbound firewall hole at all, which removes the exposed-appliance problem entirely.</p>
+
+<h2>The question before the question</h2>
+
+<p>Here's the step people skip: many businesses asking about VPNs don't need remote access to anything anymore. If your files live in SharePoint or Google Drive, your email is in Microsoft 365, your accounting is QuickBooks Online, and your line-of-business app is web-based, there is no office network to tunnel into. The office is just a place with desks and internet. In that case the right answer to "do we need a VPN?" is no, and the money is better spent on MFA enforcement, device management, and backup.</p>
+
+<p>You still need something VPN-shaped when there's a real on-premises resource: a local file server, an on-site database, machine controllers on a shop floor, a legacy app that only runs on a box in the back room, or an IT person who needs to manage network gear remotely.</p>
+
+<h2>What we actually set up for small teams</h2>
+
+<ul>
+<li><strong>No on-prem resources:</strong> nothing. We make sure MFA is enforced everywhere, devices are enrolled in management, and we skip the tunnel.</li>
+<li><strong>A handful of internal resources, small team:</strong> Tailscale or Twingate. Installation takes an afternoon, users sign in with their existing Microsoft or Google account, and access is scoped per person. Cost runs from free to a few dollars per user per month.</li>
+<li><strong>Existing firewall with VPN capability, simple needs:</strong> sometimes the built-in VPN on a current, patched firewall is fine, but only with MFA bolted on and access rules that limit what the tunnel can reach. "VPN in, touch everything" is the configuration we rip out most often.</li>
+<li><strong>Site-to-site links</strong> (connecting two offices): still a legitimate VPN use case, usually handled by the firewalls at each end.</li>
+</ul>
+
+<h2>How to know it's done right</h2>
+
+<p>Whatever remote access you run, it should pass these checks. MFA is required on every remote connection, no exceptions for the owner. Each user can reach only what their job needs. The gateway or appliance, if you have one, is on current firmware and someone owns patching it. Offboarding a person kills their access in one step. And you can produce a list, today, of who has remote access and to what. If any of those makes you hesitate, that's the gap. It's usually a one-or-two-day project to close, not a rebuild.</p>

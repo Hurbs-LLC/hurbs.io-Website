@@ -1,0 +1,48 @@
+<p>The worst way to learn your website is down is a customer telling you. Second worst is noticing yourself, three hours in. Uptime monitoring fixes this for somewhere between free and a few dollars a month: an outside service checks your site every minute, and when it stops responding, the right person's phone goes off. By the end of this guide you will have monitoring on your public services, alerts that reach a human who can act, a check on your backup jobs, and a simple status page. The steps are the same in any of the mainstream tools (UptimeRobot, Healthchecks.io, Pingdom, Better Stack, and others), so we describe what to configure rather than one vendor's exact screens.</p>
+
+<h2>Prerequisites</h2>
+<ul>
+<li>A list of what you actually need watched: your website, customer portal, mail flow, VPN endpoint, anything a customer or employee would notice going down.</li>
+<li>An account with an uptime monitoring service. Free tiers at several of them are genuinely enough for a small business.</li>
+<li>Phone numbers and emails for whoever should be woken up, and honest agreement on who that is.</li>
+</ul>
+
+<h2>Step 1: Create HTTP checks for every public service</h2>
+<p>The basic unit of monitoring is an HTTP check: the service requests a URL from the outside, on an interval, and expects a success response (a 200 status code). Create one per service. A reasonable starting set:</p>
+<pre><code>https://www.example.com/          every 1 min
+https://portal.example.com/login  every 1 min
+https://api.example.com/health    every 1 min</code></pre>
+<p>Three details matter here. Check the real thing customers use, not just the homepage: if the login page is what makes you money, monitor the login page. Use an interval of 1 to 5 minutes; hourly checks mean up to an hour of silent downtime. And require confirmation from a second location before alerting if your tool supports it, so one flaky network path between the checker and your site does not page anyone at 3 AM for nothing.</p>
+
+<h2>Step 2: Add keyword checks so "up" means "working"</h2>
+<p>A plain HTTP check has a blind spot: a server can return 200 while showing a database error, an empty page, or your hosting provider's "suspended" notice. The fix is a keyword check. Instead of only checking the status code, the monitor fetches the page and confirms a specific string is present:</p>
+<pre><code>URL:     https://www.example.com/
+Expect:  "Get a quote"   (text that only appears when the page truly rendered)</code></pre>
+<p>Pick a phrase from the meat of the page, not the header or footer, since templates often render even when the content behind them is broken. Most tools also let you invert it, alerting if a string like "error" or "maintenance" appears. One keyword check on each revenue-critical page catches the failures a status code never will.</p>
+
+<h2>Step 3: Monitor the jobs that run in the dark</h2>
+<p>Websites fail loudly. Backups and scheduled jobs fail silently, and dead backups are the failure that hurts most. The pattern for these is a heartbeat check (Healthchecks.io is built around this, and most competitors offer it): the monitor gives you a unique URL, your job pings it on success, and the alert fires when the ping does not arrive on schedule. Add one line to the end of your backup script:</p>
+<pre><code>#!/bin/bash
+/usr/local/bin/run-backup.sh &amp;&amp; curl -fsS https://hc-ping.example/your-uuid</code></pre>
+<p>The <code>&amp;&amp;</code> matters: the ping only fires if the backup succeeded, so a failed job goes quiet and trips the alarm. Set the schedule to match the job (daily, with an hour or two of grace) and do this for every backup, sync, and report your business depends on.</p>
+
+<h2>Step 4: Set up alert escalation</h2>
+<p>An alert that goes to an inbox nobody reads at 2 AM is decoration. Build a ladder, from least to most intrusive:</p>
+<pre><code>0 min:   email + Slack/Teams message to the IT channel
+5 min:   push notification or SMS to the on-call person
+15 min:  phone call to the on-call person
+30 min:  phone call to the backup person (or the owner)</code></pre>
+<p>The exact minutes matter less than the structure: start quiet, get louder, and always end at a phone call to a named human, because push notifications get swallowed by Do Not Disturb. Just as important, decide severity up front. The main website gets the full ladder. The internal wiki gets an email and waits for morning. If everything pages everyone, people mute the alerts within a month and you are back to customers telling you. Also set a recovery notification so the person who got paged knows when it is over.</p>
+
+<h2>Step 5: Publish a status page</h2>
+<p>Most monitoring services will generate a public status page from your checks with a couple of clicks: a simple page at something like <code>status.example.com</code> showing green or red per service, with history. This is worth the five minutes it takes. During an outage, customers who find a red indicator and a short note stop calling; customers who find nothing assume you do not know. Point a DNS CNAME at the page (host it on a different provider than the website itself, which the monitoring service already is), keep the service names customer-friendly, and hide anything internal.</p>
+
+<h2>Verify it</h2>
+<p>Monitoring you have never tested is a guess. Prove each piece:</p>
+<ul>
+<li>Break something on purpose. Stop the web server on a quiet evening, or point a temporary check at a URL that does not exist, and watch the whole ladder fire in order, through to the phone call.</li>
+<li>Comment out the heartbeat ping in a backup script for one cycle and confirm the missed-ping alert arrives.</li>
+<li>Confirm the recovery notification arrives when you fix it, and that the status page went red and back to green on its own.</li>
+<li>Check response times, not just up or down. Most tools graph latency for free; a page that took 300 ms last month and takes 3 seconds now is a warning you get to act on early.</li>
+</ul>
+<p>Then leave it alone and let it work. The whole setup is an evening of effort, and the first time your phone buzzes before a customer notices anything, it has paid for itself. If you would rather hand us the list and get back a tested monitoring setup with the escalation already wired, that is a routine job for us.</p>

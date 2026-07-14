@@ -1,0 +1,30 @@
+<p>Somebody on your team, or a vendor pitching you, has said the word "serverless" and you nodded along. Fair enough. It is a terrible name, because there are absolutely servers involved. What changes is who worries about them and how you pay. Here is the plain version, and more importantly, when it actually saves money.</p>
+
+<h2>The vending machine versus the delivery van</h2>
+<p>A traditional cloud server is like leasing a delivery van. You pay for it around the clock whether it is on the road or parked. It idles all night, all weekend, through every slow afternoon, and the meter runs the whole time. You also maintain it: operating system updates, security patches, disk space, restarts.</p>
+<p>Serverless is like paying per delivery. You write a small piece of code, called a function, and hand it to the cloud provider. When something needs doing, a customer submits a form, a file gets uploaded, an order comes in, the provider runs your function, charges you for the fraction of a second it took, and puts it away. No request, no charge. There is no machine for you to patch, resize, or reboot. AWS calls this Lambda, Google calls it Cloud Functions, Microsoft calls it Azure Functions, Cloudflare calls it Workers. Same idea everywhere.</p>
+
+<h2>What it costs, roughly</h2>
+<p>Serverless pricing is measured in requests and compute time, and the numbers are tiny per unit. Providers give away millions of requests a month in their free tiers, and past that you pay fractions of a cent per run. A small business tool that fires a few thousand times a day often costs pennies to a few dollars a month. The same job on a small always-on server would run tens of dollars a month, plus the patching and babysitting.</p>
+<p>The math flips at sustained heavy load. If your code is genuinely busy most of the day, every day, per-request pricing adds up and a flat-rate server becomes the cheaper deal. The rule of thumb: <strong>spiky or occasional work favors serverless, constant work favors a server.</strong> A form handler that runs 200 times a day is a perfect serverless job. A database serving queries every second of every hour is not.</p>
+
+<h2>The catch: cold starts</h2>
+<p>Serverless has one honest downside worth knowing about. If your function has not run in a while, the provider has to wake it up before it can respond, and that first request takes longer. This is called a cold start, and it typically adds anywhere from a fraction of a second to a couple of seconds depending on the platform and how the code is built. Once warm, subsequent requests are fast.</p>
+<p>For most business workloads, an email trigger, a nightly report, a webhook from your payment processor, nobody notices a cold start. For something where a human is staring at a spinner, it can matter, and there are fixes: keeping a function warm, or choosing a platform like Cloudflare Workers where cold starts are close to nonexistent. It is a design consideration, not a dealbreaker.</p>
+
+<h2>Where this fits a small business</h2>
+<p>You are probably not going to rewrite your whole operation as functions, and you should not. Serverless shines for the glue work and the odd jobs:</p>
+<ul>
+<li>The contact form on your website that emails you and drops a row in a spreadsheet.</li>
+<li>Resizing photos when staff upload them.</li>
+<li>Syncing orders from your online store into your accounting system every few minutes.</li>
+<li>A report that runs at 6 AM and lands in the owner's inbox.</li>
+<li>Webhooks: little "when X happens, do Y" connections between the tools you already use.</li>
+</ul>
+<p>Every one of those, done the old way, means a small server sitting on 24 hours a day to do 20 minutes of actual work. That is the exact waste serverless was built to eliminate. It is also less to maintain: no OS patches, no disk filling up at 2 AM, no server to forget about until it becomes a security problem.</p>
+
+<h2>How to know it is done right</h2>
+<p>A well-built serverless setup has a few marks of quality. The bill is small and tracks activity: busy month, slightly bigger bill, quiet month, smaller one. There is logging, so when a function fails you find out from an alert, not from a customer asking why their form never went through. There is a retry or a dead-letter queue, meaning failed jobs get captured and rerun instead of vanishing. And someone can tell you, in one sentence per function, what each one does and what triggers it.</p>
+<p>If a vendor sold you "serverless" and you cannot get that one-sentence list, or the bill is somehow large and flat every month, something is off. The whole point of the model is paying for work instead of paying for waiting, and when it is set up right, the invoice proves it.</p>
+
+<p>We build this kind of glue for clients regularly, and we are happy to look at whether the always-on servers you are paying for could be doing their jobs for pocket change instead.</p>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Why your cloud bill is high, and how we shrink it | Hurbs LLC</title>
+  <meta name="description" content="Right-sizing, reserved pricing, orphaned resources, and egress. Where the waste hides and how to cut it.">
+  <link rel="canonical" href="https://hurbs.io/blog/cloud-cost-optimization">
+  <meta property="og:title" content="Why your cloud bill is high, and how we shrink it | Hurbs LLC">
+  <meta property="og:description" content="Right-sizing, reserved pricing, orphaned resources, and egress. Where the waste hides and how to cut it.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/cloud-cost-optimization">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-yellow"></div>
+      <a href="/services/cloud" class="post-lane-link">CLOUD SETUP &amp; MIGRATION</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Why your cloud bill is high, and how we shrink it</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>You moved to the cloud expecting to save money, and now the monthly bill is higher than the server closet ever was. Nobody can explain exactly why. It creeps up a little every month, the invoice is forty pages of line items, and the one person who set it all up left last year. We see this constantly, and the good news is that most cloud bills have real fat in them. Cutting 30 to 50 percent without touching how anything works is common on the first pass.</p>
+
+<h2>Why cloud bills grow on their own</h2>
+<p>Cloud providers bill for everything, all the time, whether you use it or not. A server you spun up for a test in March is still billing you in October. That is the core problem: on-premise hardware is a one-time cost you can see sitting in a rack, while cloud spend is a thousand small meters running quietly in the background. Here is where the money usually goes.</p>
+
+<h3>Oversized servers</h3>
+<p>Most cloud servers we audit are running at 5 to 15 percent CPU. Someone picked a size that "felt safe" when they set it up, and nobody has looked since. Cloud pricing roughly doubles with each size step, so a server that is two sizes too big costs about four times what it should. This is called right-sizing: look at actual CPU and memory usage over a few weeks, then move to the smallest size that comfortably fits the real workload. On AWS that might mean dropping an m5.2xlarge to an m5.large. Same job, a quarter of the cost.</p>
+
+<h3>Paying on-demand prices for servers that never turn off</h3>
+<p>On-demand pricing is the rack rate. It is the right price for a server you run for a week and delete. It is the wrong price for the database that has been on for three years straight. Every major provider will cut 30 to 60 percent off a server if you commit to running it for one or three years. AWS calls these Reserved Instances and Savings Plans, Azure and Google have their own versions. If a machine has been running continuously for six months, it will probably run for another year, and it should be on a commitment plan. This is one of the easiest wins on any bill.</p>
+
+<h3>Orphaned resources</h3>
+<p>This is the junk drawer of the cloud, and almost every account has one. When you delete a server, the storage volume attached to it often survives and keeps billing. Static IP addresses that are reserved but not attached to anything bill by the hour. Old snapshots pile up for years. Load balancers point at servers that no longer exist. Test environments from projects that shipped in 2023 are still humming along. None of it does anything. All of it costs money every month. We regularly find hundreds of dollars a month in unattached volumes and idle IPs on accounts that "seemed pretty clean."</p>
+
+<h3>Egress charges</h3>
+<p>Cloud providers let data in for free and charge you on the way out. Moving data out of the cloud to the internet, to another region, or sometimes even between availability zones in the same region all costs money per gigabyte. This one surprises people because it is invisible until the workload grows. Backups pulled down to the office nightly, an app serving big files to users, replication between regions: these can quietly become one of the largest lines on the bill. Fixes include putting a CDN in front of file downloads, keeping chatty services in the same zone, and rethinking backup flows so data does not cross the meter more than it has to.</p>
+
+<h2>How we shrink a bill</h2>
+<p>The process is not magic, it is housekeeping done carefully.</p>
+<ul>
+<li><strong>Inventory first.</strong> Pull the full bill and tag every resource to an owner and a purpose. Anything nobody claims goes on the suspect list.</li>
+<li><strong>Delete the orphans.</strong> Unattached volumes, idle IPs, ancient snapshots, dead load balancers. Snapshot anything questionable before deleting so it is reversible.</li>
+<li><strong>Right-size what remains.</strong> Use the provider's own usage metrics over 2 to 4 weeks, then resize during a maintenance window.</li>
+<li><strong>Commit on the steady stuff.</strong> Reserved capacity or savings plans for anything that runs around the clock.</li>
+<li><strong>Schedule the rest.</strong> Dev and test servers do not need to run nights and weekends. Turning them off outside business hours cuts their cost by roughly two thirds.</li>
+<li><strong>Set up billing alerts.</strong> A budget alarm that emails you when spend runs 20 percent over normal costs nothing and catches problems in days instead of at invoice time.</li>
+</ul>
+
+<h2>How you know it is done right</h2>
+<p>A healthy cloud account has a few clear signs. Every resource has a tag saying what it is for and who owns it. The monthly bill is boring: it is roughly the same every month, and when it moves, someone knows why before the invoice arrives. Long-running servers sit on commitment pricing, not on-demand. And there is a recurring calendar item, quarterly is fine, where someone actually opens the billing console and looks. Cost optimization is not a one-time project. It is a habit, and once the habit exists, the bill stops surprising you.</p>
+
+<p>If your cloud bill has been drifting up and nobody can tell you why, that is exactly the kind of audit we do. Usually the first pass pays for itself within a couple of months.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cloud%20Setup%20%26%20Migration" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/azure-vs-aws-vs-google-cloud" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Azure, AWS, or Google Cloud: an honest comparison</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/what-cloudflare-does" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">What Cloudflare actually does for your website</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/terraform-first-project" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Your first Terraform project: one server on AWS</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

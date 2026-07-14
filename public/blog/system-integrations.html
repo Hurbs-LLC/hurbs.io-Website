@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>System integrations: make your apps talk to each other | Hurbs LLC</title>
+  <meta name="description" content="APIs, webhooks, and middle layers. How we stop the re-typing between systems.">
+  <link rel="canonical" href="https://hurbs.io/blog/system-integrations">
+  <meta property="og:title" content="System integrations: make your apps talk to each other | Hurbs LLC">
+  <meta property="og:description" content="APIs, webhooks, and middle layers. How we stop the re-typing between systems.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/system-integrations">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-blue"></div>
+      <a href="/services/software" class="post-lane-link">CUSTOM SOFTWARE</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>System integrations: make your apps talk to each other</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Somebody in your office is copying data from one program into another right now. An order comes in through the website, and someone re-types it into QuickBooks. A new customer fills out a form, and someone pastes their info into the CRM, then into the email tool, then into a spreadsheet. It works, until the day someone fat-fingers a number or skips a row, and now two systems disagree about the same customer.</p>
+
+<p>That re-typing is the problem system integration exists to fix. The idea is simple: instead of a person moving data between apps, the apps talk to each other directly.</p>
+
+<h2>What "integration" actually means</h2>
+
+<p>Most modern software exposes an API, which is just a way for other programs to read and write its data. QuickBooks has one. Shopify has one. Salesforce, HubSpot, Stripe, Google Sheets, almost everything you use has one. An integration is a piece of code (or a tool) that uses those APIs to move data automatically.</p>
+
+<p>There are three common shapes we build:</p>
+
+<ul>
+<li><strong>Polling.</strong> A small script checks System A every few minutes and asks "anything new?" If there is, it writes the new records into System B. Simple, reliable, slightly delayed.</li>
+<li><strong>Webhooks.</strong> System A pushes a notification to your code the instant something happens: "new order placed," "invoice paid," "form submitted." Your code catches it and updates System B immediately. This is how you get real-time sync.</li>
+<li><strong>A middle layer.</strong> When you have three or more systems that all need to stay in sync, connecting each one to each other gets messy fast. Instead, everything reports to one central piece, a small database or service, and each system syncs with that. One source of truth instead of a tangle.</li>
+</ul>
+
+<h2>Off-the-shelf vs. custom</h2>
+
+<p>You do not always need custom code. Tools like Zapier and Make can connect popular apps in an afternoon, and for simple "when this happens, do that" flows, they are the right answer. We set these up all the time and they cost a modest monthly fee.</p>
+
+<p>Where they fall down is volume, complexity, and edge cases. If you are moving thousands of records a day, the per-task pricing gets ugly. If the logic is "sync this order, but only if the customer is tagged wholesale, and split the line items across two invoices," you will fight the tool more than it helps. And when a Zap fails silently at 2 a.m., nobody finds out until the books do not balance.</p>
+
+<p>Custom integration code costs more up front but runs on a cheap server for a few dollars a month, handles your exact rules, and can log every record it touches so you can prove what happened.</p>
+
+<h2>The parts people forget</h2>
+
+<p>Moving the data is the easy 60%. The rest is what separates an integration that works from one that quietly corrupts your records:</p>
+
+<ul>
+<li><strong>Error handling.</strong> APIs go down. What happens to the order that came in during the outage? A good integration retries, queues, and alerts a human when it cannot recover.</li>
+<li><strong>Duplicate protection.</strong> Webhooks sometimes fire twice. Your code needs to notice "I already created this invoice" and skip it.</li>
+<li><strong>Field mapping.</strong> System A calls it "Company," System B calls it "Account Name," and one of them allows 50 characters while the other allows 100. Somebody has to decide what wins.</li>
+<li><strong>Logging.</strong> When accounting asks "why does this invoice say $940 instead of $904," you want a log that shows exactly what came in and what went out.</li>
+</ul>
+
+<h2>Where to start</h2>
+
+<p>Do not try to integrate everything at once. Find the single most painful re-typing task in your business, the one that eats the most hours or causes the most mistakes, and fix that first. Common first wins: website orders into accounting, form leads into the CRM, completed jobs into invoicing.</p>
+
+<p>Write down the flow on paper before anyone writes code: what triggers it, which fields move, what the rules are, and what should happen when something fails. That one-page document is most of the work.</p>
+
+<h2>How to know it's done right</h2>
+
+<p>A good integration is boring. Nobody re-types the data anymore. When something breaks, someone gets an alert within minutes, not a surprise at month-end. You can look at a log and see every record that moved. And when you add a new field or the vendor changes their API, updating it takes hours, not a rebuild.</p>
+
+<p>If your team is still keeping a "shadow spreadsheet" because they do not trust the sync, it is not done right. The whole point is that you stop double-checking.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Custom%20Software" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-typescript" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Why we build in TypeScript</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/python-business-automation" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Python: the duct tape of business automation</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/when-react-makes-sense" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">When React makes sense (and when plain HTML wins)</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

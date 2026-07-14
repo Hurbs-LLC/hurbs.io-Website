@@ -1,0 +1,69 @@
+<p>There is a category of work in every office that a computer should be doing: copying form responses into a spreadsheet, emailing people when a row changes, saving invoice attachments into the right folder. Nobody was hired to do this. Everybody does some of it anyway. Zapier and Make exist to take it off your plate, and you do not need a developer to use either one. In this guide we will build your first three automations and show you when Make is worth the switch.</p>
+
+<p>By the end you will have three working automations: a form that files its own responses, a spreadsheet that sends its own notification, and invoices that save themselves into a folder. More importantly you will know the trigger and action model, which is the whole mental model for both tools.</p>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>A Zapier account. The free tier handles two-step automations, which covers everything in this guide. Paid plans start around twenty to thirty dollars a month.</li>
+<li>Accounts for the apps you are connecting. We will use Google Forms, Google Sheets, Gmail, and Google Drive, but the same recipes work with Microsoft Forms, Excel Online, Outlook, and OneDrive. Swap in your stack.</li>
+<li>A real form and a real spreadsheet to test with. Made-up test data is fine; made-up test apps are not.</li>
+</ul>
+
+<h2>Step 1: Learn the trigger/action model</h2>
+
+<p>Every automation in Zapier (a "Zap") has the same shape: one trigger and one or more actions. The trigger is the event Zapier watches for: a new form response, a new email, a new row. The actions are what happens next: create a row, send an email, save a file. Data flows downhill; anything the trigger captures (the form answers, the email attachment) can be mapped into any field of any action after it.</p>
+
+<p>That is the whole model. Make calls the same things "modules" in a "scenario," and every other automation tool uses some version of it. Once you can say "when X happens, do Y with the data from X," you can build in any of them.</p>
+
+<h2>Step 2: Zap one, form to sheet</h2>
+
+<p>The classic starter: new form submissions land in a spreadsheet automatically, so nobody exports CSVs on Friday.</p>
+
+<ol>
+<li>In Zapier, click <strong>Create Zap</strong>.</li>
+<li>For the trigger, choose the <strong>Google Forms</strong> app and the <strong>New Form Response</strong> event. Connect your Google account when prompted and pick your form.</li>
+<li>Click <strong>Test trigger</strong>. Zapier pulls in a recent real response so you can see the actual fields. Always do this; mapping against real data is how you catch that the form calls it "Full name" while you expected "Name."</li>
+<li>For the action, choose <strong>Google Sheets</strong> and the <strong>Create Spreadsheet Row</strong> event. Pick your spreadsheet and worksheet.</li>
+<li>Zapier shows one field per column in your sheet. Click each field and map the matching piece of form data from the dropdown.</li>
+<li>Test the action, check that the row appeared in your sheet, and turn the Zap on.</li>
+</ol>
+
+<h2>Step 3: Zap two, sheet to email</h2>
+
+<p>Now the reverse direction: when a row gets added (or updated to a certain status), someone gets told. Useful for lead notifications, order alerts, anything where a spreadsheet is quietly filling up and a human needs to react.</p>
+
+<ol>
+<li>Create a new Zap. Trigger: <strong>Google Sheets</strong>, event <strong>New Spreadsheet Row</strong>. If you only care about rows that reach a certain state, use <strong>New or Updated Spreadsheet Row</strong> and set the trigger column to your Status column.</li>
+<li>Action: <strong>Gmail</strong>, event <strong>Send Email</strong>. Put the recipient in To, then build the subject and body by mixing typed text with mapped fields: subject <code>New lead: </code> plus the Name field, body pulling in whatever the recipient needs to act without opening the sheet.</li>
+<li>Test it, read the email you receive, and fix the wording before turning it on. Automated emails get sent a lot; a sloppy one gets sent a lot too.</li>
+</ol>
+
+<p>One habit worth building here: filters. Click the <strong>+</strong> between trigger and action and add a <strong>Filter</strong> step, for example "only continue if Amount is greater than 500." Filters are how you keep automations from firing on everything.</p>
+
+<h2>Step 4: Zap three, invoice attachments to a folder</h2>
+
+<p>This one saves real time during month-end. Emails with invoice attachments get filed into a Drive folder automatically instead of living in someone's inbox.</p>
+
+<ol>
+<li>In Gmail, create a label called <code>Invoices</code> and a Gmail filter that applies it, for example messages where the subject contains "invoice" or from your regular vendors. Doing the matching in Gmail keeps the Zap simple and cheap.</li>
+<li>New Zap. Trigger: <strong>Gmail</strong>, event <strong>New Labeled Email</strong>, label <code>Invoices</code>.</li>
+<li>Action: <strong>Google Drive</strong>, event <strong>Upload File</strong>. For the File field, map the email's <strong>Attachment</strong>. Pick the destination folder, something like <code>Accounting/Invoices/Inbox</code>, and let your bookkeeper sort from there.</li>
+<li>Test with a real vendor email, confirm the PDF lands in the folder, turn it on.</li>
+</ol>
+
+<h2>Step 5: Test like it will break, because it will</h2>
+
+<p>Every Zap has a run log: open the Zap and check its history, or watch <strong>Zap Runs</strong> in the dashboard. After you turn anything on, feed it two or three real-world cases and read the log for each. The failures you will actually hit are boring ones: a renamed spreadsheet column, a Google password change that disconnects the account, a form field someone deleted. Turn on Zapier's error notification emails and actually read them, because a silently dead automation is worse than no automation. People assume it is working.</p>
+
+<h2>When Make wins</h2>
+
+<p>Zapier's edge is that every recipe above takes ten minutes and the interface never fights you. Make (formerly Integromat) wins in three situations.</p>
+
+<p>First, price at volume. Both tools charge by usage, but Make's per-operation pricing is markedly cheaper once you are running thousands of runs a month. If your Zapier bill is creeping past a hundred dollars a month, price the same workload in Make; the difference is often severalfold.</p>
+
+<p>Second, branching. Zapier is mostly a straight line with filters. Make's visual builder is a canvas where one trigger can fan out into multiple routes: invoice over 5,000 goes to the manager for approval, under 5,000 files straight to the folder, and anything from a new vendor also pings accounting. When you catch yourself building three near-identical Zaps to fake a branch, that is the sign.</p>
+
+<p>Third, fiddly data. Make handles iteration over lists, JSON, and transformation steps more gracefully. If your automation needs to loop over line items, you will feel it.</p>
+
+<p>Our honest advice: start in Zapier because you will actually finish. Move a workflow to Make when the bill or the branching demands it. And write down what each automation does and which account owns it, because a year from now, when a form quietly stops filing itself, someone needs to know where to look. If that someone should be us instead, that works too.</p>

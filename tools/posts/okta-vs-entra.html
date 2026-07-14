@@ -1,0 +1,43 @@
+<p>An identity provider is the system that answers "who is this person and what are they allowed into" for everything else you run. One login, enforced MFA, one switch to flip when someone joins or leaves. Once a business passes fifteen or twenty people and a dozen apps, running without one turns offboarding into a scavenger hunt and every new app into another password. The two names that dominate this decision are Okta and Microsoft Entra ID (the product formerly called Azure AD, renamed in 2023). We set up both. Here's how we actually make the call.</p>
+
+<h2>The short answer</h2>
+
+<p>If your company lives in Microsoft 365, the answer is usually Entra. You already have it, your users already sign in with it every day, and the interesting question isn't which product to buy but whether to license the tier that unlocks the features you need. Okta earns its price in specific situations: companies not built on Microsoft, companies with a wide and messy portfolio of third-party apps, and companies that need identity to be neutral ground across multiple platforms. Everything below is the reasoning behind that.</p>
+
+<h2>The case for Entra: you probably already own it</h2>
+
+<p>Every Microsoft 365 business subscription includes Entra ID. The moment you set up 365, every user got an Entra identity; it's what they type their password into. So for a Microsoft shop, "adopting Entra" really means using what's already there:</p>
+
+<ul>
+<li>Single sign-on into third-party apps. Entra's application gallery covers thousands of common SaaS apps, and the mainstream ones (Salesforce, Zoom, Slack, Adobe, DocuSign) connect in minutes.</li>
+<li>MFA and, on the P1 tier, conditional access: rules like "require MFA outside the office," "block sign-ins from countries we don't operate in," "only company-managed devices get email." Conditional access is the single feature that most improves a small company's security posture, and it's the main reason we push clients from the basic tier to Business Premium or a P1 add-on. The step up runs on the order of a few dollars per user per month over the plan you have.</li>
+<li>Tight coupling with Windows, Intune device management, and the rest of the 365 stack. Device state feeding sign-in decisions is where this integration pays off.</li>
+</ul>
+
+<p>The honest downsides: the admin experience is Microsoft-grade, meaning capable and confusing, with settings scattered across portals that get renamed every couple of years. Integrating obscure apps that aren't in the gallery takes more work than it does in Okta. And licensing tiers are their own small research project.</p>
+
+<h2>The case for Okta: identity as neutral ground</h2>
+
+<p>Okta sells identity and nothing else, and it shows in the product. Where Okta earns its price, which typically starts in the range of a few dollars per user per month and climbs as you add MFA, lifecycle management, and other modules:</p>
+
+<ul>
+<li><strong>App breadth and integration quality.</strong> Okta's integration network is the deepest in the industry. If your stack is thirty SaaS apps from thirty vendors, including odd industry-specific ones, Okta connects to more of them with less friction, and its user provisioning (auto-creating and deactivating accounts inside each app, not just controlling sign-in) covers more apps more reliably.</li>
+<li><strong>Non-Microsoft shops.</strong> If you run Google Workspace, Macs, and a SaaS stack with no Microsoft in it, Entra makes little sense. Okta (or, credit where due, Google's own identity features, or JumpCloud at the smaller end) fits the environment you actually have.</li>
+<li><strong>Mixed and multi-platform environments.</strong> Companies running both Google and Microsoft, or acquiring companies with different stacks, sometimes want the identity layer owned by neither camp. Okta is the Switzerland option.</li>
+<li><strong>Admin experience.</strong> Day-to-day administration is simply cleaner. For a company where a non-specialist office admin manages users, that's worth something real.</li>
+</ul>
+
+<p>The downsides: it's a second bill for something Microsoft shops largely own already, and it's another critical vendor in your chain. Okta has also had a couple of well-publicized security incidents of its own in recent years, which doesn't disqualify them but belongs in the picture when the product's entire job is holding your keys.</p>
+
+<h2>How we actually decide</h2>
+
+<ol>
+<li><strong>Count your Microsoft.</strong> Email in 365, Windows machines, Teams all day? Entra. Stop here. This is most of the businesses we see.</li>
+<li><strong>Count your apps.</strong> Google-based, or Microsoft-light with a big third-party SaaS portfolio, especially if you want accounts auto-provisioned and auto-killed inside each app? Okta starts earning its price.</li>
+<li><strong>Check the weird apps.</strong> Whichever way you lean, list your five most business-critical apps and confirm they integrate with the provider you're leaning toward, at the app's own licensing tier. Plenty of SaaS vendors paywall single sign-on behind their enterprise plan, and that surprise belongs in the budget before the decision, not after.</li>
+<li><strong>Don't run both as peers.</strong> Some setups layer Okta in front of 365, and there are legitimate reasons, but two identity systems means two places to offboard someone and twice the ways to get it wrong. Pick one as the source of truth.</li>
+</ol>
+
+<h2>How to know it's done right</h2>
+
+<p>Whichever product wins, the finished state looks the same. Every app your team uses sits behind the one login, with MFA enforced by policy rather than user choice. Disabling one account locks a departed employee out of everything within minutes, and you've tested that with a real offboarding. Nobody has a private stash of passwords for apps that "didn't get connected yet." And sign-in logs live in one place, so the question "did anyone unexpected log in this week" has an answer. Getting a small company to that state is typically a one-to-two-week project, and it's one of the highest-return security projects there is.</p>

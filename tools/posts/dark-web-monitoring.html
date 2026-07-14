@@ -1,0 +1,37 @@
+<p>You've probably seen the pitch. An email or a sales call announces that your company's credentials were "found on the dark web," usually followed by an offer to sell you monitoring for a monthly fee. The framing is designed to scare you, and honestly, sometimes the vendor sending it barely knows what they found. So is dark web monitoring a real security tool or a sales gimmick? The unsatisfying answer is both, depending on who's doing it and what happens after the alert.</p>
+
+<h2>What the monitoring actually watches</h2>
+
+<p>Forget the movie version of the dark web. What these services mostly index is stolen credential data: the fallout from years of breaches at other companies. When LinkedIn, Dropbox, Adobe, or any of thousands of smaller sites got breached, the stolen databases of emails and passwords ended up traded, sold, and eventually dumped in giant public collections. A newer and nastier source is infostealer malware: programs that infect a personal or work computer and quietly upload every saved browser password, which then get sold in bulk logs.</p>
+
+<p>A monitoring service watches these dumps and marketplaces for your domain. When "jane@yourcompany.com" with a password appears in a new collection, you get an alert. That's the product. The free, respectable baseline is Troy Hunt's Have I Been Pwned, which lets you verify your whole domain and get notified when it shows up in a new breach. Paid services from the identity and security vendors add fresher sources, infostealer log coverage, and integration into a ticketing workflow.</p>
+
+<h2>Why the alerts are usually old news, and why they still matter</h2>
+
+<p>Here's the part the scare-tactic sales pitch leaves out: most hits are stale. If your office manager used her work email to sign up for a site that got breached in 2016, that record will float around forever, and every new monitoring vendor will "discover" it and try to alarm you with it. A ten-year-old password from a long-dead account is low risk on its own.</p>
+
+<p>The risk is password reuse. Attackers take those old email-and-password pairs and try them everywhere: your Microsoft 365 login, your VPN, your bank. This is called credential stuffing, it's fully automated, and it works because people reuse passwords for years. So the real question an alert raises is never "is the dark web scary?" It's "is that password, or a close cousin of it like the same word with a new number on the end, still valid anywhere we care about?"</p>
+
+<p>Infostealer hits are the exception to the "usually stale" rule. If a current employee's credentials show up in a stealer log, that means a machine they use was infected recently, and everything saved in that browser is compromised. That alert is a fire alarm, not a smoke test.</p>
+
+<h2>What to actually do when your domain shows up</h2>
+
+<p>An alert without a response process is just anxiety on a subscription plan. Here's the playbook we run:</p>
+
+<ol>
+<li><strong>Identify the account.</strong> Is this a current employee, a former employee, or a shared mailbox? Former-employee hits still matter if that mailbox or its password pattern lives on anywhere.</li>
+<li><strong>Rotate the password.</strong> Reset the affected account's password immediately, even if the exposed one looks old. It costs five minutes and closes the question. Also revoke active sessions so a logged-in attacker gets kicked out, not grandfathered in.</li>
+<li><strong>Check for reuse.</strong> Ask the user directly, without blame, whether that password or a variant is used anywhere else for work: banking portals, vendor sites, the domain registrar. Rotate everywhere it was.</li>
+<li><strong>Investigate if it's fresh.</strong> For infostealer hits or recent breach data, review the account's sign-in logs (Microsoft 365 and Google Workspace both show these) for logins from unfamiliar locations, and scan or reimage the machine involved.</li>
+<li><strong>Confirm MFA is on.</strong> If multi-factor authentication was already enforced on the account, a leaked password alone gets an attacker very little. If it wasn't, this is your prompt.</li>
+</ol>
+
+<h2>The honest verdict</h2>
+
+<p>Dark web monitoring is a useful, cheap signal when three things are true: the alerts reach someone who will act within a day, the response playbook above actually runs, and it sits on top of the controls that matter more. Those controls, in order: MFA enforced on every account, a password manager so people stop reusing passwords, and unique passwords the manager generates. Do those three things and a credential dump becomes a cleanup chore instead of an incident.</p>
+
+<p>What it is not: a substitute for any of that, or a reason to panic-buy anything. If a vendor's opening move is a scary report about 2016 breach data with no context and no remediation steps, they're selling fear, and you should read that as a signal about the vendor.</p>
+
+<h2>How to know it's set up right</h2>
+
+<p>Your domain is registered with a monitoring source, free or paid. Alerts route to a person or a ticket queue, not an unread inbox. There's a written five-step response like the one above, and it has actually been exercised at least once. MFA coverage is at 100% of accounts, because that's what turns these alerts from emergencies into maintenance. We set this up as part of standard security onboarding, and the whole thing takes an afternoon.</p>

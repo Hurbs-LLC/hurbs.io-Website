@@ -1,0 +1,43 @@
+<p>You're getting quotes for a website and the numbers are all over the place. One shop quotes a few thousand dollars. Another quotes ten times that and says they'll "build it in React." Nobody explains what React is or why it costs so much more. Here's the plain version, so you can tell whether you're being sold the right tool or just the expensive one.</p>
+
+<h2>What React is</h2>
+
+<p>React is a JavaScript framework made by Meta for building interactive interfaces. It's what you use when a page needs to behave like an application: things update on screen as you click and type, without reloading the page. Think of a dashboard with live filters, a booking system, a design tool, a multi-step configurator. Facebook's interface is the original example. Gmail-style behavior is the general idea.</p>
+
+<p>Plain HTML and CSS, on the other hand, is just documents. The browser asks for a page, the server sends it, the browser shows it. Every website worked this way for decades, and for pages whose job is showing information, it still works great.</p>
+
+<h2>The real question: does your site do work, or show information?</h2>
+
+<p>This is the whole decision. Strip away the technology names and ask what the thing actually does.</p>
+
+<p><strong>Shows information:</strong> your services, your hours, photos of your work, a contact form, a blog, testimonials, a map. That's a marketing site. Plain HTML (or a simple site generator, or WordPress) handles all of it. There's nothing "interactive" happening beyond a form submit, and browsers have handled forms since the 90s.</p>
+
+<p><strong>Does work:</strong> users log in, see data that belongs to them, create and edit things, and the screen responds instantly as they do it. Scheduling staff, tracking jobs, configuring a quote with live pricing. That's an application, and React (or a similar framework like Vue or Svelte) is the right tool. Building serious interactivity without a framework is possible, but past a certain complexity you end up badly reinventing one.</p>
+
+<h2>What the choice means for your budget</h2>
+
+<p>A React project costs more up front, and the gap is real:</p>
+
+<ul>
+<li><strong>Build time.</strong> A React app needs a build pipeline, state management, API design, and usually a separate backend. A plain HTML site needs a text editor and taste. The same visual design can be a one-week HTML project or a two-month React project.</li>
+<li><strong>Hosting.</strong> Plain HTML can be hosted for free or nearly free on services like Cloudflare Pages or Netlify, and it basically cannot go down under normal traffic. An app needs a server and a database, which means a monthly bill and someone responsible for it.</li>
+<li><strong>Maintenance.</strong> This is the cost people miss. A React project has hundreds of dependencies that need updating. Frameworks release breaking changes. An untouched React app from four years ago often won't even build today without work. A plain HTML site from 2015 still works and will keep working. If you walk away from an HTML site for three years, it just sits there, fine.</li>
+</ul>
+
+<p>None of that makes React bad. It makes React a tool with a carrying cost, which is worth paying when the interactivity earns revenue or saves labor, and pure waste when it's rendering a page that never changes.</p>
+
+<h2>The pattern we see too often</h2>
+
+<p>A business needs a five-page marketing site. A developer builds it in React because that's what they know or what pads the quote. The business ends up with a site that costs more to build, loads slower, ranks worse if it's done carelessly, and needs a specialist for every future edit. We see this constantly, and undoing it is a project of its own.</p>
+
+<p>The reverse happens too: someone tries to bolt application features onto a page-builder site with a stack of plugins, and it collapses under its own weight. Wrong tool in both directions.</p>
+
+<h2>The honest middle cases</h2>
+
+<p>Some projects sit in between. A mostly-static site with one interactive piece, like a pricing calculator or a booking widget. The right answer there is usually a plain site with a small island of JavaScript for the one interactive part, not a full framework for the whole thing. Modern tooling makes this easy, and it keeps the maintenance cost close to the plain-HTML end of the scale.</p>
+
+<h2>How to know you're getting the right advice</h2>
+
+<p>Ask whoever's quoting you one question: "Why this technology for this project?" A good answer talks about what your site needs to do. A bad answer talks about what's modern, what's scalable, or what they always use.</p>
+
+<p>Then check the incentives. A shop that quotes plain HTML when that's all you need is leaving money on the table on purpose. That's the shop telling you the truth. When your project genuinely needs an application, we'll build it in React and it'll be worth it. When it doesn't, we'll say so, because handing you a site you can afford to own beats handing you one you can't.</p>

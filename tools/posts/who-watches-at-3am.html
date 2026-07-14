@@ -1,0 +1,36 @@
+<p>Most break-ins we get called about happened at night or over a weekend. That's not bad luck. Attackers work when your people don't, because an alert that fires at 3 a.m. on a Saturday buys them until Monday morning before anyone reads it. By Monday the encryption is done. So the honest question for any business is: when something trips an alarm at 3 a.m., who sees it, and what do they do about it?</p>
+
+<h2>Alerts without eyes are just logs</h2>
+<p>Plenty of businesses technically have monitoring. The firewall logs to somewhere. The antivirus sends emails to an inbox called it-alerts@ that nobody opens. The server backup failed and put a red icon on a console nobody logs into. All of that is recording, not monitoring. It answers "what happened" after the damage, when what you needed was someone to act while it was happening.</p>
+<p>Real 24/7 monitoring means three things stacked together: sensors collecting signals (EDR on the computers, sign-in logs from Microsoft 365 or Google Workspace, firewall and server logs), something correlating those signals into alerts worth waking up for, and humans on shift who investigate and respond within minutes, at any hour. Cut any one of those and the other two don't save you.</p>
+
+<h2>What a SOC is</h2>
+<p>SOC stands for security operations center. It's the room, real or virtual, where analysts sit in shifts watching those alerts. When something fires, an analyst pulls the machine's activity timeline, decides whether it's an intern installing a weird screensaver or an actual intrusion, and acts: isolate the machine from the network, disable the account, kill the process, then call whoever needs calling.</p>
+<p>Staffing your own SOC means at least five or six analysts to cover nights, weekends, vacations, and turnover, plus the tooling. That's well into the high six figures a year. No 20-person company should build one, and almost none do. You rent it instead.</p>
+
+<h2>What MDR is</h2>
+<p>MDR, managed detection and response, is the rentable version. A vendor puts their agent on your machines, plugs into your Microsoft 365 tenant, and their SOC watches everything around the clock. When something real happens, they isolate the affected machine and call you, instead of just forwarding you an alert to deal with yourself. That "and respond" part is the whole point. A service that only notifies you at 3 a.m. has just moved the unread email to your phone.</p>
+<p>Names you'll run into: Huntress, Blackpoint, Sophos MDR, Arctic Wolf, CrowdStrike's managed tiers, and most decent MSPs resell one of these under their own label. Cost for small businesses generally lands in the range of a few dollars to a few tens of dollars per computer per month depending on scope. Compare that against a single week of downtime and it stops looking optional.</p>
+
+<h2>Threat hunting, briefly</h2>
+<p>Monitoring waits for an alarm. Threat hunting is analysts going looking without one: combing through your environment for the quiet signs of someone already inside. New inbox rules that forward mail externally. A remote-access tool installed that your IT never deployed. An admin account created at 2 a.m. Logins from two countries an hour apart. These things often don't trip automated alerts because each one, alone, looks almost normal. Good MDR services hunt as part of the package. It's how the three-week intruders get found before they pull the trigger.</p>
+
+<h2>Does a business your size need this?</h2>
+<p>The size question is really an exposure question. If you have email, a bank account, and files you'd pay to get back, you're a target, because attacks are automated and don't check headcount before knocking. That said, here's how we'd draw the line in practice:</p>
+<ul>
+<li><strong>Under 5 people, no server, everything in cloud apps:</strong> get the basics airtight first. MFA everywhere, EDR on every machine, tested backups. MDR is a reasonable add but not the first dollar.</li>
+<li><strong>5 to 50 people:</strong> this is the sweet spot for MDR. You're big enough to be worth attacking and to have real downtime costs, and far too small to staff anything internally. Nobody at the company is watching at 3 a.m., so pay someone whose job it is.</li>
+<li><strong>Compliance or insurance in play:</strong> if you handle health, financial, or legal data, or your cyber insurance application asks about 24/7 monitoring (most now do), the decision has been made for you.</li>
+</ul>
+<p>The wrong answer at any size is "our IT guy gets the alerts." One person is not a shift schedule. He sleeps, takes vacations, and quits.</p>
+
+<h2>How to know it's actually working</h2>
+<p>Whether you buy MDR directly or get it through an MSP, check these:</p>
+<ul>
+<li>Ask "who specifically responds at 3 a.m. Sunday, and how fast?" You want a staffed SOC with a stated response time in minutes, not a promise that someone's phone will buzz.</li>
+<li>Confirm they can act, not just notify. Can they isolate a machine and disable a Microsoft 365 account themselves? Get it in writing.</li>
+<li>Confirm coverage: every computer, every server, and your email tenant. Endpoint-only coverage misses the most common small-business attack, which is a stolen email password.</li>
+<li>Ask for a sample incident report from a real detection. If they can't produce one, they haven't caught much.</li>
+<li>Test it. Have your IT person run a harmless simulated detection on one machine and time how long until the phone rings.</li>
+</ul>
+<p>If the phone rings in minutes with a human who has already isolated the test machine, you're covered. If you get an email Tuesday, you've just learned something important for a very low price.</p>

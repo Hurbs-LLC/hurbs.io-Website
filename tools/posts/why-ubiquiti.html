@@ -1,0 +1,46 @@
+<p>If you run a small office, you have probably lived through one of two networking setups. Either it is a pile of consumer gear from a big-box store, with a router in a closet that nobody has logged into since 2019, or somebody sold you enterprise equipment with an annual license bill that makes you wince every renewal. There is a middle path, and for most of the offices we work in, that path is Ubiquiti's UniFi line.</p>
+
+<h2>What Ubiquiti actually is</h2>
+
+<p>Ubiquiti makes network hardware: access points, switches, gateways, and cameras, all managed from one piece of software called the UniFi controller. The gear is priced closer to prosumer than enterprise. A solid ceiling-mount access point runs somewhere in the low hundreds of dollars, and a managed PoE switch for a small office is often cheaper than a year of licensing on a comparable enterprise product.</p>
+
+<p>The controller is the part that matters. Instead of logging into each device separately, you open one dashboard and see the whole network: every switch port, every access point, every connected client. You can build VLANs, set up a guest network, adjust Wi-Fi channels, and push firmware updates from that one screen. On some of their gateways the controller runs on the device itself, so there is nothing extra to host.</p>
+
+<h2>Why we keep choosing it for small offices</h2>
+
+<p><strong>No license fees.</strong> This is the big one. You buy the hardware and you own it. The management software is included. There is no annual renewal, no feature that turns off when a subscription lapses, no surprise invoice in year two. For a 15-person office, the difference between Ubiquiti and a licensed enterprise stack over five years is often thousands of dollars.</p>
+
+<p><strong>Enterprise features at small-business prices.</strong> VLANs, guest portals, PoE, link aggregation, band steering, per-network firewall rules: the features an office actually uses are all there. Ten years ago you needed a five-figure budget to get this list. Now it fits in a small closet and a modest invoice.</p>
+
+<p><strong>One vendor, one interface.</strong> When the access points, switches, and gateway all speak to the same controller, troubleshooting gets faster. We can see which port a misbehaving device is plugged into, what VLAN it landed on, and how its signal looks, without hopping between three different admin pages.</p>
+
+<p><strong>It scales down gracefully.</strong> A two-room office can start with a gateway and one access point. When the company doubles, you add an AP and a switch, adopt them into the same controller, and the config carries over. You are not rebuilding the network to grow it.</p>
+
+<h2>The honest limits</h2>
+
+<p>We recommend Ubiquiti a lot, but we are not going to pretend it is perfect for everyone.</p>
+
+<p><strong>Support is not enterprise support.</strong> There is no phone number that connects you to a dedicated engineer with a service contract, the way Cisco TAC works. Ubiquiti support runs through tickets, chat, and a very active community forum. Answers are usually out there, but if your business needs a vendor on the hook with a guaranteed response time, Ubiquiti alone will not give you that. In practice, this is where an IT shop like ours fills the gap: we are the response time.</p>
+
+<p><strong>Firmware needs a grown-up.</strong> Ubiquiti ships updates frequently. Most are fine. Occasionally one is rough, and the smart move is to let a release settle for a week or two before pushing it to a production office. Somebody should own that decision instead of letting devices auto-update blindly.</p>
+
+<p><strong>Stock can be spotty.</strong> Popular models go in and out of availability. If you are planning a build-out, order early or plan around substitutes.</p>
+
+<p><strong>It is not the right tool for every environment.</strong> If you have hard compliance requirements that mandate specific vendors, hundreds of users on one site, or a need for advanced routing features, there are cases where Cisco, Meraki, Aruba, or a dedicated firewall makes more sense. We wrote a separate post comparing those options.</p>
+
+<h2>What a typical small-office UniFi setup looks like</h2>
+
+<ul>
+<li>A UniFi gateway handling routing, firewall, and the controller.</li>
+<li>A PoE switch feeding the access points and any cameras or desk phones.</li>
+<li>One access point per 1,500 to 2,000 square feet or so, ceiling mounted, adjusted after a coverage walk.</li>
+<li>Separate networks for staff, guests, and devices like printers and cameras, each on its own VLAN.</li>
+</ul>
+
+<p>For most offices under about 50 people, that stack covers everything they will ask of a network for years.</p>
+
+<h2>How to know it was done right</h2>
+
+<p>A good UniFi deployment is not just gear on a shelf. You should have admin credentials stored somewhere safe that is not one employee's memory. The controller should be backed up automatically. Guest Wi-Fi should be isolated from your file server. Firmware updates should happen on a schedule, not never and not instantly. And when someone asks "what is plugged into port 14," the answer should take thirty seconds, not an afternoon of cable tracing.</p>
+
+<p>If your current network cannot pass that test, whatever brand it is, that is the actual problem worth fixing. Ubiquiti just happens to make fixing it affordable.</p>

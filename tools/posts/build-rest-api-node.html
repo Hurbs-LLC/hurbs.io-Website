@@ -1,0 +1,149 @@
+<p>A REST API is the plumbing behind most modern software: a server that accepts requests over HTTP and answers with JSON. If you're going to build web apps, internal tools, or integrations, this is the fundamental skill. In this guide you'll build a small but real API with Node.js and Express: it will list items, fetch one by ID, accept new ones via POST, and handle errors cleanly. By the end you'll have a working server you can extend into anything.</p>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>Node.js 20 or newer installed. Check with <code>node --version</code>. If you don't have it, grab the LTS installer from the official Node.js site.</li>
+<li>A terminal and a text editor. We'll use plain commands that work on Mac, Linux, or Windows.</li>
+<li>Basic JavaScript familiarity: functions, objects, arrays.</li>
+<li>Optional but handy: <code>curl</code> for testing, which ships with most systems.</li>
+</ul>
+
+<h2>Step 1: Create the project</h2>
+
+<p>Make a folder and initialize an npm project inside it. The <code>-y</code> flag accepts the defaults so you don't have to answer prompts.</p>
+
+<pre><code>mkdir todo-api
+cd todo-api
+npm init -y
+npm install express
+</code></pre>
+
+<p>This creates <code>package.json</code> (your project manifest) and installs Express, the most widely used web framework for Node. That's the only dependency we need.</p>
+
+<h2>Step 2: Write a minimal server</h2>
+
+<p>Create a file named <code>server.js</code> with this content:</p>
+
+<pre><code>const express = require('express');
+
+const app = express();
+const PORT = 3000;
+
+// Parse JSON request bodies
+app.use(express.json());
+
+app.get('/', (req, res) =&gt; {
+  res.json({ status: 'ok' });
+});
+
+app.listen(PORT, () =&gt; {
+  console.log(`API listening on http://localhost:${PORT}`);
+});
+</code></pre>
+
+<p>Two things matter here. <code>express.json()</code> is middleware that reads incoming JSON bodies and puts the result on <code>req.body</code>. Without it, POST data is unreadable. And <code>app.listen</code> starts the HTTP server on port 3000.</p>
+
+<p>Run it:</p>
+
+<pre><code>node server.js
+</code></pre>
+
+<p>Open <code>http://localhost:3000</code> in a browser or hit it with curl. You should see <code>{"status":"ok"}</code>.</p>
+
+<h2>Step 3: Add GET routes</h2>
+
+<p>Real APIs serve data. We'll keep ours in an in-memory array so we can focus on the API shape (a database comes later, and slots in cleanly). Add this above the routes in <code>server.js</code>:</p>
+
+<pre><code>let todos = [
+  { id: 1, title: 'Buy fittings', done: false },
+  { id: 2, title: 'Quote the Henderson job', done: true }
+];
+let nextId = 3;
+</code></pre>
+
+<p>Then add two routes:</p>
+
+<pre><code>// List all todos
+app.get('/todos', (req, res) =&gt; {
+  res.json(todos);
+});
+
+// Get one todo by ID
+app.get('/todos/:id', (req, res) =&gt; {
+  const id = Number(req.params.id);
+  const todo = todos.find(t =&gt; t.id === id);
+  if (!todo) {
+    return res.status(404).json({ error: 'Todo not found' });
+  }
+  res.json(todo);
+});
+</code></pre>
+
+<p>The <code>:id</code> in the path is a route parameter. Express puts it on <code>req.params.id</code> as a string, so we convert it to a number before comparing. Note the 404 with a JSON error body when the ID doesn't exist: an API should always answer in JSON, even for failures.</p>
+
+<h2>Step 4: Add a POST route</h2>
+
+<p>POST is how clients create data. Add this route:</p>
+
+<pre><code>// Create a todo
+app.post('/todos', (req, res) =&gt; {
+  const { title } = req.body;
+
+  if (!title || typeof title !== 'string') {
+    return res.status(400).json({ error: 'title is required' });
+  }
+
+  const todo = { id: nextId++, title, done: false };
+  todos.push(todo);
+  res.status(201).json(todo);
+});
+</code></pre>
+
+<p>Validate input before trusting it. Here we require a non-empty string <code>title</code> and answer with 400 (bad request) if it's missing. On success we return 201 (created) and the new object, IDs included, so the client knows what was made.</p>
+
+<h2>Step 5: Add error-handling middleware</h2>
+
+<p>Express lets you define a catch-all error handler: a function with four arguments, registered after all routes. Anything a route throws (or passes to <code>next()</code>) lands here instead of crashing the server or leaking a stack trace to the client.</p>
+
+<pre><code>// 404 for unknown routes
+app.use((req, res) =&gt; {
+  res.status(404).json({ error: 'Not found' });
+});
+
+// Central error handler (must have 4 args)
+app.use((err, req, res, next) =&gt; {
+  console.error(err);
+  res.status(500).json({ error: 'Internal server error' });
+});
+</code></pre>
+
+<p>The order matters: routes first, then the 404 handler, then the error handler last. Log the real error server-side, but send the client a generic message. Internal details in error responses are a security problem.</p>
+
+<h2>Step 6: Run and test it</h2>
+
+<p>Restart the server:</p>
+
+<pre><code>node server.js
+</code></pre>
+
+<p>Then exercise every route with curl from a second terminal:</p>
+
+<pre><code>curl http://localhost:3000/todos
+
+curl http://localhost:3000/todos/1
+
+curl -X POST http://localhost:3000/todos \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Order parts"}'
+
+curl http://localhost:3000/todos/999
+</code></pre>
+
+<p>You should see the full list, a single item, a newly created item with <code>id: 3</code>, and a clean 404 error, in that order. Run the list call again and your new item is in it. During development, <code>node --watch server.js</code> restarts the server automatically when you save.</p>
+
+<h2>Where to go from here</h2>
+
+<p>You have a real API: routes, JSON in and out, validation, and centralized error handling. The pattern scales. Next steps, roughly in order: swap the array for a real database (PostgreSQL with the <code>pg</code> library is our usual pick), add PUT and DELETE routes, and add authentication before anything sensitive goes in.</p>
+
+<p>For deployment, the short version: an in-memory array resets on every restart, so add the database first. Then run the app on a small VPS or a platform like Render, Fly.io, or Railway, set the port from <code>process.env.PORT</code> instead of hardcoding 3000, and put it behind HTTPS. A small API like this runs comfortably on the cheapest tier of any of those platforms.</p>

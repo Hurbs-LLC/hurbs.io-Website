@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What Cloudflare actually does for your website | Hurbs LLC</title>
+  <meta name="description" content="DNS, CDN, DDoS protection, and Workers, in plain English.">
+  <link rel="canonical" href="https://hurbs.io/blog/what-cloudflare-does">
+  <meta property="og:title" content="What Cloudflare actually does for your website | Hurbs LLC">
+  <meta property="og:description" content="DNS, CDN, DDoS protection, and Workers, in plain English.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/what-cloudflare-does">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-yellow"></div>
+      <a href="/services/cloud" class="post-lane-link">CLOUD SETUP &amp; MIGRATION</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>What Cloudflare actually does for your website</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Somebody told you to "put the site behind Cloudflare," and you nodded like you knew what that meant. You are not alone. Cloudflare sits in front of a huge chunk of the internet, and most business owners who use it could not say what it actually does. Here is the plain-English version, because you should understand anything that sits between your customers and your website.</p>
+
+<h2>The one-sentence version</h2>
+<p>Cloudflare is a middleman between visitors and your web server. Instead of people connecting straight to your server, they connect to Cloudflare, and Cloudflare talks to your server on their behalf. Everything Cloudflare does flows from sitting in that position.</p>
+
+<h2>DNS: the address book</h2>
+<p>DNS is the system that turns a name like yourcompany.com into the numeric address of a server. Every domain needs a DNS provider, and Cloudflare is one of the best free ones. Their DNS is fast, changes take effect in minutes instead of hours, and the dashboard is clear enough that you can see every record your domain has in one screen.</p>
+<p>This matters more than it sounds. When we untangle a client's setup, half the time the DNS records live at some registrar they forgot the password to. Moving DNS to Cloudflare puts your domain's address book somewhere fast, free, and easy to audit. This is usually the first thing we do with a client's domain even if they use nothing else Cloudflare offers.</p>
+
+<h2>CDN: copies of your site, closer to your visitors</h2>
+<p>CDN stands for content delivery network. Cloudflare runs data centers in hundreds of cities, and it keeps copies of your site's static files, meaning images, stylesheets, scripts, and sometimes whole pages, in all of them. When someone in Seattle visits your site, they get those files from a server near Seattle instead of from your web host in Virginia.</p>
+<p>Two things happen as a result. Your site loads faster, especially for visitors far from your host. And your actual server does less work, because Cloudflare answers a large share of requests from its own copies. For a typical small-business site, most of the traffic never touches your server at all. That also means a traffic spike, from an ad campaign or a news mention, is far less likely to knock you over.</p>
+
+<h2>DDoS protection: absorbing the flood</h2>
+<p>A DDoS attack is when someone points thousands of hijacked machines at your site and floods it with junk traffic until it falls over. Small businesses assume they are too small to be a target. They are wrong. Attacks get launched over petty disputes, extortion attempts, and sometimes just automated scanning that happens to hit you.</p>
+<p>Because all traffic goes through Cloudflare first, the flood hits their network instead of yours. Cloudflare's network is enormous, and absorbing this kind of garbage is their core business. The junk gets filtered out and real visitors get through. This protection is included even on the free plan, and it works because of that middleman position: attackers hit the shield, not the server behind it.</p>
+<p>Related to this, Cloudflare hides your server's real address. Visitors only ever see Cloudflare's addresses, which makes it harder for attackers to go around the shield and hit your server directly.</p>
+
+<h2>Certificates and HTTPS</h2>
+<p>Cloudflare also handles the padlock. It issues and renews the certificate that gives you HTTPS, automatically, at no cost. Expired certificates are one of the most common "the website is showing a scary warning" calls we get, and putting a site behind Cloudflare makes that entire category of problem mostly disappear. One caution: the encryption mode needs to be set correctly (Full, not Flexible) so traffic is encrypted the whole way to your server and not just to Cloudflare. This is a two-minute setting that a lot of DIY setups get wrong.</p>
+
+<h2>Workers: small programs at the edge</h2>
+<p>Workers are Cloudflare's way of letting you run code on their network instead of on your server. You will hear developers get excited about this. For a small business, the practical uses are modest but real: redirecting old URLs after a site rebuild, adding security headers, or running a small API without renting a server for it. If you do not have a developer, you will probably never touch Workers, and that is fine. They are there when you need them.</p>
+
+<h2>What Cloudflare does not do</h2>
+<p>Cloudflare does not host your website. Your site still lives on a web host somewhere, and if that host goes down, Cloudflare mostly goes down with it for your visitors. It does not back up your site. It does not fix a slow database or a bloated WordPress install, although caching can hide some of the symptoms. Think of it as armor and a delivery service, not a foundation.</p>
+
+<h2>What it costs and how to know it is set up right</h2>
+<p>The free plan covers everything above and is genuinely enough for most small-business sites. Paid plans, starting at roughly twenty dollars a month, add a proper web application firewall, image optimization, and better analytics.</p>
+<p>A correct setup looks like this: your domain's DNS lives at Cloudflare, the important records have the orange cloud turned on so traffic is actually proxied, encryption mode is Full, and your web host is configured so it only accepts traffic from Cloudflare. If any of those are off, you have the dashboard but not the protection. We set this up for clients in an afternoon, and it is one of the highest-value afternoons in IT.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cloud%20Setup%20%26%20Migration" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/azure-vs-aws-vs-google-cloud" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Azure, AWS, or Google Cloud: an honest comparison</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/terraform-first-project" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Your first Terraform project: one server on AWS</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/do-you-need-kubernetes" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">You probably don’t need Kubernetes</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

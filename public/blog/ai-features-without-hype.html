@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Adding AI to your app without the hype | Hurbs LLC</title>
+  <meta name="description" content="Summarize, extract, draft, classify. The four AI features that reliably work and how to ship one safely.">
+  <link rel="canonical" href="https://hurbs.io/blog/ai-features-without-hype">
+  <meta property="og:title" content="Adding AI to your app without the hype | Hurbs LLC">
+  <meta property="og:description" content="Summarize, extract, draft, classify. The four AI features that reliably work and how to ship one safely.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/ai-features-without-hype">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-blue"></div>
+      <a href="/services/software" class="post-lane-link">CUSTOM SOFTWARE</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Adding AI to your app without the hype</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Every software vendor is bolting "AI" onto their product, and every business owner we talk to is somewhere between curious and exhausted by it. Here is the honest version: most AI pitches are vapor, but there is a small set of AI features that work reliably today, cost little to run, and save real hours. If you have an app, an internal tool, or a workflow with a lot of text in it, these are worth knowing about.</p>
+
+<h2>The four features that actually work</h2>
+
+<p>Modern language models are genuinely good at four jobs. Almost every useful AI feature we build is one of these wearing different clothes.</p>
+
+<h3>1. Summarize</h3>
+
+<p>Take something long and make it short. A 40-minute call transcript becomes five bullet points. A 30-page contract becomes a one-page brief. A week of support tickets becomes "here are the three things customers complained about most." This works well because the source material is right there: the model is condensing, not inventing.</p>
+
+<h3>2. Extract</h3>
+
+<p>Pull structured data out of unstructured text. Read an emailed purchase order and pull out the vendor, line items, quantities, and total. Read a resume and fill in the candidate fields. Read an inspection note and pull the address, the issue, and the severity. Extraction is the quiet workhorse: it is what lets you automate processes that used to require a human to read something.</p>
+
+<h3>3. Draft</h3>
+
+<p>Produce a first version for a human to edit. Reply drafts for common customer emails. A first pass at a job description, a proposal section, a product description from a spec sheet. The key word is draft. The human still sends it. You are saving the blank-page time, not removing the person.</p>
+
+<h3>4. Classify</h3>
+
+<p>Sort things into buckets. Route incoming emails to sales, support, or billing. Tag support tickets by product and urgency. Flag reviews that mention a safety issue. Classification is old technology made dramatically easier: what used to take months of training data now takes a well-written prompt and an afternoon of testing.</p>
+
+<h2>What does not work (yet)</h2>
+
+<p>Be suspicious of anything pitched as autonomous. Models that take actions on their own, agents that "run your business," anything making final decisions with money or legal weight attached. The failure mode of these systems is that they are confidently wrong, and confidently wrong at scale is expensive. Also be suspicious of "ask your data anything" chatbots as a first project. They demo great and disappoint in production, because vague questions get vague answers.</p>
+
+<h2>Guardrails: the part that makes it safe</h2>
+
+<p>Every AI feature we ship has the same three protections built in:</p>
+
+<ul>
+<li><strong>Human review where it counts.</strong> Drafts get sent by a person. Extracted invoice data gets a confirmation screen before it hits accounting. The model does the labor; a human keeps the authority.</li>
+<li><strong>Confidence thresholds and escape hatches.</strong> If the model is unsure how to classify a ticket, it goes to a human queue instead of a random bucket. "I don't know" routing is a feature, not a failure.</li>
+<li><strong>Logging.</strong> Every input and output gets recorded. When something goes wrong, you can see exactly what the model saw and what it said, and fix the prompt or the process.</li>
+</ul>
+
+<p>There is also a data question to settle up front: what are you sending to the model provider? The major APIs offer terms where your data is not used for training, but you should confirm that, and anything genuinely sensitive (health records, payment data) needs a deliberate decision, not a default.</p>
+
+<h2>What it costs</h2>
+
+<p>Less than people expect. These features run on API calls priced in fractions of a cent per request for most workloads. A tool that summarizes every support call your team has might cost a few dollars a month in API fees. The real cost is the build: wiring it into your systems, writing and testing the prompts, and building the review step. That is typically a small project, not a big one, if you keep the scope to one of the four jobs above.</p>
+
+<h2>How to pick a first project</h2>
+
+<p>Look for a task where someone reads text and then does something mechanical with it. Reads emails and routes them. Reads documents and types fields into a system. Reads notes and writes a summary. That is the sweet spot: high volume, low stakes per item, easy to check.</p>
+
+<p>Then measure before and after. Minutes per item, items per day. If you cannot measure it, you will never know if it worked, and "it feels faster" is how hype survives.</p>
+
+<h2>How to know it's done right</h2>
+
+<p>A good AI feature disappears into the workflow. Your team stops thinking of it as AI and starts thinking of it as "the thing that pre-fills the form." Error rates are known, not guessed. The weird cases route to humans. And when the model gets something wrong, you find out from a log or a review step, not from an angry customer.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Custom%20Software" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-typescript" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Why we build in TypeScript</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/python-business-automation" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Python: the duct tape of business automation</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/when-react-makes-sense" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">When React makes sense (and when plain HTML wins)</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<p>If your business runs its own servers, somebody at some point probably virtualized them, most likely on VMware. Then Broadcom bought VMware in late 2023, killed the perpetual licenses, moved everything to subscription bundles, and small-business renewal quotes came back multiples of what they used to be. The free ESXi hypervisor that half the small-business world quietly ran on went away too (it later returned in limited form, but the trust did not). So in 2026, a lot of owners are looking at a renewal quote and asking two questions: what is virtualization actually buying me, and what are my options now?</p>
+
+<h2>What virtualization buys you</h2>
+<p>Virtualization means one physical server runs several virtual machines, each acting like its own independent server. Instead of five aging boxes each doing one job, you have one or two solid machines hosting all five workloads. The practical wins:</p>
+<ul>
+<li><strong>Snapshots.</strong> Before a risky update, you take a snapshot of the VM. Update goes sideways, you roll back in minutes instead of rebuilding a server over a weekend. This alone changes how safely you can do maintenance.</li>
+<li><strong>Consolidation.</strong> Fewer physical boxes means less power, less heat, fewer things that can die, and fewer warranty renewals. Most single-purpose servers idle at a few percent CPU; stacking them wastes nothing.</li>
+<li><strong>Migration and recovery.</strong> A VM is ultimately a set of files. When the hardware ages out, you move the VM to the new box instead of reinstalling everything. When hardware fails, you restore the VM onto anything capable of running it. Compare that to resurrecting a bare-metal server whose install media nobody can find.</li>
+<li><strong>Better backups.</strong> Backup tools can capture whole VMs consistently while they run, and you can actually test a restore by booting the copy.</li>
+</ul>
+
+<h2>The VMware situation</h2>
+<p>VMware is still excellent software, and for larger businesses with a fleet of hosts and staff who know it, paying the Broadcom subscription may still pencil out. But Broadcom has been open about focusing on its largest customers. For a small business with one to three hosts, the new pricing, per-core minimums, and bundle structure usually mean paying for a lot you will never use. If your renewal quote made you sit down, you are not being singled out. That is the strategy.</p>
+
+<h2>Proxmox: where small business went</h2>
+<p>The migration wave landed mostly on Proxmox VE, an open-source hypervisor from an Austrian company that has been around since 2008. It is free to run, with optional paid support subscriptions that give you the stable update channel and someone to call; those cost a few hundred dollars per server per year rather than VMware-bundle money. What you get:</p>
+<ul>
+<li>A full web interface for managing VMs, storage, and backups. No separate management server required.</li>
+<li>Snapshots, live migration between hosts, and clustering built in, not sold as add-ons.</li>
+<li>Proxmox Backup Server, a free companion product that does deduplicated, verified VM backups properly.</li>
+<li>Built on Debian Linux and KVM, the same virtualization core that runs a large share of the world's cloud.</li>
+</ul>
+<p>Proxmox also has a built-in tool for importing VMware VMs, and in our experience a small environment migrates over a weekend, mostly waiting on disk copies. The honest trade-offs: the polish is a notch below vCenter, some enterprise storage integrations do not exist, and if a software vendor "only supports VMware," you want that conversation before you move, not after. Hyper-V, included with Windows Server licensing, is also a legitimate option for Windows-heavy shops that already own the licenses, though Microsoft's own energy is clearly in Azure.</p>
+
+<h2>When bare metal still wins</h2>
+<p>Virtualization is not a religion. Skip it when the workload says so:</p>
+<ul>
+<li><strong>One server, one job, forever.</strong> If the whole building runs on a single application server and nothing else, a hypervisor adds a layer to manage without much payoff. Keep it simple and back it up well.</li>
+<li><strong>Performance-critical workloads.</strong> A database that hammers storage, video processing, or anything that needs a GPU is often happier owning the hardware outright. The virtualization overhead is small these days, but small is not zero.</li>
+<li><strong>Special hardware.</strong> Machines wired to shop-floor equipment, licensing dongles, and industrial control cards can be passed through to a VM, but sometimes the cleanest answer is a dedicated box.</li>
+<li><strong>Nothing left on-prem.</strong> If your last server exists only to serve files, the real question is not which hypervisor. It is whether a NAS or the cloud retires the server entirely.</li>
+</ul>
+
+<h2>How to know it is set up right</h2>
+<p>A healthy small-business virtualization setup, on any platform, looks like this: the host has enough RAM and disk that you are not playing Tetris with resources. Backups capture whole VMs, go to a second device and offsite, and someone has actually booted a restored copy this year. Snapshots get used before maintenance and deleted after, because a six-month-old snapshot quietly eating disk is a classic failure. And the licensing situation is written down: what you run, what it costs at renewal, and what the exit path is. Plenty of businesses learned in 2024 what it feels like to have no exit path. The fix is cheap now and expensive later.</p>

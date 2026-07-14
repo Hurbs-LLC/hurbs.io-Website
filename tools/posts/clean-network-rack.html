@@ -1,0 +1,74 @@
+<p>Open the network closet in most small offices and you will find it: a bird's nest of cables in six colors, a switch balanced on a cardboard box, and a mystery power strip daisy-chained to another power strip. It mostly works, which is why it stays that way until the day something breaks and nobody can tell which cable goes where. This guide walks through building a clean rack from scratch. By the end you will have a documented, labeled rack that anyone competent can service in minutes instead of hours.</p>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>A rack or wall-mount cabinet sized for your gear plus growth. For a small office, a 12U wall-mount cabinet is a common sweet spot. Sizes are measured in rack units; 1U is 1.75 inches of height.</li>
+<li>Your network gear: firewall or gateway, switch(es), and whatever else lives there (NVR, small server, modem/ONT).</li>
+<li>A 24- or 48-port patch panel matching your cable count, Cat6 rated.</li>
+<li>A punch-down tool with a 110 blade, a cable tester, and a labeler (a cheap handheld label maker is fine).</li>
+<li>Short patch cables in a couple of colors: 0.5 ft to 1 ft for panel-to-switch, a few longer ones for odd jumps.</li>
+<li>Velcro cable wraps. Leave the zip ties in the drawer.</li>
+<li>A UPS sized for your gear (rack-mount if it fits, shelf otherwise).</li>
+<li>A maintenance window. Repatching a live office network takes the network down.</li>
+</ul>
+
+<h2>Step 1: Plan the layout top to bottom</h2>
+
+<p>Sketch the rack on paper before you mount anything. The convention that works:</p>
+
+<pre><code>U12  (empty, growth)
+U11  Patch panel
+U10  Cable management bar (optional but worth it)
+U9   Switch
+U8   (empty, airflow)
+U7   Firewall / gateway
+U6   Shelf: modem or ONT, NVR, anything non-rackmount
+U3-4 (empty, growth)
+U1-2 UPS at the bottom</code></pre>
+
+<p>The logic: the patch panel sits directly above the switch so patch cables are short and vertical. Shelved odds and ends go in the middle where you can see them. The UPS goes at the bottom, always, because it is the heaviest thing in the rack by a wide margin and weight down low keeps the rack stable. Leave empty units between heat-producing gear and for the equipment you have not bought yet. A rack packed solid on day one is a problem on day 400.</p>
+
+<h2>Step 2: Measure, count, and order</h2>
+
+<p>Count your incoming wall runs; that sets the patch panel size (buy the next size up from your count). Count switch ports the same way, adding PoE budget if cameras or APs hang off this switch. Measure the distance from panel to switch to pick patch cable lengths: if the panel is 1U above the switch, half-foot or one-foot cables are right, and anything longer becomes the spaghetti you are trying to prevent.</p>
+
+<p>Pick a color convention now and write it down. Something simple: blue for workstations, yellow for APs, red for uplinks and firewall, green for cameras. The convention matters more than the specific colors.</p>
+
+<h2>Step 3: Punch down the patch panel</h2>
+
+<p>Pull the incoming wall runs to the back of the panel, leaving a service loop, a couple of feet of slack coiled neatly, so the panel can be pulled forward for service later. For each cable: strip a couple inches of jacket, untwist each pair only as far as the termination requires, seat the conductors into the panel's slots following the T568B color pattern printed on the panel (use T568B throughout unless the building is already wired T568A; whichever it is, be consistent), and punch each conductor with the 110 tool until it trims and seats with a click.</p>
+
+<p>Test every port as you go with the cable tester, one end on the panel port, the remote unit on the wall jack it should map to. Finding a miswire now takes thirty seconds. Finding it after everything is dressed and labeled takes an evening.</p>
+
+<h2>Step 4: Mount the gear and patch it</h2>
+
+<p>Mount everything per your layout sketch, heaviest at the bottom, and get power sorted before data: gear plugs into the UPS battery-backed outlets, not a power strip, and nothing daisy-chains.</p>
+
+<p>Then patch, and here is where short cables pay off. Panel port 1 to a switch port with a half-foot cable, straight down. Repeat across the panel. Group the runs with velcro wraps every few inches so they lie flat as a ribbon. Uplinks and the firewall connection get your designated color so they are identifiable at a glance.</p>
+
+<p>Why velcro and never zip ties: zip ties get cinched tight, which can deform cable pairs and degrade performance, and every future change means cutting them off (usually nicking a cable jacket in the process) and throwing them away. Velcro opens and closes forever and cannot be over-tightened enough to hurt the cable.</p>
+
+<h2>Step 5: Label both ends of everything</h2>
+
+<p>Every patch cable gets a flag label at both ends. Every wall run gets a number that matches on the patch panel port and the wall jack (jack "A-07" appears on panel port 7 and on the faceplate in the office). Gear gets labeled too: the firewall, each switch, the UPS, with hostname or role. The test for good labeling: someone who has never seen this rack should be able to trace any connection without pulling a single cable.</p>
+
+<p>Label the power side as well. Knowing which UPS outlet feeds the firewall matters at exactly the moment you least want to guess.</p>
+
+<h2>Step 6: Photograph and document</h2>
+
+<p>Take photos: the full rack front and back, the patch panel close enough to read labels, the UPS connections. Then write the one-page document: a port map (panel port, wall location, what is connected, switch port), the color convention, gear list with model and serial numbers, and where the admin credentials live (a password manager, not this document). Store it with your IT documentation and drop a printed copy in a sleeve inside the cabinet. Update the photos whenever the rack changes; a photo from two years ago is worse than no photo, because people trust it.</p>
+
+<h2>Verify it</h2>
+
+<ul>
+<li>Every wall jack tested and mapped to a labeled panel port.</li>
+<li>Every patch cable labeled at both ends, no cable longer than the job needs.</li>
+<li>Velcro throughout, zero zip ties on data cables.</li>
+<li>UPS at the bottom, all network gear on battery-backed outlets, no daisy-chained strips.</li>
+<li>Colors follow the written convention.</li>
+<li>Photos and the port map exist, dated, in your documentation and in the cabinet.</li>
+<li>The final test: hand the photos and port map to someone unfamiliar with the site and ask them to find where jack A-07 lands. If they can answer from the documentation alone, you are done.</li>
+</ul>
+
+<p>A clean rack is not vanity. It is the difference between a five-minute fix and a half-day outage, every single time something changes. Build it once, keep the discipline, and the closet stays boring, which is the goal.</p>

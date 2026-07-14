@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your first Power Automate flow: an approval that emails itself | Hurbs LLC</title>
+  <meta name="description" content="Trigger, condition, approval, notification. Kill one email chain today, step by step.">
+  <link rel="canonical" href="https://hurbs.io/blog/first-power-automate-flow">
+  <meta property="og:title" content="Your first Power Automate flow: an approval that emails itself | Hurbs LLC">
+  <meta property="og:description" content="Trigger, condition, approval, notification. Kill one email chain today, step by step.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/first-power-automate-flow">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-green"></div>
+      <a href="/services/digital" class="post-lane-link">DIGITAL TRANSFORMATION</a>
+      <span class="post-type">STEP-BY-STEP GUIDE</span>
+    </div>
+    <h1>Your first Power Automate flow: an approval that emails itself</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>If you pay for Microsoft 365, you own Power Automate, and most companies never touch it. That is a shame, because the classic first use case takes about half an hour: someone submits a request, the right person gets an approval on their phone, and everyone gets an email with the outcome. No more "did you see my email about the PTO request?"</p>
+
+<p>In this guide we will build exactly that. Someone adds an item to a SharePoint list (a purchase request, a PTO request, whatever yours is), a manager approves or rejects it from Teams or email, and the flow emails the requester the result. By the end you will have a working approval flow and, more usefully, you will understand the trigger, action, and condition pattern that every other flow is built from.</p>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>A Microsoft 365 business account. Power Automate is included; this flow uses only standard connectors, so no extra license is needed.</li>
+<li>A SharePoint list to act as the request form. We will use one called <strong>Purchase Requests</strong> with columns for Title, Amount (number), and Justification (multiple lines of text). Create it on any site you have access to: from the site home page, choose New, then List.</li>
+<li>Ten minutes of an approver's time to test with. You can approve your own requests during testing.</li>
+</ul>
+
+<h2>Step 1: Create the flow and pick the trigger</h2>
+
+<p>Go to <a href="https://make.powerautomate.com">make.powerautomate.com</a> and sign in with your work account. In the left menu choose <strong>Create</strong>, then <strong>Automated cloud flow</strong>. Automated means the flow starts by itself when something happens, as opposed to a button you press or a schedule.</p>
+
+<p>Name it something you will recognize in a year, like <code>Purchase request approval</code>. In the trigger search box type <code>SharePoint</code> and pick <strong>When an item is created</strong>. Click Create.</p>
+
+<p>The designer opens with your trigger as the first block. Click it and fill in two fields: <strong>Site Address</strong> (pick your site from the dropdown) and <strong>List Name</strong> (pick Purchase Requests). That is the whole trigger: any new item in that list now starts a run of this flow.</p>
+
+<p>If your requests come from a Microsoft Form instead of a list, the only difference is the trigger: use <strong>When a new response is submitted</strong> from the Forms connector, followed by <strong>Get response details</strong>. Everything after this point is identical.</p>
+
+<h2>Step 2: Add the approval action</h2>
+
+<p>Click the <strong>+</strong> under the trigger and choose <strong>Add an action</strong>. Search for <code>approval</code> and pick <strong>Start and wait for an approval</strong>. The "and wait" part matters: the flow pauses here, for days if it has to, until a human responds.</p>
+
+<p>Fill in the fields:</p>
+
+<ul>
+<li><strong>Approval type</strong>: choose <strong>Approve/Reject - First to respond</strong>. If you list several approvers, the first response settles it. The "Everyone must approve" option exists for when you need all signatures.</li>
+<li><strong>Title</strong>: this is the subject line the approver sees. Make it self-explanatory. Type <code>Purchase request: </code> and then, from the dynamic content panel (the lightning-bolt icon on the field), insert <strong>Title</strong> from the trigger. Dynamic content is how you pull values from earlier steps into later ones; you will use it constantly.</li>
+<li><strong>Assigned to</strong>: the approver's email address. Start with yourself for testing.</li>
+<li><strong>Details</strong>: the body of the approval request. Something like <code>Amount: </code> plus the Amount dynamic content, a new line, <code>Justification: </code> plus the Justification field, and <code>Requested by: </code> plus <strong>Created By DisplayName</strong>.</li>
+</ul>
+
+<p>The approver will get this in email, in the Teams Approvals app, and on their phone, with Approve and Reject buttons and a comments box. You build it once; Microsoft handles the delivery.</p>
+
+<h2>Step 3: Branch on the outcome</h2>
+
+<p>Add another action below the approval. Search for <code>condition</code> and pick <strong>Condition</strong> from the Control group. A condition is an if/else: it checks a value and splits the flow into a True branch and a False branch.</p>
+
+<p>Click the left value box and, from dynamic content under the approval step, choose <strong>Outcome</strong>. Leave the middle dropdown as <strong>is equal to</strong>. In the right box type <code>Approve</code>. Spell it exactly like that, capital A, because the comparison is literal. The approval action returns the string <code>Approve</code> or <code>Reject</code>, and this condition sends approved requests down the True branch.</p>
+
+<h2>Step 4: Send the outcome emails</h2>
+
+<p>In the <strong>True</strong> branch, add an action, search for <code>send an email</code>, and pick <strong>Send an email (V2)</strong> from the Office 365 Outlook connector.</p>
+
+<ul>
+<li><strong>To</strong>: from dynamic content, pick <strong>Created By Email</strong> so the reply goes to whoever made the request.</li>
+<li><strong>Subject</strong>: <code>Approved: </code> plus the Title dynamic content.</li>
+<li><strong>Body</strong>: a short note, plus <strong>Responses Comments</strong> from the approval step so the requester sees anything the approver wrote, like "approved, use the Amazon business account."</li>
+</ul>
+
+<p>Now do the same in the <strong>False</strong> branch with a rejection email: <code>Not approved: </code> plus Title, and definitely include the comments, because "rejected" with no reason generates a walk to someone's desk.</p>
+
+<p>If you want a paper trail on the list itself, add one more action in each branch: SharePoint's <strong>Update item</strong>, setting a Status column to Approved or Rejected. Then the list doubles as your log.</p>
+
+<p>Click <strong>Save</strong> in the top right.</p>
+
+<h2>Step 5: Test it</h2>
+
+<p>Use the built-in tester. Click <strong>Test</strong> in the top right, choose <strong>Manually</strong>, then go add an item to your Purchase Requests list. Within a few seconds the test view lights up each step with a green check as it runs, then stops at the approval and waits.</p>
+
+<p>Check your inbox or the Approvals app in Teams, approve your own request with a comment, and watch the flow finish: condition goes True, email goes out. Then submit a second item and reject it to prove the False branch works too. If a step fails it shows a red X; click it and the run history shows the exact inputs and outputs, which makes most failures obvious (a typo in the condition value is the classic).</p>
+
+<h2>Wrap-up</h2>
+
+<p>Once both branches have passed, swap the Assigned to field from your address to the real approver and tell the team the list is live. You now have the pattern behind nearly every business flow: a trigger fires, actions run, a condition branches, and dynamic content carries data between steps. The same skeleton handles invoice sign-offs, new-hire equipment requests, and content review. Change the list, change the approver, ship another one.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Digital%20Transformation" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/sharepoint-without-sprawl" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">SharePoint without the sprawl</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/slack-or-teams" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Slack or Teams: pick one, set it up right</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/zapier-make-automation" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Automate the boring stuff with Zapier or Make</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

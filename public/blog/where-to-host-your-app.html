@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Where to host your app: VPS, PaaS, or serverless | Hurbs LLC</title>
+  <meta name="description" content="A $6 VPS, a platform that deploys from git, or functions that scale to zero. Honest tradeoffs.">
+  <link rel="canonical" href="https://hurbs.io/blog/where-to-host-your-app">
+  <meta property="og:title" content="Where to host your app: VPS, PaaS, or serverless | Hurbs LLC">
+  <meta property="og:description" content="A $6 VPS, a platform that deploys from git, or functions that scale to zero. Honest tradeoffs.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/where-to-host-your-app">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-blue"></div>
+      <a href="/services/software" class="post-lane-link">CUSTOM SOFTWARE</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Where to host your app: VPS, PaaS, or serverless</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>You had an app built, or you're about to, and now someone asks where it will run. The hosting world has a hundred vendors but really only three shapes: a VPS you manage yourself, a platform that deploys from your git repo, and serverless functions. Each one is the right answer for somebody. Here is the honest comparison, including the parts vendors don't advertise.</p>
+
+<h2>Option 1: A VPS (you rent a server)</h2>
+
+<p>A VPS is a virtual private server: a slice of a machine in someone's datacenter that is entirely yours. DigitalOcean, Linode, Vultr, and Hetzner all sell them starting around $5 to $10 a month, and that little box can comfortably run a small business app, its database, and a few side services.</p>
+
+<p><strong>The good:</strong> it's the cheapest option at every scale that matters to a small business, and the price is flat and predictable. You can run anything on it: any language, any database, cron jobs, background workers, all on one bill. There's no lock-in; your app is just files on a Linux box, and moving to another provider is an afternoon.</p>
+
+<p><strong>The honest downside:</strong> you are now a part-time sysadmin. Security updates, firewall rules, SSL certificate renewal, database backups, disk filling up, and the reboot at 2 a.m. are all your problem. None of it is hard individually, but it's a real, permanent chore, and the failure mode is neglect: the server that hummed along for two years is often two years behind on patches. Tools like Docker and management panels reduce the burden but don't remove it.</p>
+
+<p><strong>Pick a VPS when:</strong> you have someone (in-house or hired, this is a lot of what we do) who owns the maintenance, you want low predictable cost, or you need something platforms don't allow, like an odd database or long-running background processes.</p>
+
+<h2>Option 2: A PaaS (deploy from git)</h2>
+
+<p>Platform-as-a-service means you push code to git and the platform builds, deploys, runs, and scales it. Heroku invented the pattern; today Render, Railway, and Fly.io are the usual suspects, with Vercel and Netlify covering the frontend-heavy version of the same idea.</p>
+
+<p><strong>The good:</strong> the ops chore mostly disappears. Patched servers, SSL, deploys, rollbacks, and logs are the platform's job. Deploys become "git push," which means your developer ships more and babysits less. For a small team without a dedicated ops person, this is worth real money.</p>
+
+<p><strong>The honest downside:</strong> cost. Entry tiers run maybe $5 to $25 a month, comparable to a VPS, but the curve is steeper: add a managed database, a background worker, and a bit more memory, and you're at several times the VPS price for the same horsepower. There's also mild lock-in, not to your code, but to the platform's way of doing things (their config, their add-ons, their database hosting). And you inherit their limits: free and cheap tiers may sleep your app when idle, and some platforms restrict long-running processes.</p>
+
+<p><strong>Pick a PaaS when:</strong> nobody wants to own server maintenance, your app is a fairly standard web app, and paying somewhat more per month to not think about infrastructure is a good trade. For most small businesses with one custom app, this is the default we recommend.</p>
+
+<h2>Option 3: Serverless (functions on demand)</h2>
+
+<p>Serverless means your code runs only when a request comes in, and you pay per execution. AWS Lambda is the heavyweight; Cloudflare Workers and the function offerings inside Vercel and Netlify are the approachable versions. There are still servers, obviously. You just never see them.</p>
+
+<p><strong>The good:</strong> near-zero cost at low traffic. An API that gets a few thousand hits a month can run essentially free. Scaling is automatic: a traffic spike that would flatten a $6 VPS just costs you a little more that month. There is nothing to patch, ever.</p>
+
+<p><strong>The honest downside:</strong> it reshapes how the app is built. Functions are short-lived and stateless, so long tasks, persistent connections, and "just write a file to disk" all need workarounds. Your database has to live somewhere else, and wiring functions to databases has its own gotchas. Debugging is harder than tailing a log on one server. Lock-in is the strongest of the three options: an app built around one vendor's functions, queues, and storage does not move casually. And pay-per-use cuts both ways; costs are wonderful at low volume and can get surprising at high volume or with inefficient code.</p>
+
+<p><strong>Pick serverless when:</strong> the workload is spiky or tiny (webhooks, scheduled jobs, a lightweight API), or the app was designed for it from day one. This site you're reading runs on Cloudflare Workers, and for a static site with light logic it's a great fit.</p>
+
+<h2>The short version</h2>
+
+<ul>
+<li><strong>VPS:</strong> cheapest, most flexible, and you own every problem. Best with someone maintaining it.</li>
+<li><strong>PaaS:</strong> costs more as you grow, but the ops burden mostly vanishes. Best default for a small team with one standard web app.</li>
+<li><strong>Serverless:</strong> nearly free when small, scales itself, but constrains the design and locks you in hardest. Best for spiky or lightweight workloads.</li>
+</ul>
+
+<h2>How to know you chose right</h2>
+
+<p>Six months in, hosting should be a line item, not a topic. Deploys are routine, the monthly bill doesn't surprise anyone, and nobody is quietly dreading the server because it hasn't been patched since launch. If you're on a VPS nobody maintains, or paying PaaS prices that keep creeping past what a small server would cost, the choice is worth revisiting. Moving between these options is a project, not a crisis, and it's far cheaper than living with the wrong one for years.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Custom%20Software" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-typescript" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Why we build in TypeScript</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/python-business-automation" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Python: the duct tape of business automation</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/when-react-makes-sense" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">When React makes sense (and when plain HTML wins)</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

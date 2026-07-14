@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Troubleshoot a network printer like a tech | Hurbs LLC</title>
+  <meta name="description" content="The diagnostic order we use: driver, queue, IP, VLAN, firmware. Fix it in minutes instead of rebooting everything twice.">
+  <link rel="canonical" href="https://hurbs.io/blog/troubleshoot-network-printer">
+  <meta property="og:title" content="Troubleshoot a network printer like a tech | Hurbs LLC">
+  <meta property="og:description" content="The diagnostic order we use: driver, queue, IP, VLAN, firmware. Fix it in minutes instead of rebooting everything twice.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/troubleshoot-network-printer">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-red"></div>
+      <a href="/services/it-support" class="post-lane-link">IT SUPPORT &amp; MANAGED SERVICES</a>
+      <span class="post-type">STEP-BY-STEP GUIDE</span>
+    </div>
+    <h1>Troubleshoot a network printer like a tech</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>"The printer isn't working" is the most common ticket in office IT, and most people troubleshoot it in a random order: reboot the PC, reinstall the driver, kick the printer. Techs do it in a fixed order instead, because a print job crosses four layers, and each layer has a fast test. This guide walks that order. At the end you will be able to isolate a printer problem to the printer, the network, the print queue, or the driver, and fix the common cases yourself.</p>
+
+<h2>Prerequisites</h2>
+<ul>
+<li>A Windows PC that is failing to print (the checks are similar on a Mac, and we note the differences).</li>
+<li>The printer's IP address. It is usually on a sticker, in the printer's own network settings menu, or printable from the printer's control panel as a "configuration page" or "network status page."</li>
+<li>Local admin rights on the PC for the spooler steps.</li>
+<li>Physical access to the printer for the first step.</li>
+</ul>
+
+<h2>Step 1: Rule out the printer itself</h2>
+<p>Walk to the printer before you touch a computer. Check the obvious: power on, no error lights, no paper jam message, paper in the tray, toner not empty. Then print a test page from the printer's own control panel, not from a computer. Every network printer has this in its menu, usually under Reports or Settings.</p>
+<p>This one test splits the problem in half. If the internal test page fails, the problem is hardware or consumables, and no amount of driver work will fix it. If it prints clean, the printer is fine and the problem is on the network, the queue, or the driver side. Most people skip this step and waste an hour on a printer with an empty tray 2.</p>
+
+<h2>Step 2: Ping the printer</h2>
+<p>Now check whether your PC can reach the printer at all. Open a command prompt and ping the printer's IP:</p>
+<pre><code>ping 192.168.1.50</code></pre>
+<p>Replace <code>192.168.1.50</code> with your printer's actual IP. Same command works in Terminal on a Mac.</p>
+<p><strong>If you get replies</strong>, the network path is good. Skip to Step 4.</p>
+<p><strong>If you get "Request timed out" or "Destination host unreachable"</strong>, the PC cannot reach the printer, and nothing downstream matters yet. Go to Step 3.</p>
+<p>One more useful check while you are here: confirm the printer's IP has not changed. Printers on DHCP sometimes pick up a new address after a power outage or router reboot, and every PC keeps printing to the old one. Print the network status page at the printer and compare the IP on it to the IP your PC is using (Settings, then Printers and scanners, select the printer, Printer properties, Ports tab). If they differ, that is your whole problem. Fix it by updating the port, and prevent it forever by giving the printer a DHCP reservation in your router so its address never changes.</p>
+
+<h2>Step 3: Chase the network problem</h2>
+<p>No ping reply means one of three things: the printer fell off the network, there is a cabling or Wi-Fi issue, or the PC and printer are on networks that cannot see each other.</p>
+<p>Check in this order:</p>
+<ol>
+<li><strong>Link light.</strong> On a wired printer, look at the Ethernet port. No blinking light means a dead cable, a dead switch port, or a cable someone unplugged while moving furniture. Reseat both ends, try a different cable, try a different switch port.</li>
+<li><strong>Wi-Fi printers.</strong> Check the printer's network menu to confirm it is still joined to the right network. Wireless printers drop off after a router change or password update and sit there looking healthy.</li>
+<li><strong>Reboot the printer.</strong> Printer network stacks are not famous for stability. Power cycle it, wait a minute, ping again.</li>
+<li><strong>VLAN reachability.</strong> This is the one that stumps offices with segmented networks. If your PC is on the office network and the printer landed on the guest network, or on a separate printer VLAN with no route between them, pings fail even though both devices are healthy. Compare the first three numbers of each IP: a PC at 192.168.1.20 and a printer at 192.168.20.50 are on different subnets. Sometimes that is intentional and the firewall is supposed to allow printing across VLANs; sometimes a device just got plugged into the wrong port. If devices on one VLAN can print and devices on another cannot, this is your answer, and the fix lives in the switch and firewall config, not on any PC.</li>
+</ol>
+<p>Once ping works, try printing again. If it still fails, keep going.</p>
+
+<h2>Step 4: Clear the print queue and restart the spooler</h2>
+<p>The printer is fine and the network is fine, so now suspect the queue. On Windows, all printing runs through the Print Spooler service, and one corrupt job can jam it for every job behind it. The symptom is a document stuck at the top of the queue showing "Error" or "Deleting" and refusing to leave.</p>
+<p>Fix it by stopping the spooler, deleting the stuck job files, and starting it again. Open Command Prompt as administrator and run:</p>
+<pre><code>net stop spooler
+del /Q %systemroot%\System32\spool\PRINTERS\*.*
+net start spooler</code></pre>
+<p>The middle line deletes the spooled job files directly, which clears jobs that refuse to cancel from the queue window. Everything in the queue is gone after this, so warn anyone who was printing.</p>
+<p>On a Mac, the equivalent move is opening the printer's queue from System Settings, deleting stuck jobs, or resetting the printing system by right-clicking (or Control-clicking) in the Printers list.</p>
+<p>Print a test page from the PC. If it works, you are done, and if the queue jams regularly, note which document type causes it. Repeated spooler jams often trace back to one application or one driver.</p>
+
+<h2>Step 5: Suspect the driver</h2>
+<p>If the queue is clean, the network is good, and the printer passes its own test, what remains is the driver: the translator between Windows and the printer. Driver problems have a distinctive smell: printing garbage pages full of symbols, jobs that vanish without printing, or one PC failing while every other PC prints fine.</p>
+<p>Do this:</p>
+<ol>
+<li>Remove the printer from Settings, then Printers and scanners.</li>
+<li>Download the current driver from the manufacturer's support site for your exact model. Do not let Windows pick a generic driver if the manufacturer offers a real one.</li>
+<li>Reinstall, and when given the choice, set up the printer by its IP address rather than letting the installer search. Searching finds the wrong device in offices with several printers.</li>
+</ol>
+<p>While you are on the manufacturer's site, check the printer's firmware version against the latest release. Firmware updates fix real bugs, including ones that look exactly like network drops and garbled jobs, and printers almost never get updated after the day they are unboxed. Update firmware from the printer's web admin page (browse to the printer's IP address) or the manufacturer's utility, and do it while nobody is printing.</p>
+
+<h2>Verify it</h2>
+<p>Confirm the fix from more than one angle: print a test page from the affected PC, print a real document from a real application, and if the office had a shared complaint, have a second PC print too. If everything flows, do two minutes of future-proofing: give the printer a DHCP reservation so Step 2's IP drift never happens, and write the printer's IP on a label on the printer itself. The next person to troubleshoot it will start with the information that took you the longest to find.</p>
+<p>The order is the method: printer, network, queue, driver. Each step clears a layer, and whatever step fixes it tells you what actually broke. If you get through all five and the printer still will not print, the problem is genuinely unusual, and that is a fine time to call someone who does this daily.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20IT%20Support%20%26%20Managed%20Services" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/microsoft-365-small-business" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Microsoft 365 for small business: what you actually need</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/google-workspace-vs-microsoft-365" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Google Workspace or Microsoft 365? How to pick</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/windows-and-mac-one-office" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Running Windows and Mac in one office</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

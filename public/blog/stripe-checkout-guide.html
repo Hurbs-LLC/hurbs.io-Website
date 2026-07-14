@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Take payments with Stripe Checkout | Hurbs LLC</title>
+  <meta name="description" content="Products, checkout sessions, webhooks, and test mode. Payments in an afternoon, done correctly.">
+  <link rel="canonical" href="https://hurbs.io/blog/stripe-checkout-guide">
+  <meta property="og:title" content="Take payments with Stripe Checkout | Hurbs LLC">
+  <meta property="og:description" content="Products, checkout sessions, webhooks, and test mode. Payments in an afternoon, done correctly.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/stripe-checkout-guide">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-blue"></div>
+      <a href="/services/software" class="post-lane-link">CUSTOM SOFTWARE</a>
+      <span class="post-type">STEP-BY-STEP GUIDE</span>
+    </div>
+    <h1>Take payments with Stripe Checkout</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Stripe Checkout is the fastest legitimate way to take payments online. Stripe hosts the payment page, handles the card fields, and deals with PCI compliance, so your code never touches a card number. In this guide you'll wire up a Node app that sends customers to a Stripe-hosted checkout page, then confirms the payment with a webhook. By the end you'll have taken a test payment end to end and know what "going live" involves.</p>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>A Stripe account (free to create at stripe.com; you can build everything in test mode before activating).</li>
+<li>Node.js 18 or newer installed.</li>
+<li>A basic Node/Express app, or willingness to start one from scratch.</li>
+<li>The Stripe CLI installed (used to test webhooks locally).</li>
+</ul>
+
+<h2>Step 1: Get your test mode keys</h2>
+
+<p>In the Stripe Dashboard, make sure the test mode toggle is on, then go to Developers, then API keys. You'll see two keys:</p>
+
+<ul>
+<li><strong>Publishable key</strong> (starts with <code>pk_test_</code>): safe to expose in a browser.</li>
+<li><strong>Secret key</strong> (starts with <code>sk_test_</code>): server-side only. Never commit it, never put it in frontend code.</li>
+</ul>
+
+<p>Put the secret key in an environment variable. Locally, a <code>.env</code> file works:</p>
+
+<pre><code>STRIPE_SECRET_KEY=sk_test_your_key_here</code></pre>
+
+<p>Add <code>.env</code> to your <code>.gitignore</code> before you do anything else.</p>
+
+<h2>Step 2: Create a product and price</h2>
+
+<p>In the Dashboard, go to the Product catalog and add a product. Give it a name and a price. Stripe separates the two concepts: a Product is the thing you sell, a Price is an amount attached to it (one product can have several prices). After saving, copy the Price ID, which looks like <code>price_1AbCdE...</code>. You'll reference it in code.</p>
+
+<p>You can also create products from code, but for a handful of fixed offerings, the Dashboard is simpler and keeps pricing changes out of your deploys.</p>
+
+<h2>Step 3: Create a checkout session from your server</h2>
+
+<p>Install the SDK:</p>
+
+<pre><code>npm install stripe express</code></pre>
+
+<p>Then add a route that creates a Checkout Session and redirects the customer to it:</p>
+
+<pre><code>const express = require('express');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+const app = express();
+
+app.post('/create-checkout-session', async (req, res) =&gt; {
+  const session = await stripe.checkout.sessions.create({
+    mode: 'payment',
+    line_items: [
+      {
+        price: 'price_YOUR_PRICE_ID',
+        quantity: 1,
+      },
+    ],
+    success_url: 'https://yourdomain.com/success?session_id={CHECKOUT_SESSION_ID}',
+    cancel_url: 'https://yourdomain.com/cancel',
+  });
+
+  res.redirect(303, session.url);
+});
+
+app.listen(4242, () =&gt; console.log('Running on port 4242'));</code></pre>
+
+<p>A few things worth knowing:</p>
+
+<ul>
+<li><code>mode: 'payment'</code> is a one-time charge. Use <code>'subscription'</code> for recurring billing.</li>
+<li>The <code>success_url</code> is where Stripe sends the customer after paying. The <code>{CHECKOUT_SESSION_ID}</code> placeholder gets filled in by Stripe so your success page can look up the session.</li>
+<li>The <code>cancel_url</code> is where they land if they back out. Send them back to the product page, not a dead end.</li>
+</ul>
+
+<p>On your site, the buy button is just a form that posts to this route:</p>
+
+<pre><code>&lt;form action="/create-checkout-session" method="POST"&gt;
+  &lt;button type="submit"&gt;Buy now&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+<h2>Step 4: Confirm payment with a webhook</h2>
+
+<p>Here is the part people skip and regret. Do not treat "customer landed on the success page" as proof of payment. Browsers close, connections drop. The reliable signal is the <code>checkout.session.completed</code> webhook, which Stripe sends to your server when the payment actually goes through.</p>
+
+<p>Add a webhook endpoint. Note that this route needs the raw request body for signature verification, so it uses <code>express.raw</code>:</p>
+
+<pre><code>const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) =&gt; {
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      req.headers['stripe-signature'],
+      endpointSecret
+    );
+  } catch (err) {
+    return res.status(400).send(`Webhook error: ${err.message}`);
+  }
+
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+    // Fulfill the order here: mark it paid, send the email, grant access.
+    console.log('Payment confirmed for session', session.id);
+  }
+
+  res.json({ received: true });
+});</code></pre>
+
+<p>The signature check matters. Without it, anyone who finds your webhook URL can fake a "payment succeeded" event.</p>
+
+<p>To test locally, use the Stripe CLI to forward events to your machine:</p>
+
+<pre><code>stripe listen --forward-to localhost:4242/webhook</code></pre>
+
+<p>The CLI prints a webhook signing secret (starts with <code>whsec_</code>). Put that in <code>STRIPE_WEBHOOK_SECRET</code> while developing.</p>
+
+<h2>Step 5: Run a test payment</h2>
+
+<p>Start your server, click your buy button, and you'll land on the Stripe-hosted checkout page. In test mode, use card number <code>4242 4242 4242 4242</code> with any future expiration date, any CVC, and any ZIP. Submit it and watch three things happen: the browser redirects to your success URL, the payment shows up in the Dashboard under Payments, and your webhook logs the completed session.</p>
+
+<p>Stripe publishes other test card numbers for declines and failed payments. Test at least one decline so you know what the customer sees.</p>
+
+<h2>Step 6: Go live</h2>
+
+<p>When test mode works end to end:</p>
+
+<ol>
+<li>Activate your Stripe account (business details, bank account for payouts).</li>
+<li>Switch the Dashboard out of test mode and copy your live keys (<code>sk_live_</code>).</li>
+<li>Recreate your product and price in live mode. Test and live data are completely separate, so the Price ID will be different.</li>
+<li>Register your webhook endpoint in the Dashboard under Developers, then Webhooks, pointing at your production URL, subscribed to <code>checkout.session.completed</code>. Copy the new signing secret.</li>
+<li>Update the environment variables on your server. Never hardcode keys, and keep live keys out of the repo entirely.</li>
+</ol>
+
+<p>Run one real transaction with your own card and refund it from the Dashboard. Cheap insurance.</p>
+
+<h2>Wrap-up</h2>
+
+<p>You now have a checkout flow where Stripe handles the card data, your server creates sessions, and the webhook is the source of truth for fulfillment. Stripe's fee is roughly 3% plus a small per-transaction charge for standard card payments in the US, and there is no monthly minimum, which makes it a fair deal until your volume is large enough to negotiate.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Custom%20Software" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-typescript" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Why we build in TypeScript</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/python-business-automation" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Python: the duct tape of business automation</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/when-react-makes-sense" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">When React makes sense (and when plain HTML wins)</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

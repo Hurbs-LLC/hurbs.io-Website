@@ -1,0 +1,28 @@
+<p>Count the passwords in your business. Email, accounting software, the CRM, payroll, the shared drive, the scheduling tool, whatever your industry runs on. Most small businesses land somewhere between 15 and 40 separate logins per employee. Nobody can remember that many, so people reuse one password everywhere, keep a spreadsheet called "passwords.xlsx," or stick a note under the keyboard. Then someone quits and the office manager spends an afternoon trying to remember every place that person had an account, and inevitably misses two. Identity and access management is the unglamorous fix for all of that, and it is more within reach for a small business than the enterprise-sounding name suggests.</p>
+
+<h2>SSO: one front door instead of forty</h2>
+<p>Single sign-on means your staff log into one place, usually Microsoft 365 or Google Workspace since you likely already pay for one of them, and that account becomes the key to everything else. The CRM, the accounting tool, the HR system: instead of each keeping its own password, they hand the login question to your main identity provider. Click "Sign in with Microsoft," done.</p>
+<p>The everyday win is fewer passwords and fewer reset tickets, and resets are consistently one of the biggest time sinks in small-business IT. The bigger win is control. One account per person means one place to protect with multi-factor authentication, one place to watch for suspicious logins, and one switch to flip when someone leaves. Disable the account and every connected app locks at the same moment. No afternoon of hunting, no forgotten CRM login still working three months after the goodbye cake.</p>
+<p>Most business software supports this today. On cheaper plans some vendors charge extra for SSO, which is annoying but usually still worth it for the apps that hold money or customer data.</p>
+
+<h2>Roles: stop granting access one favor at a time</h2>
+<p>In most small companies, access is handed out ad hoc. Someone needs into the shared drive, they ask, an admin clicks a button, and nobody ever revisits it. Five years later, who can see what is a mystery, and the answer is usually "way more people than you think."</p>
+<p>Role-based access flips that. You define a handful of roles that match how the business actually works: technician, office staff, bookkeeper, manager. Each role carries a set list of access. A new hire gets assigned a role and instantly has exactly what that job needs, nothing bolted on over the years by accident. When someone changes jobs internally, you change their role, and the old access falls away instead of piling up. For a 15-person company this is four or five roles and an afternoon of decisions, not an enterprise project.</p>
+
+<h2>Least privilege: the seatbelt</h2>
+<p>Least privilege is a simple principle: every person, and every app, gets the minimum access needed to do the job, and nothing more. The bookkeeper does not need the customer database. The marketing intern does not need payroll. Nobody does day-to-day work from an administrator account, including the owner.</p>
+<p>This is not about trusting your people less. It is about limiting the blast radius when, not if, a password gets phished. If an attacker lands in an account that can only see that person's own work, you have an incident. If they land in an account that can reach everything because access was never trimmed, you have a disaster. Same click on the same fake email, wildly different outcome, and the difference was decided months earlier by how access was set up.</p>
+
+<h2>What good looks like at small-business scale</h2>
+<p>You do not need enterprise identity software. A realistic setup for a company of 5 to 50 people:</p>
+<ul>
+<li>Microsoft 365 or Google Workspace as the single identity provider, with multi-factor authentication required for everyone, no exceptions.</li>
+<li>Every business app that supports "Sign in with Microsoft/Google" switched over to it.</li>
+<li>A shared password manager for the stragglers that do not support SSO, so at least those passwords are strong, unique, and revocable.</li>
+<li>Four or five defined roles, and a one-page list of which role gets which apps.</li>
+<li>A written onboarding and offboarding checklist. Offboarding especially: disable the account, confirm the app list, transfer the mailbox and files, done in under an hour.</li>
+</ul>
+
+<h2>How to know it is done right</h2>
+<p>Three tests. First, ask what happens when someone quits: the right answer is "we disable one account and they are out of everything," and it should take minutes. Second, pick an employee at random and ask what they have access to: someone should be able to answer from the role list, not by logging into eight admin panels to check. Third, count the password reset requests: after SSO lands, they should drop off a cliff, because there is only one password left to forget, and even that one gets typed less.</p>
+<p>If any of those tests fail today, this is a very fixable problem. We set this up for small businesses regularly, and the offboarding test alone usually justifies the work the first time someone leaves.</p>

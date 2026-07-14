@@ -1,0 +1,32 @@
+<p>When the internet goes down at a small business, the register stops taking cards, the phones go quiet, and the cloud software everyone lives in becomes a spinning wheel. For a retail shop or a busy office, an outage is not an inconvenience, it is the whole business standing still. Failover internet fixes this: a second connection that takes over automatically when the primary one dies. It is one of the cheapest pieces of insurance in IT, and most businesses that need it do not have it.</p>
+
+<h2>The basic setup: dual-WAN</h2>
+<p>The heart of a failover setup is a dual-WAN router. WAN is just the port where your internet connection plugs in, and dual-WAN means the router has two of them. Your main ISP goes into port one, your backup connection goes into port two, and the router watches the primary connection constantly. When it stops responding, the router shifts all traffic to the backup, usually within seconds. Your staff may notice a brief hiccup. They will not notice an outage.</p>
+<p>Plenty of business-grade gear does this out of the box: Ubiquiti, Peplink, Cisco Meraki, Fortinet, and others. If you already own a business firewall, there is a decent chance it has a second WAN port sitting unused. The ISP-provided router almost never does this well, which is one more reason we replace those.</p>
+
+<h2>What to use as the backup line</h2>
+<p>The backup should fail differently than the primary. If both connections are cable internet from the same provider entering the building through the same conduit, one backhoe takes out both. Your options, roughly in order of popularity:</p>
+<ul>
+<li><strong>LTE/5G cellular:</strong> the most common choice. A cellular modem or a router with a SIM slot gives you a backup that shares no wires with your primary. Business cellular data plans for failover run somewhere in the tens of dollars per month, and since it only carries traffic during an outage, data usage stays small.</li>
+<li><strong>A second wired ISP:</strong> if your address is served by both cable and fiber from different companies, a cheap plan from the second one makes a strong backup. Just confirm they do not share infrastructure.</li>
+<li><strong>Satellite:</strong> Starlink has become a real option for locations with only one wired provider. Higher monthly cost, but it fails completely independently of anything in the ground.</li>
+</ul>
+
+<h2>Failover and failback, automatically</h2>
+<p>The word "automatic" is doing the heavy lifting here. A backup connection that requires someone to unplug one cable and plug in another is not failover, it is a scavenger hunt during an emergency. The router should detect the outage by pinging a reliable target, switch over on its own, and then switch back (failback) once the primary is healthy again for a sustained period, not the instant it flickers back to life. Flapping back and forth during an unstable outage is worse than staying on backup, so a good configuration waits a few minutes of stable primary before failing back.</p>
+<p>One configuration detail that bites people: make sure the router checks actual internet reachability, not just whether the cable has link. A cable modem can show a solid green light while the connection behind it is dead. Ping something out on the internet, not the modem.</p>
+
+<h2>What stays up, and what to expect</h2>
+<p>On a cellular backup, plan around the fact that it is slower and sometimes metered. The things that matter most keep working fine:</p>
+<ul>
+<li><strong>Card payments:</strong> a card transaction is a few kilobytes. Cellular backup handles a full day of sales without breaking a sweat.</li>
+<li><strong>VoIP phones:</strong> each call needs under 100 kbps. Your phones stay up, which matters because "our internet is down" should never mean "customers get a busy signal."</li>
+<li><strong>Email and cloud apps:</strong> usable, maybe a touch slower.</li>
+</ul>
+<p>What you may want to hold back: big file syncs, video calls for the whole office, and streaming. Better routers let you set rules so that during failover, payments and phones get priority and the break-room smart TV gets nothing.</p>
+
+<h2>What it costs</h2>
+<p>A capable dual-WAN router runs a few hundred dollars if you do not already own one. The cellular plan is typically tens of dollars a month. Against that, price one outage: a retail location doing a few thousand dollars a day in card sales loses real money every hour the terminal is down, and that is before you count staff standing around and customers walking out. The setup usually pays for itself the first time it fires.</p>
+
+<h2>Test it, then test it again</h2>
+<p>A failover setup you have never tested is a hope, not a plan. When it is installed, unplug the primary WAN cable and watch what happens. Run a card transaction on backup. Make a phone call on backup. Plug the primary back in and confirm traffic fails back on its own. Then put a reminder on the calendar and do the same test quarterly, because firmware updates and ISP changes have a way of quietly breaking things. The whole test takes ten minutes. If it passes, you can stop thinking about internet outages, which is the entire point.</p>

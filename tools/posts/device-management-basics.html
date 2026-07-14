@@ -1,0 +1,41 @@
+<p>Somewhere around the fifth or sixth company laptop, every business crosses an invisible line. Below it, "device management" means the owner remembers who has which machine. Above it, nobody remembers, and the questions start piling up. Where is the laptop the last salesperson had? Is anything protecting the one in the field tech's truck? Why does the front-desk PC still have the old bookkeeper's files on it?</p>
+
+<p>The industry answer is MDM, which stands for mobile device management, a name that stuck from the era when it was only about phones. Today it covers laptops and desktops too, and vendors have piled on acronyms (UEM, EMM) that all mean roughly the same thing. Strip the alphabet soup away and device management is four plain capabilities.</p>
+
+<h2>1. Knowing what you have</h2>
+
+<p>Enrolled devices show up in one dashboard: who has the machine, what model it is, what's installed on it, when it last checked in, whether its disk is encrypted. That sounds mundane until you need it. An insurance renewal asks how many computers you have and how they're protected. An employee leaves and you need to know what to collect. A machine hasn't checked in for 30 days and nobody knows where it is. Inventory is the boring foundation everything else stands on.</p>
+
+<h2>2. Setting rules (this is what "profiles" means)</h2>
+
+<p>A profile is just a bundle of settings pushed to a device automatically. Instead of configuring each laptop by hand and hoping, you write the rule once and every enrolled machine gets it and keeps it. Typical rules for a small business:</p>
+
+<ul>
+<li>The disk must be encrypted (BitLocker on Windows, FileVault on Mac), and the recovery key gets stored in the management system, not on a sticky note.</li>
+<li>The screen locks after a few minutes and requires a password or fingerprint to unlock.</li>
+<li>Security updates install on a schedule; users can delay a restart, not veto it forever.</li>
+<li>Company Wi-Fi and email settings arrive preconfigured, so a new machine works out of the box.</li>
+<li>Users don't run as full administrators for daily work.</li>
+</ul>
+
+<p>None of these are exotic. They're the settings a careful person would apply to every machine anyway. Profiles just remove the "would" and the "every machine, forever" problem.</p>
+
+<h2>3. Installing and updating software remotely</h2>
+
+<p>Management tools push software without touching the machine. New hire's laptop gets Chrome, the Office apps, the VPN client, and your line-of-business software before it's handed over. When an update needs to go everywhere, it goes everywhere, instead of eleven machines getting it and the twelfth becoming the security hole. Combined with automated patching, this is most of the daily value.</p>
+
+<h2>4. Remote lock and wipe</h2>
+
+<p>This is the capability people actually picture when they hear MDM. A laptop is stolen from a car, or an employee exits badly and won't return the machine. From the dashboard, you can lock the device or wipe company data off it remotely, next time it touches the internet. Paired with disk encryption, a stolen laptop becomes an expensive paperweight instead of a data breach. Without management, that same theft means composing an awkward email to every client whose information was on the machine.</p>
+
+<h2>Where Intune fits</h2>
+
+<p>Microsoft Intune is the management tool most small businesses end up with, mainly because it's included in Microsoft 365 Business Premium, which many companies already pay for. It manages Windows, macOS, iOS, and Android from one console. Apple-centric shops sometimes choose a Mac-focused tool like Jamf instead, and either way, company-owned Apple devices should be registered in Apple Business Manager (free) so they enroll automatically on first startup and can't be quietly un-enrolled. The specific product matters less than the coverage: one system, every company device in it.</p>
+
+<h2>What about personal phones?</h2>
+
+<p>The touchy one. Employees reasonably don't want their personal phone controlled by work, and you reasonably don't want company email walking around unprotected. Modern tools split the difference: on personal devices, management applies only to a work profile or the company apps, not the whole phone. You can require a passcode and wipe company email off a lost phone without touching anyone's photos. Say this out loud to your team when you roll it out, in writing. Most resistance to MDM is people assuming it's surveillance. Good device management watches devices, not people, and you should be able to show exactly what it can and can't see.</p>
+
+<h2>How to know it's done right</h2>
+
+<p>The test is a thirty-second thought experiment. A company laptop gets stolen tonight. Can you, tomorrow morning, name whose it was and what was on it, confirm the disk was encrypted, and lock or wipe it remotely? If yes, you have device management. If the answer involves phrases like "I think so" or "the newer ones, probably," you have a device list in someone's head, and the gap between those two states is where the bad week lives.</p>

@@ -1,0 +1,28 @@
+<p>Every company has one. The workbook. Forty tabs, a decade of history, formulas nobody dares touch, and a name like FINAL_v7_USE_THIS_ONE.xlsx. It started as one person's tracking sheet and somewhere along the way it became the system your business runs on. Excel is a great calculator and a fine place to look at data. It is a terrible database. Here's how to tell yours has crossed the line, and what to move to when it has.</p>
+
+<h2>The signs it has outgrown itself</h2>
+<p>None of these are hypothetical. We see all of them, constantly.</p>
+<ul>
+<li><strong>Multiple people edit it.</strong> Excel was built for one author. The moment two people need it, you get "the file is locked by Deb," emailed copies with conflicting edits, or a shared file where someone silently overwrites someone else's row. Co-authoring in Microsoft 365 helps until two people touch the same cells, and it does nothing about the next four problems.</li>
+<li><strong>A web of VLOOKUPs holds it together.</strong> The customer tab feeds the orders tab, which feeds the summary tab, through hundreds of lookups. Insert a column in the wrong place and numbers quietly change three tabs away. Nobody notices for a month. Quiet wrongness is the worst kind.</li>
+<li><strong>Broken links and #REF! errors.</strong> The workbook references other workbooks, one of which lives on a laptop that got replaced. Every open starts with a warning dialog everyone has learned to click through. Clicking through warnings is your team telling you they've given up on the file being correct.</li>
+<li><strong>The same fact lives in five places.</strong> A customer's phone number appears on four tabs. They change it, you update one. Now the file disagrees with itself and there's no way to know which copy is true. Databases exist specifically to store each fact once.</li>
+<li><strong>One person understands it.</strong> If the workbook's author won the lottery tomorrow, could anyone else maintain it? If the honest answer is no, that file is a business risk with a spreadsheet icon.</li>
+<li><strong>It's slow and it's huge.</strong> Thirty seconds to open, recalculation lag on every edit, a file size measured in tens of megabytes. Excel holds a lot of rows, but "holds" and "works well with" are different claims.</li>
+</ul>
+<p>Two or more of those, and you don't have a spreadsheet problem to fix. You have a graduation to plan.</p>
+
+<h2>Graduation path 1: Airtable or similar</h2>
+<p>For most teams, the first step up isn't a "real" database. It's a tool like Airtable (Smartsheet and Notion databases live in the same neighborhood). It looks like a spreadsheet, so nobody revolts, but it acts like a database: each record exists once, tabs become linked tables instead of copy-paste islands, every field has a type so nobody types "TBD" in a date column, and everyone edits the same live data with a change history showing who did what.</p>
+<p>You also get forms for free: a link people fill out that creates a clean record, instead of six people typing into row 4,000 in six styles. Cost lands around ten to twenty five dollars per user per month for paid tiers. The move from a workbook takes days, not months, and it fixes the multi-editor and duplicate-data problems immediately.</p>
+
+<h2>Graduation path 2: a real database with a form on top</h2>
+<p>When the data gets bigger, or other systems need to read it, or you're tired of per-user pricing, the next step is an actual database: SQLite for small single-server setups, Postgres when multiple things connect to it. Neither costs anything in license fees.</p>
+<p>A bare database has no screens, so you pair it with a front end: a form tool or an internal-tool builder that gives your team pages for entering and finding records without anyone learning SQL. What this buys you over Airtable: it's yours, it scales into millions of rows without blinking, your dashboards (Power BI, Looker Studio) query it directly, and validation rules stop bad data at the door instead of letting it in to be cleaned later. The tradeoff is that someone has to set it up and look after it, which is either your IT person or a shop like ours.</p>
+
+<h2>Graduation path 3: a real app</h2>
+<p>Sometimes the workbook isn't tracking data, it's running a process: quoting, scheduling, inventory with rules and approvals. First, check whether off-the-shelf software for that job already exists, because it usually does and buying beats building. If your process is genuinely unusual, a small custom app on top of that same Postgres database is the honest answer. This is the most expensive path and it's the right one less often than people think. Try paths one and two first.</p>
+
+<h2>How to actually make the move</h2>
+<p>Don't migrate the workbook. Migrate the data. Most of those forty tabs are old snapshots, abandoned experiments, and manual reports that a database will generate on demand. The live data is usually three or four real tables hiding in the mess. The order of operations: identify those core tables, clean them (dedupe, fix types, pick one version of the truth), load them into the new home, run both systems in parallel for a couple of weeks while you compare outputs, then freeze the workbook as read-only history. Never delete it. You'll want the archaeology someday.</p>
+<p>You'll know you graduated right when nobody asks "which file is current," two people entering data at once is boring instead of dangerous, and the reports come from the system instead of from the one person who knows where the numbers hide. If your company has one of these workbooks, we can look at it and tell you which path fits. Usually within an hour of opening the file.</p>

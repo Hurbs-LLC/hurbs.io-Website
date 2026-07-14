@@ -1,0 +1,36 @@
+<p>Somebody just told you something is wrong. Files won't open, or there's a ransom note on a server, or the bank called about a wire nobody authorized. The next 24 hours decide whether this is a contained incident or a company-defining disaster, and the biggest mistakes we see happen in the first hour, made by smart people acting fast in the wrong order. Here is the order.</p>
+
+<h2>Hour one: isolate, don't power off</h2>
+<p>The instinct is to yank power cords. Don't. Pulling the plug destroys the machine's memory, which holds encryption keys, the attacker's tools, and the evidence investigators need. In some ransomware cases, keys recoverable from RAM were the difference between decrypting files and losing them.</p>
+<p>Instead, cut the machine off from the network and leave it running. Unplug the ethernet cable, turn off Wi-Fi, or use your EDR's "isolate host" button if you have one. Isolation stops the spread just as well as a shutdown, without burning the evidence.</p>
+<p>While you're at it, contain the paths the attacker is likely using: disconnect or lock your backup systems so they can't be reached and deleted, and if you can't tell how far the spread goes, disconnecting the office from the internet at the firewall is a legitimate blunt move. Losing internet for a day is cheap compared to the alternative.</p>
+<p>One more thing in hour one: get off the suspect network for your own communications. If the attacker is reading your email, don't coordinate the response in it. Use phone calls or personal devices with a group text until you know the email tenant is clean.</p>
+
+<h2>Hours one to two: preserve evidence and start writing</h2>
+<p>Do not wipe anything, do not reinstall Windows on the affected machine, do not delete the weird files, and do not restore backups over infected systems yet. Every one of those feels like progress and each destroys the record of how the attacker got in. If you rebuild without knowing the entry point, you're inviting round two through the same door.</p>
+<p>Leave ransom notes in place and photograph them with your phone. Start an incident log right now: a notebook or a doc on a clean device, with a timestamped line for everything: what was noticed, when, by whom, and every action anyone takes. Your insurer, your lawyers, and possibly regulators will ask, and reconstructing a timeline from memory a week later is miserable.</p>
+
+<h2>Hours two to four: call your insurer and get IR help</h2>
+<p>If you carry cyber insurance, call the carrier's incident hotline before you spend money on anything else. This isn't just about coverage. Most policies require prompt notice, and acting first and calling later can jeopardize the claim. The carrier will also connect you with their approved incident response firm and breach counsel, usually within hours, and those people do this every week.</p>
+<p>No insurance? Call an incident response firm directly, or your IT provider if they have IR capability. This is not the moment for a solo effort. A competent IR team figures out what the attacker touched, whether they're still inside, and whether data left the building, and those answers drive every legal obligation that follows.</p>
+<p>Two firm rules for this window: don't contact the attackers yourself, and don't pay anything on your own. Ransom negotiation is a specialist job with legal landmines, including sanctions checks on who you'd be paying. Let counsel and the IR firm run that if it comes to it. And report the incident to the FBI's IC3 (ic3.gov); if a fraudulent wire is involved, both IC3 and your bank immediately, because recall attempts are only realistic in the first hours.</p>
+
+<h2>Hours four to twelve: reset credentials, in the right order</h2>
+<p>Assume the attacker has passwords. Which ones doesn't matter yet; reset broadly, starting where it hurts most:</p>
+<ol>
+<li>Admin accounts first: domain admins, Microsoft 365 global admins, firewall and backup consoles.</li>
+<li>Then every user password, plus revoking active sessions and sign-in tokens. This step matters as much as the passwords. A password reset without a session revoke leaves the attacker's existing logins alive.</li>
+<li>Then service accounts, API keys, and anything remote-access: VPN, remote desktop tools, RMM software.</li>
+<li>Turn on MFA anywhere it's missing while you're in there.</li>
+</ol>
+<p>Check email tenants for attacker persistence: inbox rules that forward or delete mail, new app registrations, recently added MFA devices that aren't yours. These are how attackers keep access after a password reset, and they hide well.</p>
+
+<h2>Hours twelve to twenty-four: notify the people you must</h2>
+<p>Notification is a legal question, not a PR one, so let breach counsel drive it. Depending on your state, your industry, and whose data was touched, there may be hard deadlines for notifying regulators, affected individuals, or partners. Some contractual obligations to customers have short windows too. What you decide today should be recorded in the incident log with counsel's reasoning.</p>
+<p>Inside the company, tell employees what they need to operate: which systems are down, what to do instead, and one strict rule: nobody posts or speaks about the incident externally, because early guesses are usually wrong and they live forever.</p>
+
+<h2>Recovery starts after, not during</h2>
+<p>Only once the IR team confirms the attacker's access is cut do you start restoring, onto clean or rebuilt systems, from backups verified to predate the intrusion, most critical systems first. Restoring earlier just hands the attacker your recovered environment. Recovery will run past the 24-hour mark, and that's normal. The first day was about stopping the bleeding and keeping your options open.</p>
+
+<h2>Do the one-hour version now</h2>
+<p>Every step above goes better with ten minutes of prep. Put on one printed page: the cyber insurer's hotline number and policy number, your IR firm or IT provider's emergency line, who in the company declares an incident, and the first three moves: isolate without powering off, start the log, make the calls. Print it, because if the incident is ransomware, the copy on the file server is encrypted. That page is the cheapest security purchase you'll ever make.</p>

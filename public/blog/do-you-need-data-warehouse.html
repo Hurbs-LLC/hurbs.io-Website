@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Do you need a data warehouse yet? | Hurbs LLC</title>
+  <meta name="description" content="When reports across systems get painful, a warehouse helps. What it is and the size where it makes sense.">
+  <link rel="canonical" href="https://hurbs.io/blog/do-you-need-data-warehouse">
+  <meta property="og:title" content="Do you need a data warehouse yet? | Hurbs LLC">
+  <meta property="og:description" content="When reports across systems get painful, a warehouse helps. What it is and the size where it makes sense.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/do-you-need-data-warehouse">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-yellow"></div>
+      <a href="/services/data-ai" class="post-lane-link">DATA &amp; AI ANALYTICS</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Do you need a data warehouse yet?</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>You run your books in QuickBooks, your sales in a CRM, your jobs in a scheduling tool, and your inventory in a spreadsheet. Each one works fine on its own. Then somebody asks a simple question like "what's our margin by customer this year" and you realize the answer lives in three different systems, and none of them talk to each other. So someone spends a Friday afternoon exporting CSVs and stitching them together in Excel. Again.</p>
+
+<p>That Friday afternoon is the signal. It means your data has outgrown the tools that hold it, and it might be time to think about a data warehouse.</p>
+
+<h2>What a data warehouse actually is</h2>
+
+<p>Strip away the jargon and a data warehouse is one central database that holds copies of the data from all your other systems. Your CRM keeps running. QuickBooks keeps running. But every night (or every hour), the important tables from each get copied into one place, organized so they can be joined together and queried.</p>
+
+<p>That's it. It's not magic and it's not AI. It's a database whose whole job is answering questions that span more than one system.</p>
+
+<p>Common tools in this space: BigQuery from Google, Snowflake, Amazon Redshift, and for smaller shops, plain PostgreSQL running on a cheap cloud server. The fancy ones scale to billions of rows. Most small businesses never need that scale, which matters for cost.</p>
+
+<h2>The pain points that mean you're ready</h2>
+
+<p>We see the same symptoms over and over:</p>
+
+<ul>
+<li><strong>The Friday export ritual.</strong> Someone regularly pulls CSVs from two or more systems and merges them by hand to build a report. If this happens weekly and takes more than an hour, you're paying an employee to be a bad, slow data pipeline.</li>
+<li><strong>Two systems disagree and nobody knows which is right.</strong> Sales says revenue was one number, accounting says another. Without a central place where the data is reconciled, these arguments never end.</li>
+<li><strong>You can't answer historical questions.</strong> Your CRM shows the pipeline as it is today. It can't tell you what the pipeline looked like on the first of March. A warehouse keeps snapshots, so trend questions become answerable.</li>
+<li><strong>Reports break when a person is on vacation.</strong> If your reporting depends on one employee's personal spreadsheet and their memory of how to build it, that's a single point of failure wearing shoes.</li>
+</ul>
+
+<h2>The threshold: when it makes sense</h2>
+
+<p>Rough guidance from the jobs we've done. You probably do <strong>not</strong> need a warehouse if you have one or two systems, fewer than ten employees, and your questions get answered inside the tools you already own. QuickBooks reports plus your CRM's built-in dashboards cover a lot of ground. Don't buy infrastructure to solve a problem you don't have.</p>
+
+<p>You probably <strong>do</strong> need one when three or more of these are true:</p>
+
+<ul>
+<li>You have three or more systems holding business data (accounting, CRM, operations, e-commerce, payroll)</li>
+<li>Someone spends two or more hours a week building cross-system reports by hand</li>
+<li>Decisions are getting delayed because the numbers take days to assemble</li>
+<li>You've been burned by a decision made on stale or wrong data</li>
+<li>You're planning to grow, and the manual process already creaks at current size</li>
+</ul>
+
+<p>Notice the threshold isn't about data volume. A ten-person company with four systems needs a warehouse more than a fifty-person company that lives entirely in one platform. The trigger is <strong>fragmentation</strong>, not size.</p>
+
+<h2>What it costs, roughly</h2>
+
+<p>Small-business warehouses are cheaper than most owners expect. The database itself often runs a few dollars to a few hundred dollars a month depending on data volume, because tools like BigQuery bill by usage and small companies have small usage. The real cost is the setup: connecting your systems, building the pipelines that copy data over, and modeling the tables so reports come out clean. That's a one-time project measured in days or weeks, not months, for a typical small business. After that it mostly runs itself, with occasional maintenance when a source system changes.</p>
+
+<h2>How to know it's done right</h2>
+
+<p>A warehouse project succeeded if, three months later, these things are true:</p>
+
+<ul>
+<li>The Friday export ritual is gone. Reports that used to take hours refresh on their own.</li>
+<li>There's one agreed number for revenue, margin, and pipeline, and everyone knows where it lives.</li>
+<li>Someone besides the person who built it can answer a new question against the data.</li>
+<li>When a source system hiccups, you get an alert instead of discovering wrong numbers a month later.</li>
+</ul>
+
+<p>If instead you got a pile of dashboards nobody opens and a monthly bill, the project failed, no matter how modern the tooling was. The point was never the warehouse. The point was getting trustworthy answers without burning staff time to produce them.</p>
+
+<p>If you're doing the CSV ritual right now and want a sanity check on whether a warehouse fits your setup, we're happy to look at what you've got and tell you straight whether it's worth it yet.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Data%20%26%20AI%20Analytics" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/first-power-bi-dashboard" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Build your first Power BI dashboard from a spreadsheet</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/looker-studio-dashboards" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Free dashboards with Looker Studio</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/sql-still-runs-business" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">SQL: the 40-year-old skill that still runs your business</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

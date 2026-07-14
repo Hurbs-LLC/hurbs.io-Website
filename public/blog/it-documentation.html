@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IT documentation: the cheapest insurance you can buy | Hurbs LLC</title>
+  <meta name="description" content="Network maps, passwords, and runbooks. What to document, where to keep it, and who gets access.">
+  <link rel="canonical" href="https://hurbs.io/blog/it-documentation">
+  <meta property="og:title" content="IT documentation: the cheapest insurance you can buy | Hurbs LLC">
+  <meta property="og:description" content="Network maps, passwords, and runbooks. What to document, where to keep it, and who gets access.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/it-documentation">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-red"></div>
+      <a href="/services/it-support" class="post-lane-link">IT SUPPORT &amp; MANAGED SERVICES</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>IT documentation: the cheapest insurance you can buy</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Every small business has one person who knows how the IT actually works. Where the Wi-Fi password lives, which switch feeds the back office, why you have to reboot the label printer on Mondays. The whole system runs on what is in that person's head. Then that person goes on vacation, or quits, or gets hit with the flu during a server problem, and the company discovers that "Dave knows" was the entire disaster recovery plan.</p>
+<p>Documentation fixes this, and it is close to free. A few hours of writing things down buys you faster fixes, cheaper vendor calls, and a business that survives losing any one person.</p>
+
+<h2>What to document</h2>
+<p>You do not need a binder the size of a phone book. You need five things, current and findable.</p>
+<p><strong>1. A network map.</strong> One page showing how the pieces connect: internet comes in here, hits this firewall, feeds these switches, these access points hang off them, the server and printers live here. Include the make, model, and IP address of each device. A hand-drawn photo of a whiteboard is genuinely fine. When something breaks, this page turns "the internet is down" into "the switch feeding the front office is down," and that difference is hours.</p>
+<p><strong>2. Credentials.</strong> Every password that matters: firewall admin, router, server, Microsoft 365 or Google Workspace admin, domain registrar, website host, backup system, printer admin pages. The domain registrar login is the one businesses lose most often, and losing it means you can be locked out of your own website and email routing. Credentials do not go in the same document as everything else; more on where they go below.</p>
+<p><strong>3. Account and vendor info.</strong> Who your ISP is, the account number, the support phone number, the circuit ID if you have one. Same for the phone provider, printer lease, and software vendors. This turns a 40-minute support call into a 15-minute one, because half of every support call is proving who you are.</p>
+<p><strong>4. Runbooks.</strong> Short, numbered instructions for the things that recur: how to set up a new employee's accounts, how to remove a departing employee's access, how to restart the server safely, what to check when the internet drops, how the Monday label printer ritual actually works. A runbook is not literature. Five to ten numbered steps, written so a smart non-technical person could follow them under stress.</p>
+<p><strong>5. The weird stuff.</strong> Every network has folklore. The port that is dead, the scanner that only works with one specific driver version, the reason there are two Wi-Fi networks. Undocumented folklore is where new IT people and new employees burn their first month.</p>
+
+<h2>Where to keep it</h2>
+<p>Split it in two.</p>
+<p><strong>Passwords go in a password manager.</strong> A business password manager, something like 1Password or Bitwarden, with a shared vault for company credentials. Not a spreadsheet named passwords.xlsx, not a Word doc, not a notebook in the top drawer. A password manager encrypts everything, lets you grant and revoke access per person, and shows you who has access to what. Business plans run a few dollars per user per month.</p>
+<p><strong>Everything else goes somewhere shared and searchable.</strong> A dedicated section in SharePoint, Google Drive, Notion, wherever your company already keeps documents. The requirements are only that it is backed up, that more than one person can reach it, and that it is not on one person's laptop. A folder called "IT" with five well-named documents beats an elaborate wiki nobody maintains.</p>
+<p>One copy of the essentials should also survive your systems being down. If the network documentation is only reachable through the network, it is useless on the day you need it most. A printed copy of the network map and vendor contact sheet in a drawer, or a copy in a personal cloud account the owner controls, covers this.</p>
+
+<h2>Who gets access</h2>
+<p>Keep it simple and deliberate:</p>
+<ul>
+<li><strong>The owner has access to everything</strong>, including every password, even if they never use it. The business must never be lockable out of its own systems by any employee or any vendor. We put this in writing with every client: you own the credentials, we just use them.</li>
+<li><strong>Whoever does IT work</strong>, internal or external, gets the technical documentation and the credentials they need for that work.</li>
+<li><strong>A second trusted person</strong> knows where everything is and can get in if the first two are unavailable on the same bad day.</li>
+<li><strong>Regular staff</strong> get the runbooks that concern them and nothing else. The office manager needs the new-employee setup runbook, not the firewall password.</li>
+</ul>
+<p>And when anyone with access leaves, the passwords they knew get changed. That step is on the offboarding runbook, which you now have.</p>
+
+<h2>How to know it is done right</h2>
+<p>The test is simple to state: if your most knowledgeable IT person disappeared tomorrow, could a competent stranger keep things running using only what is written down? Run a small version of it for real. Pick one runbook and have someone who did not write it follow it, exactly as written, and note every step where they got stuck. Fix those steps. Do that once and your documentation is better than most businesses ever get.</p>
+<p>Then put a recurring reminder on the calendar, twice a year, to read through and fix what has drifted. Documentation does not rot loudly. It rots quietly, and you find out during an outage.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20IT%20Support%20%26%20Managed%20Services" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/microsoft-365-small-business" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Microsoft 365 for small business: what you actually need</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/google-workspace-vs-microsoft-365" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Google Workspace or Microsoft 365? How to pick</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/windows-and-mac-one-office" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Running Windows and Mac in one office</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

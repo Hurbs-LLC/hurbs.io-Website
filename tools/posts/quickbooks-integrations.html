@@ -1,0 +1,40 @@
+<p>QuickBooks is where the money lives, but the information the money depends on lives everywhere else. The deal closes in the CRM, then somebody retypes it into an invoice. Hours land in the project tool, then somebody copies them into billing at month end. Receipts pile up in a shoebox, physical or digital, until somebody keys them in. Every one of those retyping steps costs time, and worse, it's where the typos happen: the transposed digits, the invoice that never got created, the hours that never got billed. Connecting QuickBooks to the rest of your software removes the retyping, and most of the connections are cheaper and easier than people expect.</p>
+
+<h2>The three connections that pay off first</h2>
+
+<p><strong>CRM to invoice.</strong> When a deal closes in your CRM, the customer and the invoice should appear in QuickBooks without anyone typing. HubSpot, Salesforce, and most mainstream CRMs have QuickBooks integrations that sync customers and push closed deals into invoices or estimates. The payoff is speed: invoices go out the day the deal closes instead of whenever someone gets around to it, and faster invoices mean faster payment.</p>
+
+<p><strong>Time tracking to billing.</strong> If you bill hours, your project or time tool should feed QuickBooks directly. QuickBooks Time (the old TSheets) is Intuit's own and syncs natively. Harvest, Toggl, and most project management tools with time tracking offer QuickBooks connections that turn tracked hours into invoice line items. The month-end scramble of "reconstruct what everyone did from memory and spreadsheets" just stops. Unbilled hours are usually the biggest leak in a service business, and this plugs it.</p>
+
+<p><strong>Bank feeds and receipts.</strong> This one's built in and still underused. Connect your business bank and credit card accounts inside QuickBooks and transactions flow in daily, ready to categorize instead of ready to type. Pair it with receipt capture: snap a photo in the QuickBooks mobile app, or use a tool like Dext or Expensify, and the receipt attaches to the matching transaction. Your accountant will notice the difference at tax time, and so will your bill.</p>
+
+<h2>Three ways to connect things</h2>
+
+<p>Every QuickBooks integration falls into one of three buckets, and picking the right bucket matters more than picking the right brand.</p>
+
+<h3>Native integrations</h3>
+
+<p>These are connections built by the vendor: the QuickBooks sync inside HubSpot, the Shopify connector, the QuickBooks Time link. You turn them on in the app's settings, authorize QuickBooks, and map a few fields. Native integrations are the default choice because someone else maintains them. When QuickBooks changes something, the vendor fixes the connector. Cost is usually nothing beyond what you already pay, or a small add-on fee. The limitation is flexibility: the integration does what it does, and if you need it to behave differently, you mostly can't make it.</p>
+
+<h3>Zapier and its cousins</h3>
+
+<p>Zapier, Make, and Power Automate sit between apps and pass data on triggers: "when a row is added to this sheet, create a QuickBooks invoice." Reach for these when there's no native integration, or the native one doesn't handle your specific case. Setup is form-filling, not coding, and costs run from free for light use to a modest monthly fee at real volume. Two cautions from experience. First, these connections fail quietly: a changed field name or an expired authorization stops the flow, and you find out weeks later when the numbers don't add up. Turn on failure notifications and check them. Second, per-task pricing gets expensive at high volume. Syncing ten invoices a week is cheap. Syncing a thousand orders a day is not.</p>
+
+<h3>Custom API work</h3>
+
+<p>QuickBooks Online has a proper developer API, and sometimes paying someone to write a real integration is the right call. The signals: high transaction volume where per-task tools get pricey, logic too complicated for a trigger-action tool, or an in-house system nothing else talks to. Custom work costs real money up front and needs an owner for maintenance, because the QuickBooks API changes and authorizations expire. Don't start here. Start native, fall back to Zapier, and go custom only when the volume or the complexity forces the issue.</p>
+
+<h2>Rules that keep the sync from making a mess</h2>
+
+<ul>
+<li><strong>One system owns each record.</strong> Decide where a customer gets created and edited, CRM or QuickBooks, and make the sync one-directional if you can. Two-way sync with edits on both sides is how you get duplicate customers with slightly different names.</li>
+<li><strong>Clean up before you connect.</strong> A sync will happily duplicate your existing mess. Merge duplicate customers and fix your chart of accounts first.</li>
+<li><strong>Test with a handful of records.</strong> Run five invoices through and check every field before you turn the firehose on.</li>
+<li><strong>Write down what's connected.</strong> A one-page list of every integration, what it moves, and where its settings live. Future you, or your accountant, will need it.</li>
+</ul>
+
+<h2>How you know it's done right</h2>
+
+<p>Nobody retypes anything. An invoice exists in QuickBooks minutes after the deal closes. Month-end billing takes an afternoon instead of three days. And when something breaks, you hear about it from an alert, not from a customer asking why they never got an invoice. If your bookkeeper's job has shifted from data entry to review and cleanup, the integrations are doing their job.</p>
+
+<p>We do this work regularly: picking the right bucket for each connection, setting up the syncs, and testing them properly. Most small businesses get the big three connected in a week or two of part-time work.</p>

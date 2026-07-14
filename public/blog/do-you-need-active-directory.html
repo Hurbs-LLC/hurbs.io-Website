@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Do you still need Active Directory? | Hurbs LLC</title>
+  <meta name="description" content="On-prem AD, Entra ID, or nothing at all. How identity management looks for small offices now.">
+  <link rel="canonical" href="https://hurbs.io/blog/do-you-need-active-directory">
+  <meta property="og:title" content="Do you still need Active Directory? | Hurbs LLC">
+  <meta property="og:description" content="On-prem AD, Entra ID, or nothing at all. How identity management looks for small offices now.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/do-you-need-active-directory">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-red"></div>
+      <a href="/services/networks" class="post-lane-link">NETWORKS &amp; INFRASTRUCTURE</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Do you still need Active Directory?</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>For twenty-plus years, the default answer for any office with more than a handful of computers was Active Directory: a Windows server in the closet that held every user account, enforced the password rules, and decided who could open which folder. A lot of businesses are still running that server, paying to maintain it, and quietly wondering if they still need it. Sometimes the answer is yes. Increasingly, it is no. Here is how to tell which one you are.</p>
+
+<h2>What Active Directory actually does</h2>
+<p>On-prem Active Directory (AD) gives you three big things. Central logins: one account per person that works on any domain-joined computer, so the front desk PC and the back office PC both know who Sarah is. Group Policy (GPO): rules pushed to every machine, like screen-lock timeouts, mapped drives, printer assignments, and software restrictions. And permissions on file shares: the accounting folder opens for accounting and nobody else, enforced by the server.</p>
+<p>The cost side: a physical or virtual Windows Server, Windows Server licensing, client access licenses, patching, backups, and someone who knows how to care for it. For a 50-person company with a file server and strict controls, that is money well spent. For a 6-person office, it is often a $5,000 habit nobody has questioned.</p>
+
+<h2>The cloud option: Entra ID</h2>
+<p>Microsoft Entra ID (the product formerly called Azure Active Directory) is the cloud descendant. If your business uses Microsoft 365, you already have it: every M365 user account is an Entra ID account. Windows machines can be joined to Entra ID instead of a local domain, which gets you central logins, the ability to disable a departed employee's access from a web portal, and multi-factor authentication across email, files, and apps.</p>
+<p>What Entra ID alone does not give you is Group Policy. The cloud equivalent is Microsoft Intune, which pushes settings, security baselines, and software to machines over the internet. Intune covers most of what small businesses actually used GPO for, and it works on laptops that never set foot in the office, which GPO handles poorly. Entra ID and Intune come bundled in Microsoft 365 Business Premium, which runs in the low tens of dollars per user per month and includes the Office apps you are probably already paying for.</p>
+
+<h2>When on-prem AD still wins</h2>
+<p>Domain-joined, server-in-the-building AD is still the right call in a few situations:</p>
+<ul>
+<li><strong>You genuinely need a file server.</strong> Large CAD files, video, big databases, or software that demands a mapped drive on the local network. AD and a Windows file server remain the cleanest way to run per-folder permissions on premises.</li>
+<li><strong>Line-of-business software requires it.</strong> Plenty of industry apps, especially in manufacturing, healthcare, and legal, still expect a domain. Check with the vendor before you plan a funeral for the server.</li>
+<li><strong>You need deep GPO control.</strong> Intune has closed most of the gap, but if you have years of intricate policies, shared workstations in a shop environment, or machines that cannot reach the internet, GPO is still more precise.</li>
+<li><strong>Compliance says so.</strong> Some frameworks and auditors are written around domain controls. Not a reason to keep AD forever, but a reason to plan the exit carefully.</li>
+</ul>
+<p>There is also a middle path called hybrid: keep AD on site and sync it to Entra ID with Microsoft's Entra Connect tool, so the same account works on the local domain and in Microsoft 365. Lots of businesses live here during a transition. Fewer should live here permanently, because now you are maintaining both.</p>
+
+<h2>The small-office cloud-only path</h2>
+<p>Here is the setup we deploy for most offices under about 25 people that do not have a hard on-prem requirement:</p>
+<ul>
+<li>Microsoft 365 Business Premium for every user.</li>
+<li>Every computer joined to Entra ID at setup, so people sign in with their work account and MFA protects it.</li>
+<li>Intune enforcing the basics: disk encryption, screen lock, antivirus settings, updates.</li>
+<li>Files in SharePoint and OneDrive instead of a file server. Permissions by team, files available anywhere, versioning built in.</li>
+<li>No Windows Server. No server to patch, back up, or replace in five years.</li>
+</ul>
+<p>When someone leaves, you disable one account from a browser and their laptop, email, and files all lock at once. That single motion is worth the migration by itself. And the old server, if it is only serving files, either retires completely or gets replaced by a NAS for the one big shared folder that does not fit the cloud model.</p>
+
+<h2>How to know you got it right</h2>
+<p>Whichever way you land, the test is the same. Pick a fake departing employee and time how long it takes to cut off all their access; the answer should be minutes, from one place. Check that every computer requires a company-controlled login rather than a local account someone set up in 2019. Confirm files have permissions by group, not shared passwords. If you are cloud-only, confirm nothing in the office still points at the old domain. And if the server is staying, make sure it is patched, backed up, and on hardware younger than your last two phones. A domain controller from 2016 with no backups is not an IT strategy, it is a countdown.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Networks%20%26%20Infrastructure" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-ubiquiti" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Why we reach for Ubiquiti in small offices</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/cisco-meraki-ubiquiti" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Cisco, Meraki, or Ubiquiti: matching gear to the job</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/pfsense-firewall-setup" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Set up a pfSense firewall for a small office</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

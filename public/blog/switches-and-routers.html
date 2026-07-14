@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Switches and routers: what each box actually does | Hurbs LLC</title>
+  <meta name="description" content="Routing, switching, and where the firewall fits. The 10-minute mental model of your network.">
+  <link rel="canonical" href="https://hurbs.io/blog/switches-and-routers">
+  <meta property="og:title" content="Switches and routers: what each box actually does | Hurbs LLC">
+  <meta property="og:description" content="Routing, switching, and where the firewall fits. The 10-minute mental model of your network.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/switches-and-routers">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-red"></div>
+      <a href="/services/networks" class="post-lane-link">NETWORKS &amp; INFRASTRUCTURE</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Switches and routers: what each box actually does</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Somewhere in your office there is a shelf or a closet with a stack of blinking boxes, and if you are like most business owners, you know the internet stops when one of them stops and that is about it. That is fine right up until something breaks, or a vendor quotes you gear you cannot evaluate. Ten minutes with a clear mental model fixes that. Here is what each box actually does.</p>
+
+<h2>The switch: traffic inside your building</h2>
+<p>A switch connects devices to each other inside your network. Computers, printers, desk phones, security cameras, wireless access points: they all plug into switch ports, and the switch moves traffic between them. When your front-desk computer sends a job to the printer down the hall, that traffic goes through the switch and never touches the internet at all.</p>
+<p>A switch is fast, simple, and mostly dumb on purpose. It learns which device is on which port and delivers traffic directly, like a mailroom clerk who knows every desk in the building. It does not decide what is allowed. It just moves things.</p>
+<p>Two things worth knowing when you buy one. First, port count: count every wired device, add the wall jacks you might use later, and buy headroom, because a full switch means another project. Second, PoE, power over Ethernet: a PoE switch sends electricity down the same cable as the data, which is how desk phones, cameras, and ceiling-mounted Wi-Fi access points get power without an outlet nearby. If you have any of those, you want PoE ports.</p>
+
+<h2>The router: traffic between networks</h2>
+<p>A router connects your network to other networks, and for a small business that almost always means one thing: the internet. When your computer loads a website, the switch hands that traffic to the router, and the router sends it out through your ISP connection and steers the reply back to the right device.</p>
+<p>The router is also where your network's identity lives. It hands out internal addresses to your devices (that is DHCP), it translates all of them onto your single public internet address (that is NAT), and it usually holds settings like which traffic gets priority. If the switch is the mailroom, the router is the shipping dock: everything leaving the building or arriving from outside goes through it.</p>
+<p>One box, one job: you generally have one router, sitting between your ISP's modem and everything else. You might have several switches hanging off it as the building grows.</p>
+
+<h2>The firewall: the rules</h2>
+<p>A firewall decides what traffic is allowed. Traffic from inside going out, replies coming back in, and, most importantly, anything from the internet trying to reach into your network uninvited. A firewall inspects traffic against rules and drops what does not belong.</p>
+<p>Here is where the boxes blur, and it is the source of most confusion: in small-business gear, the router and the firewall are usually the same physical device. Products from Fortinet, SonicWall, Ubiquiti, and similar vendors route traffic and enforce firewall rules in one box, and vendors call that box a "firewall," a "security gateway," or a "router" depending on the brochure. Functionally, routing is the job of moving traffic between networks, and firewalling is the job of policing it. One device commonly does both.</p>
+<p>The practical takeaway: the free router your ISP gave you does routing with a bare-minimum firewall and almost no visibility. A business-grade firewall in the same spot gives you real rules, logging, content filtering, and the ability to separate guest Wi-Fi from your business network. That upgrade is usually the single highest-value swap in a small office.</p>
+
+<h2>Where each box sits</h2>
+<p>Trace the wire from the street and the layout explains itself:</p>
+<ol>
+<li><strong>Modem (or ONT for fiber):</strong> the ISP's box. It converts their signal on the wire into Ethernet. It is the property line of your network.</li>
+<li><strong>Router/firewall:</strong> plugs into the modem. Everything inside the building lives behind it.</li>
+<li><strong>Switch:</strong> plugs into the router. All your wired devices plug into the switch.</li>
+<li><strong>Wireless access points:</strong> plug into the switch (ideally a PoE port) and put your Wi-Fi devices onto the same network as everything else. Wi-Fi is not a separate system, it is wireless ports on your network.</li>
+</ol>
+<p>Modem, then firewall, then switch, then devices. When something is down, you can now troubleshoot in order: if the modem has no signal, it is the ISP's problem. If the modem is fine but nothing gets out, look at the router/firewall. If the internet works at one desk but not another, it is probably a switch port or a cable.</p>
+
+<h2>How to know your setup is right</h2>
+<p>A healthy small-business network has a business-grade firewall behind the modem instead of relying on the ISP box, a switch with open ports to spare, PoE where phones or access points need it, guest Wi-Fi separated from business traffic, and a simple diagram taped inside the network cabinet that says what each box is and what plugs into it. If nobody in the building can name which box is which, that diagram alone is worth the visit. We label everything when we install it, because the next person to open that cabinet, even if it is us, should not have to guess.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Networks%20%26%20Infrastructure" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-ubiquiti" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Why we reach for Ubiquiti in small offices</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/cisco-meraki-ubiquiti" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Cisco, Meraki, or Ubiquiti: matching gear to the job</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/pfsense-firewall-setup" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Set up a pfSense firewall for a small office</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

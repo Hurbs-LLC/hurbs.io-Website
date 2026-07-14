@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EDR, XDR, antivirus: what actually protects endpoints now | Hurbs LLC</title>
+  <meta name="description" content="Signatures are dead. What modern endpoint protection watches for and why detection beats prevention alone.">
+  <link rel="canonical" href="https://hurbs.io/blog/what-is-edr">
+  <meta property="og:title" content="EDR, XDR, antivirus: what actually protects endpoints now | Hurbs LLC">
+  <meta property="og:description" content="Signatures are dead. What modern endpoint protection watches for and why detection beats prevention alone.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/what-is-edr">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-green"></div>
+      <a href="/services/cybersecurity" class="post-lane-link">CYBERSECURITY</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>EDR, XDR, antivirus: what actually protects endpoints now</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>You bought antivirus for every computer in the office years ago. It renews automatically, the icon sits in the tray, and nobody has thought about it since. Then your insurance renewal form asks if you have "EDR deployed on all endpoints" and you have no idea if the thing you own counts. Usually it doesn't. Here's the difference, in plain terms.</p>
+
+<h2>Why old-school antivirus stopped being enough</h2>
+<p>Traditional antivirus works off signatures. Someone finds a piece of malware, writes a fingerprint for it, and pushes that fingerprint out to every customer. Your antivirus scans files and flags anything that matches a known fingerprint. That worked fine when malware was a file that sat on disk and looked the same on every victim's machine.</p>
+<p>Modern attacks don't look like that. Attackers repack their malware so every copy has a different fingerprint. More often they skip malware entirely and use tools already on your computer: PowerShell, remote management software, scheduled tasks, the same utilities your IT person uses. There is no bad file to fingerprint. A signature scanner watches that whole attack happen and reports a clean system.</p>
+<p>Signature scanning still catches the old commodity junk, and every modern product still includes it. But if it's the only layer you have, you're defended against 2012.</p>
+
+<h2>What EDR actually does</h2>
+<p>EDR stands for endpoint detection and response. Instead of just scanning files, an EDR agent records what's happening on the machine: which processes start, what launched them, what they touch on disk, where they connect on the network, what they do to the registry. Then it looks for behavior that adds up to an attack.</p>
+<p>A concrete example. Word opens, which is normal. Word spawns PowerShell, which is weird. That PowerShell downloads something from an address nobody has ever connected to, then starts encrypting files in your shared drive at high speed. No single step matches a virus signature. The chain is obviously an attack, and behavior-based detection flags it as one.</p>
+<p>The "response" half is the part antivirus never had. When EDR sees that chain, it can kill the process, quarantine the file, and isolate the whole machine from the network so the attack can't spread, while still letting your security tools talk to it. Someone investigating can pull the full timeline: what ran, when, what it touched. With plain antivirus, your response options are basically "delete the file and hope."</p>
+<p>Real products in this space: Microsoft Defender for Endpoint, CrowdStrike Falcon, SentinelOne, Sophos Intercept X, Huntress paired with Defender. Pricing lands in the range of a few dollars per computer per month for small-business tiers, more for the big enterprise names.</p>
+
+<h2>Where XDR fits</h2>
+<p>XDR is "extended" detection and response. Same idea, wider view. Instead of watching only laptops and servers, it also pulls in signals from email, Microsoft 365 or Google Workspace sign-ins, firewalls, and cloud apps, then correlates across them. So a suspicious login from another country, followed by a new inbox rule that forwards mail externally, followed by odd activity on that user's laptop, shows up as one connected incident instead of three alerts in three separate consoles.</p>
+<p>For a small business, XDR is usually not a separate purchase. It's a tier of the product you already picked. If you're on Microsoft 365 Business Premium, Defender's XDR features are largely sitting there waiting to be turned on. The label matters less than whether anything is correlating your signals at all.</p>
+
+<h2>Detection beats prevention alone</h2>
+<p>Prevention still matters. Patch your machines, filter your email, require MFA. But every prevention layer fails sometimes, and vendors who promise 100% blocking are selling you something. The honest model is: block what you can, and detect fast what gets through.</p>
+<p>The numbers that matter are dwell time and response time. An attacker who gets in and is kicked out within an hour is an incident report. An attacker who sits in your network for three weeks, mapping your backups and reading your email before pulling the trigger, is a rebuild-the-company event. EDR exists to shrink that window from weeks to minutes.</p>
+<p>One catch: EDR generates alerts, and alerts need a human. An EDR console nobody looks at is barely better than no EDR. That's why small businesses usually pair the agent with a managed detection service (Huntress, or an MSP's SOC) where actual people triage the alerts around the clock. If nobody at your company will watch the console, buy the version where someone else does.</p>
+
+<h2>How to know you're covered</h2>
+<p>Run through this list:</p>
+<ul>
+<li>Every computer and server has an EDR agent, not just "antivirus." Ask your IT person for the product name and check that it's one of the EDR products, not a legacy consumer suite.</li>
+<li>The agent count matches your machine count. Coverage gaps are where attackers land. The one laptop without the agent is always the one that gets hit.</li>
+<li>A named human or service reviews alerts, including nights and weekends, with a stated response time.</li>
+<li>Isolation has been tested. Someone has actually clicked "isolate host" on a test machine and confirmed it works.</li>
+<li>Your cyber insurance application answers match reality. Saying yes to "EDR on all endpoints" when it's not true is a great way to have a claim denied.</li>
+</ul>
+<p>If you can't answer those five, that's the gap to close. It's one of the cheaper fixes in security, and it's the one insurers, and attackers, check first.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cybersecurity" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/who-watches-at-3am" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Who’s watching your network at 3 a.m.?</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/ransomware-defense-layers" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Ransomware defense: the five layers that matter</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/test-your-backups" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">How to actually test your backups: a restore drill</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

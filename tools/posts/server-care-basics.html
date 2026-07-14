@@ -1,0 +1,40 @@
+<p>Somewhere in your office there is probably a server. It sits in a closet, it hums, and nobody touches it because it works. That is exactly how servers get dangerous. A server that has been "fine" for three years with no maintenance is not fine. It is a machine quietly accumulating the ingredients of a very bad week, and you will find out how many when it finally stops.</p>
+<p>Server care is not exotic. It is a short monthly routine, plus a couple of quarterly items. Here is what maintaining a server actually involves, in plain terms, so you know what you are paying for or what you are skipping.</p>
+
+<h2>Updates</h2>
+<p>Servers need patches like every other computer, but unlike your laptop, they rarely install them on their own, because an unplanned reboot on a server takes the whole office down with it. So updates have to be done deliberately: check what patches are pending, read whether any of them are known to cause trouble, install them during off hours, reboot, and confirm everything came back.</p>
+<p>The reboot is not optional. Windows servers in particular can download updates for months that never take effect until someone restarts the machine. We regularly meet servers with uptimes over a year, which sounds impressive and actually means a year of security fixes sitting uninstalled. Unpatched servers are the front door for most of the ransomware cases you read about.</p>
+<p>Cadence: monthly, scheduled, after hours.</p>
+
+<h2>Disk health</h2>
+<p>Disks are the part of a server most likely to die, and the only part that takes your data with it. Two separate things to watch:</p>
+<ul>
+<li><strong>Physical health.</strong> Drives report their own condition through SMART data, and server RAID controllers report the state of the array. A RAID array is designed to survive one dead drive, and it will run degraded for months without anyone noticing, right up until the second drive dies and everything is gone. Checking the array status takes two minutes. Not checking it is how "we had redundant drives" turns into a data recovery invoice.</li>
+<li><strong>Free space.</strong> Servers fill up with log files, old backups, and forgotten folders. Windows servers start behaving strangely when the system drive gets tight, and databases stop cold when their disk hits full. Watching the trend matters more than the snapshot: a drive that ate 10 percent last month will be a problem you can see coming.</li>
+</ul>
+<p>Cadence: monthly at minimum. Better, automated alerts that fire when a drive degrades or space drops below a threshold, with the monthly check confirming the alerting itself still works.</p>
+
+<h2>Backup checks</h2>
+<p>The server backup gets its own line item because backup jobs fail silently and constantly. A job that ran perfectly for two years will start failing after a Windows update, a password change, or a full destination disk, and the only notice is an email nobody reads.</p>
+<p>The monthly routine has two parts. First, confirm the jobs are actually completing: green statuses, recent timestamps, sizes that make sense. Second, periodically restore something real, a file or a folder, and confirm it opens. A backup that has never been restored from is unverified, and unverified backups have a bad habit of failing exactly once, at the worst moment. We wrote up the full approach in our post on the 3-2-1 backup rule; the short version is that the restore test is the part everybody skips and the part that matters.</p>
+<p>Cadence: completion check monthly, test restore at least quarterly.</p>
+
+<h2>Logs</h2>
+<p>Servers write down their problems before they become your problems. The system and application event logs show disk errors weeks before a drive fails, service crashes that users worked around without reporting, and login patterns that look like someone guessing passwords. Nobody reads logs line by line. The skill is scanning for what changed: new errors that were not there last month, warnings that went from occasional to constant.</p>
+<p>Ten minutes of log review each month catches a remarkable share of problems while they are still cheap.</p>
+
+<h2>The physical stuff</h2>
+<p>Quarterly, someone should actually look at the machine. Dust chokes server fans, and a cooking server throttles and crashes in ways that look like software problems. Check that the closet has not become a storage room with boxes stacked against the vents, that the temperature in there is reasonable, and that the UPS (the battery backup the server plugs into) still holds a charge. UPS batteries last three to five years and then quietly become power strips. The next outage tests yours whether you checked it or not.</p>
+
+<h2>The monthly routine, on one page</h2>
+<ol>
+<li>Install pending updates, reboot, confirm services came back.</li>
+<li>Check RAID and disk health, check free space against last month.</li>
+<li>Confirm backup jobs completed. Quarterly, restore a real file.</li>
+<li>Scan event logs for new errors and warnings.</li>
+<li>Quarterly: dust, airflow, closet temperature, UPS battery.</li>
+</ol>
+<p>For one server, this is an hour or two a month for someone who knows what they are looking at. That is the honest total. Managed IT providers bundle exactly this routine, plus the monitoring that watches between visits, into their monthly fee, which is reasonable if nobody on staff can or wants to own it. What is not reasonable is nobody owning it.</p>
+
+<h2>How to know it is done right</h2>
+<p>Ask whoever maintains your server three questions. When was it last patched and rebooted? What is the current state of the drives and the backup jobs? When did we last restore a file successfully? Right answers are specific and recent. If the answers are vague, the routine is not happening, and the server is coasting on luck. The whole goal of server care is a machine so boring nobody thinks about it, kept boring on purpose.</p>

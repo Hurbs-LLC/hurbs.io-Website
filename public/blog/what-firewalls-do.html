@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What your firewall actually does (and what it can’t) | Hurbs LLC</title>
+  <meta name="description" content="Ports, rules, and inspection. Why a firewall is necessary but nowhere near sufficient.">
+  <link rel="canonical" href="https://hurbs.io/blog/what-firewalls-do">
+  <meta property="og:title" content="What your firewall actually does (and what it can’t) | Hurbs LLC">
+  <meta property="og:description" content="Ports, rules, and inspection. Why a firewall is necessary but nowhere near sufficient.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/what-firewalls-do">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-green"></div>
+      <a href="/services/cybersecurity" class="post-lane-link">CYBERSECURITY</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>What your firewall actually does (and what it can’t)</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Somebody sold you a firewall at some point. Maybe it came bundled with your internet service, maybe an IT vendor installed a box with blinking lights in your network closet, and ever since then the assumption has been "we have a firewall, so we're protected." We hear that sentence a lot, usually right before we find something the firewall never had a chance of stopping. So let's talk about what that box actually does, and where its job ends.</p>
+
+<h2>The basic job: deciding what traffic gets through</h2>
+
+<p>At its core, a firewall is a bouncer for network traffic. Every connection on a network uses a port, which is just a numbered channel. Web traffic uses ports 80 and 443. Email servers listen on 25. Remote desktop uses 3389. A firewall looks at traffic trying to come in or go out and checks it against a list of rules: allow this port from this address, block everything else.</p>
+
+<p>The single most valuable thing a firewall does is refuse inbound connections you never asked for. Out of the box, a decent firewall blocks all unsolicited inbound traffic. That alone stops the constant background noise of the internet: automated scanners probing every public IP address on earth, all day, every day, looking for an open port to poke at. If you've never looked at a firewall log, the volume of that scanning is genuinely surprising.</p>
+
+<h2>Modern firewalls do more than ports</h2>
+
+<p>The firewalls we install for businesses today (units from Fortinet, SonicWall, Ubiquiti, and similar) are usually called next-generation firewalls, and they inspect traffic more deeply than just checking port numbers. Depending on the model and licensing, that can include:</p>
+
+<ul>
+<li><strong>Application awareness.</strong> Recognizing that traffic on port 443 is actually Dropbox, or BitTorrent, and applying rules by application instead of just port.</li>
+<li><strong>Intrusion prevention.</strong> Matching traffic against known attack signatures and dropping it.</li>
+<li><strong>Content filtering.</strong> Blocking categories of websites, or known-malicious domains.</li>
+<li><strong>Geo-blocking.</strong> Refusing connections from countries you do no business with. Crude, but it cuts noise dramatically.</li>
+</ul>
+
+<p>Those features often require an active subscription. We regularly find firewalls whose security licensing lapsed two years ago. The box still routes traffic fine, so nobody noticed, but the inspection features quietly stopped updating. If you own a business-grade firewall, checking that the subscription is current is a five-minute task worth doing this week.</p>
+
+<h2>What a firewall cannot do</h2>
+
+<p>Here is the part vendors underplay. Most of the ways businesses actually get compromised today walk right past the firewall, because they arrive over connections your own people initiated.</p>
+
+<ul>
+<li><strong>Phishing.</strong> An employee clicks a link in an email and types their password into a fake Microsoft login page. That's outbound web traffic on port 443, which the firewall allows because it has to. No firewall rule stops it.</li>
+<li><strong>Stolen passwords.</strong> If someone logs into your Microsoft 365 or Google Workspace account with a valid password from anywhere in the world, your office firewall is not even in the conversation. Those services live in the cloud, outside your network entirely.</li>
+<li><strong>Malicious attachments.</strong> Encrypted email and HTTPS mean the firewall often can't see the payload at all.</li>
+<li><strong>Anything on a laptop that leaves the building.</strong> The firewall protects the network it sits on. Your salesperson working from a coffee shop is on someone else's network.</li>
+<li><strong>Threats already inside.</strong> Once malware is running on a machine inside your network, the firewall's inbound rules are irrelevant. Outbound rules can help contain it, but most small-business firewalls allow nearly all outbound traffic by default.</li>
+</ul>
+
+<p>That last point deserves emphasis. The default posture of most installs is "block inbound, allow all outbound." Tightening outbound rules (blocking remote desktop out, restricting server traffic to only what those servers need) is real work, and it's where a firewall goes from a checkbox to an actual control.</p>
+
+<h2>Necessary, not sufficient</h2>
+
+<p>None of this means firewalls don't matter. They do. An unfirewalled network with an exposed remote desktop port will be compromised, not might be. But a firewall is one layer, and it covers a shrinking share of the risk. The layers that cover the rest look like this: multi-factor authentication on email and cloud accounts, endpoint protection on every computer, patched software, backups that actually restore, and people who know what a phishing email looks like.</p>
+
+<h2>How to know yours is doing its job</h2>
+
+<p>A few concrete checks, whether you do them or you ask your IT provider for the answers in writing:</p>
+
+<ul>
+<li>Is the firmware current? Firewalls themselves get exploited, and unpatched firewall vulnerabilities have driven several major incident waves in the past few years.</li>
+<li>Are the security subscriptions active?</li>
+<li>Are there any inbound port-forwarding rules? Each one is a hole punched on purpose. Every rule should have a name attached and a reason it still exists. Port 3389 forwarded to anything is an emergency, fix it today.</li>
+<li>Has the admin password been changed from the default, and is the management interface reachable only from inside the network?</li>
+<li>Is anyone actually reviewing the logs, ever?</li>
+</ul>
+
+<p>If your current provider can't answer those questions quickly, that tells you something too. We do firewall reviews as part of nearly every network assessment, because the box with the blinking lights is usually fine. It's the rules and the licensing nobody has looked at since 2021 that need the attention.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cybersecurity" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/what-is-edr" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">EDR, XDR, antivirus: what actually protects endpoints now</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/who-watches-at-3am" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Who’s watching your network at 3 a.m.?</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/ransomware-defense-layers" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Ransomware defense: the five layers that matter</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lift-and-shift, explained: move servers to the cloud without rewriting | Hurbs LLC</title>
+  <meta name="description" content="When rehosting beats rebuilding, what changes after the move, and the gotchas we plan around.">
+  <link rel="canonical" href="https://hurbs.io/blog/lift-and-shift-explained">
+  <meta property="og:title" content="Lift-and-shift, explained: move servers to the cloud without rewriting | Hurbs LLC">
+  <meta property="og:description" content="When rehosting beats rebuilding, what changes after the move, and the gotchas we plan around.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/lift-and-shift-explained">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-yellow"></div>
+      <a href="/services/cloud" class="post-lane-link">CLOUD SETUP &amp; MIGRATION</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Lift-and-shift, explained: move servers to the cloud without rewriting</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>You have a server or three doing real work: an accounting app, a file server, maybe a line-of-business system that runs the whole company. The hardware is aging, the closet is hot, and someone has suggested "moving it to the cloud." Then someone else said the app would need to be rewritten first, and the whole conversation stalled. It usually does not need a rewrite. The move has a name: lift-and-shift, or rehosting if you want the formal term, and it means taking the server as it is and running it as a virtual machine in the cloud.</p>
+
+<h2>What lift-and-shift actually is</h2>
+<p>Your server, physical or virtual, is at bottom a disk image: an operating system, installed software, data, and settings. Lift-and-shift copies that whole thing into a cloud provider and boots it there as a virtual machine. Azure, AWS, and VMware-based clouds all have migration tooling that replicates a running server over the network while it keeps working, then cuts over when you are ready. The app does not know it moved. Users connect the same way, often to the same names. Nothing gets rewritten.</p>
+<p>The alternative approaches you will hear pitched, replatforming and full rebuilds, involve changing the application to use cloud-native services. Sometimes that is worth it. But it costs developer time, introduces risk, and requires access to source code you may not even have for vendor software.</p>
+
+<h2>When rehosting beats rebuilding</h2>
+<p>Lift-and-shift is the right call more often than cloud marketing admits. It wins when the deadline is real: your hardware is failing, your lease is ending, or your maintenance contract is up, and you need to be out in months, not years. It wins when the software is a vendor product you cannot modify, which describes most accounting, ERP, and industry-specific applications small businesses run. It wins when the app is stable and finished; rewriting working software to make it more "cloud-native" is spending money to re-earn what you already have. And it wins as a first step, because you can always modernize a piece at a time later, from inside the cloud, without a deadline over your head.</p>
+<p>Rebuilding beats rehosting mainly when the app is your own code, actively developed, and its hosting costs or scaling limits are a real business problem. That is a minority of the cases we see.</p>
+
+<h2>What changes after the move</h2>
+<p>Even though the server itself is untouched, the world around it changes, and this is where honest planning matters.</p>
+<p><strong>The bill changes shape.</strong> You stop paying in occasional painful lumps for hardware and start paying monthly for compute, storage, and backups. A server that was "free" because you bought it years ago now has a visible price every month. Sometimes the cloud costs more in raw dollars, and what you are buying is getting out of the hardware business: no more failed power supplies, no more weekend rebuilds, no more single air conditioner keeping the company alive.</p>
+<p><strong>Sizing becomes a dial instead of a purchase.</strong> On-premise servers get bought oversized because they have to last five years. In the cloud you size for what the workload actually uses, and resize in minutes. Most lifted servers can be stepped down a size or two after a month of watching real usage, and that is where a lot of cloud cost horror stories get fixed.</p>
+<p><strong>Access and security change.</strong> Your server used to be reachable only from inside the office. Now the path is a VPN or private connection between office and cloud, and the firewall rules that used to live in a box on the wall live in cloud network settings. This is a real workstream, not a checkbox.</p>
+
+<h2>Gotchas we plan around</h2>
+<p><strong>Licensing.</strong> This is the big one. Windows Server and SQL Server licensing works differently in the cloud, and moving existing licenses is allowed in some scenarios and not others. Microsoft's rules here have shifted more than once. Azure Hybrid Benefit can save real money if you have the right agreements. Some vendor applications also tie their license to hardware identifiers that change when the machine moves, which means calling the vendor before migration day, not during it.</p>
+<p><strong>Latency.</strong> In the closet, your server was a millisecond from every desk. In the cloud it might be twenty or forty milliseconds away, and applications react very differently to that. Web apps and remote desktop sessions generally do not care. Old client-server applications that make thousands of tiny database calls per screen can go from snappy to unusable. We test this before committing, and when an app is latency-sensitive, the fix is usually to move the users' sessions to the cloud too, next to the data, with something like Azure Virtual Desktop or an RDS host.</p>
+<p><strong>Backup strategy.</strong> Your old backup job probably wrote to a NAS or a rotating drive. That design does not transplant. Cloud platforms have native backup services that snapshot the whole VM on a schedule, and they are good, but someone has to configure them, set retention, and test a restore. "The cloud" does not back itself up by default, and we have met more than one business that learned this the hard way.</p>
+<p><strong>The stragglers.</strong> Every office has them: the label printer wired to the server, the scanner that drops files on a share, the door controller nobody remembers installing. Anything that talks to the server over the local network needs to be found before the move, because these are the things that break on Monday morning.</p>
+
+<h2>How to know it was done right</h2>
+<p>A good lift-and-shift is anticlimactic. Users sign in Monday and notice nothing, except maybe that the app is no better and no worse. Behind the scenes: the VM is sized to its measured usage rather than its old hardware, backups run on a schedule and a test restore has actually been performed, the office-to-cloud connection has a documented fallback, licensing has been confirmed in writing, and the old server sits powered off but intact for a few weeks as the final safety net before it is wiped. That last quiet month is the real deliverable. We plan these moves so the exciting part happens on paper, weeks before cutover night.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cloud%20Setup%20%26%20Migration" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/azure-vs-aws-vs-google-cloud" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Azure, AWS, or Google Cloud: an honest comparison</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/what-cloudflare-does" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">What Cloudflare actually does for your website</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/terraform-first-project" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Your first Terraform project: one server on AWS</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

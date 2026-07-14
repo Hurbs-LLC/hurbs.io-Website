@@ -1,0 +1,50 @@
+<p>Count the emails your team answered last week that started with "can you send me," "what's the status of," or "do you have a copy of." Every one of those is a customer who wanted something simple, waited hours for it, and pulled one of your people away from real work to get it. A customer portal exists to delete that whole category of email. Here's what a portal actually is, what belongs in the first version, and how to phase it so you don't overbuild.</p>
+
+<h2>What a customer portal is</h2>
+
+<p>A portal is a private section of your website where each client logs in and sees their own stuff. Not a public page, not a shared drive link, but an account view: their projects, their invoices, their documents, their requests. The bank and your insurance company have trained everyone to expect this. Increasingly, business clients expect it from their vendors too.</p>
+
+<p>The value runs both directions. Clients get answers at 9 p.m. on a Sunday without waiting on anyone. Your team stops being a human search engine for information that already exists in your systems. And there's a quieter benefit: a portal makes you look organized, because it forces you to be.</p>
+
+<h2>The four things clients actually want</h2>
+
+<p>Portals fail when they try to do everything. The requests that generate all that email fall into four buckets, and a portal that nails these covers the vast majority of the traffic:</p>
+
+<ul>
+<li><strong>Status.</strong> Where is my project, order, or job right now? A simple stage indicator ("scheduled," "in progress," "waiting on parts," "complete") with a date on it kills the single most common email you get.</li>
+<li><strong>Invoices.</strong> What do I owe, what have I paid, and can I get a copy of March's invoice for my bookkeeper? A list of invoices with PDFs and paid/unpaid flags. Add a pay-online button via Stripe or your payment processor and you'll get paid faster too.</li>
+<li><strong>Documents.</strong> Contracts, reports, warranties, photos, deliverables. One organized place per client, instead of attachments scattered across two years of email threads that nobody can find.</li>
+<li><strong>Requests.</strong> A form to ask for something new or report a problem, which lands in your queue with all the needed details, gets a reference number, and shows its own status. This replaces the inbox black hole with a paper trail both sides can see.</li>
+</ul>
+
+<h2>Phase one: read-only, plus a request form</h2>
+
+<p>Here's the scoping discipline that keeps a portal affordable. Phase one should mostly let clients <em>see</em> things, not do things.</p>
+
+<p>Read-only is dramatically cheaper to build and safer to run. Showing a client their invoice list involves pulling data and displaying it. Letting them edit things, schedule things, or interact with live systems means validation, permissions, edge cases, and ways for things to go wrong, and every one of those costs design and testing time. The one interactive piece worth including from day one is the request form, because it's simple (data flows in, lands in a queue) and it's where the email pain is worst.</p>
+
+<p>So phase one looks like: client logs in, sees status of their active work, sees and downloads invoices and documents, submits requests. That's a contained project, typically weeks-to-a-couple-of-months scale depending on how your existing data is stored, and it captures most of the value immediately.</p>
+
+<p>One honest prerequisite: a portal can only show data you actually have somewhere. If job statuses live in a foreman's head and invoices live in three different folders, the first (and genuinely useful) work is getting that data into a consistent system. The portal is a window. There has to be something behind the glass.</p>
+
+<h2>Phase two: let them do things</h2>
+
+<p>After a few months of real usage, you'll know exactly what clients want next, because they'll tell you and the usage data will confirm it. Common phase-two additions, in rough order of payoff:</p>
+
+<ul>
+<li><strong>Online payment</strong> on those invoices, if it wasn't in phase one. This one often pays for itself in faster collections alone.</li>
+<li><strong>Approvals.</strong> Clients sign off on quotes, change orders, or proofs right in the portal, with a timestamped record, instead of "approved, thanks" buried in an email thread.</li>
+<li><strong>Scheduling.</strong> Booking or rescheduling service windows against your real availability.</li>
+<li><strong>Messaging on a job.</strong> Threaded discussion attached to the project itself, so the history lives with the work.</li>
+<li><strong>Notifications.</strong> Automatic emails when a status changes or a document lands, so clients stop checking manually.</li>
+</ul>
+
+<p>Resist building any of this in phase one on speculation. Every feature above sounds good in a planning meeting. Half of them, in any given business, go unused. Let real behavior pick the winners.</p>
+
+<h2>Build or buy?</h2>
+
+<p>Worth asking before building: your industry may already have software with a client portal bolted on (practice management tools, field-service platforms, and the like), and your accounting software probably has some invoice-sharing feature. If one of those fits how you work, use it. Custom earns its cost when the off-the-shelf portal shows the wrong things, fights your process, or can't talk to the systems where your data actually lives. That's a real and common situation, it's just not the starting assumption.</p>
+
+<h2>How to know it's working</h2>
+
+<p>The measure is the inbox. Ninety days after launch, the "can you send me" and "what's the status" emails should be visibly down, and portal logins should be steady without you nagging anyone. If clients still email instead of logging in, find out why: usually the portal is missing the one thing they ask about most, or logging in is more annoying than emailing. Both are fixable, and both are cheaper to fix than they were to guess at up front. That's the whole point of phasing it.</p>

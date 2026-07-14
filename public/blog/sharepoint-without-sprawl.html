@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SharePoint without the sprawl | Hurbs LLC</title>
+  <meta name="description" content="Site structure, permissions, and naming that hold up past year one. Fixing the folder chaos for good.">
+  <link rel="canonical" href="https://hurbs.io/blog/sharepoint-without-sprawl">
+  <meta property="og:title" content="SharePoint without the sprawl | Hurbs LLC">
+  <meta property="og:description" content="Site structure, permissions, and naming that hold up past year one. Fixing the folder chaos for good.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/sharepoint-without-sprawl">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-green"></div>
+      <a href="/services/digital" class="post-lane-link">DIGITAL TRANSFORMATION</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>SharePoint without the sprawl</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Somewhere in your SharePoint there is a folder called "New Folder (2)" and inside it is a file called "FINAL v3 USE THIS ONE.xlsx". Nobody knows if it is actually the final version. Three people have edit access who left the company last year. This is normal. Almost every SharePoint we walk into looks like this, because SharePoint makes it easy to create things and hard to notice you should not have.</p>
+
+<p>The good news: SharePoint sprawl is not a personality flaw of your team. It is the predictable result of skipping three decisions at setup. Make those decisions now, even years late, and the mess stops growing.</p>
+
+<h2>Decision 1: sites follow teams, not projects</h2>
+
+<p>The most common failure mode is one giant site with one giant document library, organized by an ever-deepening folder tree. The second most common is the opposite: a new site for every project, forever, until you have 200 sites and nobody knows which ones are alive.</p>
+
+<p>The structure that holds up is one site per long-lived function: Operations, Finance, HR, Sales, and one for company-wide stuff like the handbook and templates. Projects get folders (or document sets) inside the site of the team that owns them, not their own site. A site is a permission boundary and a search scope. A folder is just a folder. If a thing needs its own permissions and its own lifespan, it earns a site. Otherwise it does not.</p>
+
+<p>Keep folder depth shallow. Two or three levels is the practical limit. Past that, people stop navigating and start dumping files at whatever level they landed on. Also, deep paths break things: SharePoint has a real limit around 400 characters for the full file path, and synced deep folders hit it constantly.</p>
+
+<h2>Decision 2: permissions go to groups, never to people</h2>
+
+<p>This is the one that bites hardest. When someone clicks Share on a folder and picks a coworker's name, SharePoint quietly breaks permission inheritance on that folder. Do that a few hundred times over a few years and nobody on earth can answer the question "who can see our payroll files?" We have audited tenants where the honest answer took two days to produce.</p>
+
+<p>The fix is a rule, and the rule has no exceptions: access is granted to Microsoft 365 groups, and people are added to groups. "Finance Members" can edit the Finance site. "Finance Visitors" can read it. When Sarah joins accounting, she goes into one group and gets everything she needs. When she leaves, she comes out of one group and loses everything. Offboarding becomes a one-line task instead of an archaeology project.</p>
+
+<p>Turn off casual sharing while you are at it. In the SharePoint admin center, set the default sharing link to "People with existing access" instead of "Anyone" or "People in your organization." Users can still share deliberately; they just stop granting access by accident every time they paste a link into an email.</p>
+
+<h2>Decision 3: names and retention are written down</h2>
+
+<p>A naming convention does not need to be clever. It needs to exist and fit on one page. Ours usually looks like this:</p>
+
+<ul>
+<li>Dates go first and go backwards: <code>2026-07-13 Board Minutes.docx</code>. Files sort themselves.</li>
+<li>Client or project name next, then what the document is: <code>Acme - MSA - Signed.pdf</code>.</li>
+<li>No "final," no "v2," no initials. SharePoint keeps version history automatically. Right-click a file and choose Version history: every save is there, restorable. The moment your team trusts this, the FINAL-v3 disease dies.</li>
+</ul>
+
+<p>Retention is the other half. Old files are not harmless; they are the reason search returns six copies of every template and the reason legal discovery costs what it costs. Decide how long each kind of document lives: seven years for financial records, duration-plus-two for contracts, one year for general working files, whatever your accountant and lawyer say. Then set it up once in Microsoft Purview as retention labels and let it run. Files age out on their own instead of accumulating forever.</p>
+
+<h2>Fixing an existing mess</h2>
+
+<p>Do not try to reorganize in place while people are working. The order that works:</p>
+
+<ol>
+<li>Build the new structure empty: sites, libraries, groups, sharing settings.</li>
+<li>Move current, active files into it, renaming as you go. This is usually a much smaller pile than you fear. Most of the volume is dead weight.</li>
+<li>Move everything else into a read-only Archive site. Do not sort it. Search still finds it if anyone ever needs it.</li>
+<li>Set the old locations read-only for a month, then remove them. If nobody screams in a month, nobody was using it.</li>
+</ol>
+
+<h2>How you know it is done right</h2>
+
+<p>Three tests. First, ask "who can see the HR site?" and get an answer in under a minute by opening one group's membership. Second, a new hire finds the expense report template without asking anyone, because there is exactly one place it could be. Third, six months later there are no new top-level folders you cannot explain. Sprawl is not something you clean up once; it is something the structure either invites or prevents. Get the three decisions right and the structure does the maintenance for you.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Digital%20Transformation" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/slack-or-teams" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Slack or Teams: pick one, set it up right</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/first-power-automate-flow" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Your first Power Automate flow: an approval that emails itself</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/zapier-make-automation" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Automate the boring stuff with Zapier or Make</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<p>You have a spreadsheet that runs part of your business. Sales by month, jobs by crew, invoices by customer, something like that. Every Monday somebody opens it, squints at it, and copies numbers into an email. This guide walks you through turning that spreadsheet into a live Power BI dashboard: one page with a headline number, a couple of charts, and a table, published where your team can open it in a browser. No code, and the software is free to start.</p>
+
+<h2>Prerequisites</h2>
+<ul>
+<li>A Windows PC. Power BI Desktop is Windows-only. Mac users can do most of this in the Power BI web service instead, but this guide uses Desktop.</li>
+<li>An Excel file with your data in it. It works best if the data is a flat table: one header row, one row per record (per sale, per job, per invoice).</li>
+<li>A work email address (Microsoft blocks personal gmail/outlook addresses from signing up for the Power BI Service). You only need this for the publish step at the end.</li>
+</ul>
+
+<h2>Step 1: Install Power BI Desktop</h2>
+<p>Get it from the Microsoft Store: search "Power BI Desktop" and install it. The Store version updates itself, which matters because Microsoft ships updates monthly. You can also download the installer from Microsoft's Power BI site if you prefer. Desktop is free with no trial clock on it. You only pay when you get into paid sharing tiers later.</p>
+
+<h2>Step 2: Get Data from your Excel file</h2>
+<p>Open Power BI Desktop. On the <strong>Home</strong> ribbon, click <strong>Get Data</strong>, then choose <strong>Excel workbook</strong>. Browse to your file and open it.</p>
+<p>The Navigator window appears, listing every sheet and table in the workbook. Check the box next to the sheet with your data. The preview pane on the right shows you what Power BI sees. If the preview looks right, you could click <strong>Load</strong>. Don't. Click <strong>Transform Data</strong> instead, because real spreadsheets are never clean and the next step is where you fix that.</p>
+
+<h2>Step 3: Clean it in Power Query</h2>
+<p>Transform Data opens the Power Query Editor, a separate window where you fix the data before it lands in your report. The most common fixes:</p>
+<ul>
+<li><strong>Wrong header row.</strong> If your spreadsheet has a title or blank rows above the real headers, use <strong>Home &gt; Remove Rows &gt; Remove Top Rows</strong> to delete them, then <strong>Home &gt; Use First Row as Headers</strong>.</li>
+<li><strong>Wrong column types.</strong> Each column header has a small type icon (ABC for text, 123 for number, a calendar for dates). Click it and set the right type. Dates read as text will wreck your charts later, so get this right now.</li>
+<li><strong>Junk columns.</strong> Right-click a column header and <strong>Remove</strong>. Notes columns, blank columns, that "old, do not use" column from 2019: gone.</li>
+<li><strong>Blank or error rows.</strong> Click the filter arrow on a key column (like the date) and uncheck null.</li>
+</ul>
+<p>Every fix you make gets recorded in the <strong>Applied Steps</strong> list on the right. That's the point of Power Query: next month, when the spreadsheet has new rows, you hit Refresh and all these steps replay automatically. You clean once, not weekly.</p>
+<p>When it looks right, click <strong>Close &amp; Apply</strong> in the top left. The data loads into your report.</p>
+
+<h2>Step 4: Build the visuals</h2>
+<p>You're now on a blank report canvas. On the right you have the <strong>Visualizations</strong> pane (chart types) and the <strong>Data</strong> pane (your columns). Building a visual is: click a chart type, then drag columns onto it. Build these four.</p>
+<h3>Card: the headline number</h3>
+<p>Click the <strong>Card</strong> visual (it looks like the number 123). Drag your amount column (revenue, job count, whatever matters most) into its field well. Power BI sums it automatically. Resize it and park it top-left. This is the number people came for.</p>
+<h3>Bar chart: the breakdown</h3>
+<p>Click a <strong>Clustered bar chart</strong>. Drag a category column (customer, crew, product, region) to the Y-axis and your amount column to the X-axis. It sorts largest-first by default, which is what you want.</p>
+<h3>Line chart: the trend</h3>
+<p>Click the <strong>Line chart</strong>. Drag your date column to the X-axis and the amount to the Y-axis. If the X-axis explodes into a Year/Quarter/Month/Day hierarchy, use the drill arrows on the visual header, or remove the levels you don't want from the X-axis well, to get a clean monthly line.</p>
+<h3>Table: the receipts</h3>
+<p>Click the <strong>Table</strong> visual and drag in the four or five columns someone would want when they ask "which ones, exactly?" Date, customer, amount is usually enough.</p>
+<p>Here's the part that makes it feel like magic: click a bar in the bar chart. Every other visual on the page filters to match. Click it again to clear. That's built in, you didn't configure anything.</p>
+
+<h2>Step 5: Publish to the Power BI Service</h2>
+<p>Save the file (<strong>File &gt; Save</strong>, it saves as a .pbix). Then on the <strong>Home</strong> ribbon, click <strong>Publish</strong>. Sign in with your work Microsoft account, pick a workspace (<strong>My workspace</strong> is fine to start), and wait for the success message. Click the link it gives you and your report opens at app.powerbi.com, in a browser, no Desktop needed.</p>
+
+<h2>Step 6: Share it</h2>
+<p>In the Service, open the report and click <strong>Share</strong> in the top bar. Type coworkers' email addresses and send. One licensing note so the first share doesn't surprise you: viewing shared reports generally requires each viewer to have a Power BI Pro license, which runs around ten to fifteen dollars per user per month, and Pro comes bundled in some Microsoft 365 plans. Check what your organization already has before buying anything.</p>
+<p>When the spreadsheet changes, open the .pbix in Desktop, click <strong>Refresh</strong>, then <strong>Publish</strong> again. Later you can set up scheduled refresh in the Service so it updates itself, but manual refresh is fine for week one.</p>
+
+<h2>Verify it</h2>
+<p>Open the published report in a browser on a different machine, or have a coworker open it. Check three things: the card total matches what the spreadsheet says, clicking a bar cross-filters the table, and the line chart's most recent month looks right. If the total is off, the culprit is almost always a data type or a filtered-out row from Step 3, so reopen Power Query and check your Applied Steps.</p>
+<p>That's a working dashboard from one spreadsheet in an afternoon. If your data lives in five spreadsheets, or in QuickBooks, or in a system nobody can export from, that's the point where it gets harder, and it's the kind of thing we set up for people all the time.</p>

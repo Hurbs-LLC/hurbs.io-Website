@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cameras and access control on your own network | Hurbs LLC</title>
+  <meta name="description" content="PoE cameras, NVRs, badge systems, and why surveillance gear belongs on its own VLAN.">
+  <link rel="canonical" href="https://hurbs.io/blog/cameras-access-control">
+  <meta property="og:title" content="Cameras and access control on your own network | Hurbs LLC">
+  <meta property="og:description" content="PoE cameras, NVRs, badge systems, and why surveillance gear belongs on its own VLAN.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/cameras-access-control">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-red"></div>
+      <a href="/services/networks" class="post-lane-link">NETWORKS &amp; INFRASTRUCTURE</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Cameras and access control on your own network</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>At some point most businesses want cameras, and a lot of them want to stop handing out brass keys too. The security industry is happy to sell you both as a monthly subscription with per-camera fees forever. The alternative, running cameras and door access on your own network, costs more up front, less over time, and leaves you owning your own footage and your own locks. Here is how the pieces fit and where the real decisions are.</p>
+
+<h2>PoE cameras: one cable does everything</h2>
+
+<p>Skip Wi-Fi cameras for business use. Battery and wireless cameras are fine for a doorbell at home; in a business they mean dead batteries, dropped clips, and footage that saved to someone's personal cloud account. The business-grade answer is PoE: cameras powered over the same Ethernet cable that carries their video, plugged into a PoE switch.</p>
+
+<p>That buys you reliability (no batteries, no wireless interference), clean installs (one Cat6 run per camera, no electrician needed at the camera location), and central power. Put the PoE switch on a UPS and every camera stays up through an outage, which is precisely when you want cameras working.</p>
+
+<p>Camera placement is its own small discipline: cover entrances, points of sale, and loading areas; mount high enough to avoid tampering but low enough to catch faces, since a straight-down view of the top of a head identifies nobody. And in most cases, cameras face doors and public areas, not employees' desks. Check your state's rules on audio recording before enabling microphones; audio consent laws vary and several states are strict about it.</p>
+
+<h2>NVR or cloud: where does the footage live?</h2>
+
+<p>An NVR, a network video recorder, is a box on your rack with big drives that records every camera continuously. The alternative is cloud recording, where each camera streams to a vendor's servers for a per-camera monthly fee.</p>
+
+<p>The honest comparison:</p>
+
+<ul>
+<li><strong>Cost:</strong> an NVR is a one-time purchase. Cloud fees per camera per month look small until you multiply by 12 cameras and 5 years, at which point the cloud has cost several times the NVR.</li>
+<li><strong>Bandwidth:</strong> a dozen cameras streaming to the cloud around the clock eats a serious chunk of your internet upload. Local recording uses none of it.</li>
+<li><strong>Access and resilience:</strong> cloud systems make remote viewing effortless and survive the NVR being stolen or burned. A local NVR keeps recording when the internet is down, which cloud cameras generally cannot. The theft risk is real but manageable: lock the NVR in the rack cabinet and, on systems that support it, mirror critical clips offsite.</li>
+<li><strong>Ownership:</strong> with local recording the footage is yours. With cloud, your access to your own footage lasts exactly as long as the subscription.</li>
+</ul>
+
+<p>For most small businesses we favor a local NVR, and ecosystems like UniFi Protect or a standalone NVR with ONVIF-compatible cameras make it straightforward, with remote viewing through the controller. Cloud-first systems like Verkada or Rhombus make sense for companies with many sites and nobody local to touch hardware, priced accordingly.</p>
+
+<h2>Badges and fobs instead of brass keys</h2>
+
+<p>The problem with metal keys is arithmetic: keys get copied and never come back, and when an employee with a key leaves on bad terms, the honest fix is rekeying every lock. Electronic access control replaces the key with a badge, fob, or phone credential, and replaces the locksmith visit with a checkbox.</p>
+
+<p>The parts: a reader at each door, an electric strike or magnetic lock in the frame, and a controller that decides who gets in. Modern small-business systems put the controller on your network and often power everything over PoE, so a door becomes, from a wiring standpoint, another network drop plus lock hardware.</p>
+
+<p>What you get beyond convenience: per-person credentials that deactivate the minute someone leaves, schedules (the cleaning crew's fob works weekday evenings only), and an audit log of who opened which door when. That log is the feature businesses do not know they need until the first time they need it.</p>
+
+<p>One non-negotiable: doors must fail safe for the people inside. Egress hardware and fire code come first, and lock choice (fail-secure strikes versus fail-safe maglocks) has life-safety implications. This is the part of the job where we involve a licensed low-voltage or locksmith professional and pull the right permits, and you should expect the same from anyone you hire.</p>
+
+<h2>Why all of it belongs on its own VLAN</h2>
+
+<p>Cameras and door controllers are computers, usually cheap ones, sometimes with firmware that stopped getting updates years ago. Compromised cameras are a well-worn path into networks and a favorite recruit for botnets. So the standing rule: surveillance and access control get their own VLAN, walled off from the network your workstations and file server live on.</p>
+
+<p>Concretely, that means the cameras, NVR, and door controllers sit in their own network segment, firewall rules block that segment from reaching your business systems, and ideally the cameras cannot reach the open internet at all except for firmware updates and, if used, their vendor's cloud relay. Your management workstation can reach into the camera VLAN; the cameras cannot reach out. If a camera is ever compromised, the blast radius is other cameras, not your accounting system. We covered the general concept in our VLANs post; this is the textbook use case for it.</p>
+
+<h2>Retention: how long to keep footage</h2>
+
+<p>Retention is a math problem and a policy problem. The math: recording hours times camera count times bitrate determines drive space. As a rough feel, a dozen cameras at 1080p with continuous recording fit around 30 days on the multi-terabyte drives NVRs typically ship with, and motion-only recording stretches that a lot. Higher resolution or more cameras shrinks it.</p>
+
+<p>The policy: 30 days is a common small-business default, and it is enough for most incidents, which get discovered within days. Some industries and some insurers specify minimums, so check yours. Write the retention period down somewhere official, because "how far back does the footage go" is a question you will eventually be asked by police, a lawyer, or an insurance adjuster, and "we are not sure" is a bad answer. Also decide who may review and export footage, and keep that list short.</p>
+
+<h2>How to know it was done right</h2>
+
+<p>Every camera and door controller is on the isolated VLAN and cannot browse the internet. The NVR is locked up, on the UPS, and you have tested pulling up footage from two weeks ago. Terminated employees lose door access the same day, and the audit log proves it. Default passwords are gone from every device. And the retention policy is written down, with drive space that actually delivers it.</p>
+
+<p>Owning this stack takes a competent setup and a little maintenance. In exchange, no subscription decides whether you can open your own door or watch your own footage.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Networks%20%26%20Infrastructure" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-ubiquiti" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Why we reach for Ubiquiti in small offices</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/cisco-meraki-ubiquiti" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Cisco, Meraki, or Ubiquiti: matching gear to the job</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/pfsense-firewall-setup" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Set up a pfSense firewall for a small office</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

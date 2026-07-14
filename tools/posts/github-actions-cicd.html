@@ -1,0 +1,112 @@
+<p>If deploying your app involves a person remembering steps, it will eventually be deployed wrong. CI/CD fixes that: every push runs your tests automatically (continuous integration), and code that passes on your main branch deploys itself (continuous deployment). GitHub Actions is the easiest place to start because it's built into GitHub, free for a generous amount of usage on public and private repos, and configured with one YAML file in your repo. In this guide you'll set up a workflow that tests every push and pull request for a Node project, then add a deploy job that only runs on main.</p>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>A project in a GitHub repository.</li>
+<li>A test command that runs locally. For Node, that means <code>npm test</code> does something real. Even one test counts.</li>
+<li>A way to deploy from the command line (a CLI like <code>wrangler</code>, <code>flyctl</code>, or an rsync/SSH script). The deploy step just automates whatever you already do by hand.</li>
+</ul>
+
+<h2>Step 1: Understand the moving parts</h2>
+
+<p>Three terms and you know the whole system:</p>
+
+<ul>
+<li>A <strong>workflow</strong> is a YAML file in <code>.github/workflows/</code> that says when to run and what to do.</li>
+<li>A <strong>job</strong> is a set of steps that runs on a fresh virtual machine GitHub spins up for you.</li>
+<li>A <strong>step</strong> is either a shell command or an <strong>action</strong>, which is a reusable building block published by GitHub or the community (checking out code, installing Node, and so on).</li>
+</ul>
+
+<h2>Step 2: Create the CI workflow</h2>
+
+<p>In your repo, create <code>.github/workflows/ci.yml</code>:</p>
+
+<pre><code>name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test</code></pre>
+
+<p>What each piece does:</p>
+
+<ul>
+<li><code>on:</code> triggers the workflow on any push to main and on every pull request. PRs get tested before they merge, and main gets tested after.</li>
+<li><code>actions/checkout</code> clones your repo onto the runner.</li>
+<li><code>actions/setup-node</code> installs Node 20 and caches your npm downloads so later runs are faster.</li>
+<li><code>npm ci</code> installs exactly what <code>package-lock.json</code> says. Use it instead of <code>npm install</code> in CI: it's faster and it fails loudly if the lockfile is out of sync instead of silently changing versions.</li>
+<li><code>npm test</code> runs your tests. If any step exits nonzero, the job fails and GitHub marks the commit with a red X.</li>
+</ul>
+
+<p>Commit the file and push. Go to the Actions tab in your repo and you'll see the run in progress, with live logs for every step.</p>
+
+<h2>Step 3: Add a deploy job gated on main</h2>
+
+<p>Now extend the same file with a second job that deploys, but only after tests pass and only on the main branch:</p>
+
+<pre><code>  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main' &amp;&amp; github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy
+        run: npm run deploy
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}</code></pre>
+
+<p>The two lines that make this safe:</p>
+
+<ul>
+<li><code>needs: test</code> means the deploy job waits for the test job and never runs if tests fail. Broken code cannot ship through this pipeline.</li>
+<li>The <code>if:</code> condition restricts deploys to pushes on main. Pull requests get tested but never deployed.</li>
+</ul>
+
+<p>Replace <code>npm run deploy</code> with your actual deploy command. For a Cloudflare Workers site that's <code>npx wrangler deploy</code>; for a server it might be a script that rsyncs files and restarts a service. Whatever you type by hand today goes here.</p>
+
+<h2>Step 4: Store credentials as secrets</h2>
+
+<p>Your deploy command almost certainly needs a token or key. Do not put it in the YAML. In your repo, go to Settings, then Secrets and variables, then Actions, and add a repository secret (for example <code>DEPLOY_TOKEN</code>). The <code>${{ secrets.DEPLOY_TOKEN }}</code> syntax in the workflow injects it as an environment variable at runtime. Secrets are encrypted, masked in logs, and not exposed to workflows triggered from forks.</p>
+
+<h2>Step 5: Protect the main branch</h2>
+
+<p>The pipeline only helps if people can't route around it. In Settings, then Branches, add a branch protection rule (or ruleset) for main that requires the test check to pass before merging. Now a PR with failing tests physically cannot merge, and since deploys only happen from main, nothing broken reaches production.</p>
+
+<h2>Verify it</h2>
+
+<p>Run the full loop once, on purpose:</p>
+
+<ol>
+<li>Open a branch, break a test, and push a PR. The check should go red and the merge button should lock.</li>
+<li>Fix the test, push again, watch it go green, and merge.</li>
+<li>Watch the Actions tab: the test job runs on main, then the deploy job runs, then your change is live.</li>
+</ol>
+
+<p>If all three happen without you touching a server, you have CI/CD. From here you can add more later (linting, multiple Node versions, staging environments), but resist the urge to build a cathedral. A pipeline that tests every change and deploys main automatically already puts you ahead of most small shops we walk into.</p>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How we cut over systems without downtime | Hurbs LLC</title>
+  <meta name="description" content="Parallel runs, DNS TTLs, rollback plans. The playbook for switching systems while the business keeps running.">
+  <link rel="canonical" href="https://hurbs.io/blog/zero-downtime-cutovers">
+  <meta property="og:title" content="How we cut over systems without downtime | Hurbs LLC">
+  <meta property="og:description" content="Parallel runs, DNS TTLs, rollback plans. The playbook for switching systems while the business keeps running.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/zero-downtime-cutovers">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-yellow"></div>
+      <a href="/services/cloud" class="post-lane-link">CLOUD SETUP &amp; MIGRATION</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>How we cut over systems without downtime</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Every migration has a moment where the old system stops being the real one and the new system takes over. That moment is the cutover, and it is the part clients lose sleep over, because they have all heard a story: the email migration that ate a weekend, the new server that went live Friday and was down Monday. Those stories are real, and they are almost always planning failures, not technical ones. Here is how we run cutovers so the business keeps working straight through them.</p>
+
+<h2>The core idea: never burn the bridge behind you</h2>
+<p>Every technique below comes down to one principle. At no point during a migration should the old system be gone before the new system is proven. Amateurs move things; professionals run things in parallel and then switch. The switch is small, fast, and reversible. The move happened earlier, quietly, while nobody was watching.</p>
+
+<h2>Parallel runs</h2>
+<p>Before any cutover, the new system runs alongside the old one, doing real work with real data, while the old system remains the one everyone uses. For a server migration, that means the cloud VM is built, the data is replicating continuously, and we are logging into it daily. For an email migration, mailboxes are synced and mail flow is tested to a pilot group. For a new application server, a handful of users work on it for days before anyone else knows it exists.</p>
+<p>The parallel period is where problems are supposed to appear. A report that renders wrong, a printer that cannot reach the new host, a permissions gap. Every one of those found during the parallel run is a Tuesday-afternoon fix. The same problem found after cutover is an outage. So we do not rush this phase, and we treat "we found three problems this week" as the process working, not failing.</p>
+
+<h2>Lowering DNS TTLs ahead of time</h2>
+<p>Many cutovers ultimately happen in DNS: a name that pointed at the old server starts pointing at the new one. DNS records carry a TTL, a time-to-live, which tells the rest of the internet how long to cache the answer. If your record's TTL is 24 hours, some users will keep landing on the old server for up to a day after you change it. That is a slow, partial, confusing cutover.</p>
+<p>So days before the switch, we drop the TTL on the relevant records to something like 300 seconds, five minutes. Nothing visible changes, but now the internet checks back frequently. On cutover day, we update the record, and within minutes essentially everyone is on the new system. If something is wrong, pointing the record back also takes minutes. After things settle, the TTL goes back up. This is a small, free step, and skipping it is one of the most common mistakes in DIY migrations.</p>
+
+<h2>Rollback plans, written before they are needed</h2>
+<p>Every cutover we run has a written rollback plan before it starts. Not "we'll figure it out," but specific steps: which record gets pointed back, which sync gets reversed, who makes the call, and, most important, what the decision criteria are. Something like: if core functions are not confirmed working within 45 minutes, we roll back and reschedule, no debate.</p>
+<p>Deciding that threshold in advance matters because in the moment, everyone wants to push through. It is one in the morning, the fix feels ten minutes away, and it has felt ten minutes away for two hours. A pre-agreed line takes ego out of it. Rolling back is not failure; it converts a potential Monday outage into a rescheduled maintenance window nobody outside the room ever hears about. We have rolled back cutovers and had the second attempt go clean a week later. That is the system working.</p>
+<p>A rollback plan also has to be tested in one specific way: the old system must still be intact and untouched. This is why we never decommission, repurpose, or "clean up" the old environment on cutover night. It sits there, powered on, ready to take the load back, until the new system has survived real use.</p>
+
+<h2>Cutover windows, chosen on purpose</h2>
+<p>Even a well-planned switch deserves a window: a scheduled block of time when the change happens, users know about it, and the right people are on hand. We pick windows based on the actual rhythm of the business, not a generic "weekends are safe." For a restaurant group, Monday morning beats Saturday night. For an accounting firm, nothing moves in the first two weeks of April. The right window is when a hiccup would cost the least and when the people who can verify the system, meaning your staff who actually use it, are reachable.</p>
+<p>Inside the window, the sequence is boring on purpose: final data sync, switch, verify against a written checklist, then a decision point. The checklist is written with the client beforehand and is specific: can the front desk pull up a customer, can invoices print, does mail flow in both directions. "It seems fine" is not a verification.</p>
+
+<h2>The morning after matters as much as the night of</h2>
+<p>Cutovers do not end when the switch flips. The first business day on the new system is part of the plan: someone is watching, response time is short, and the old system is still one decision away. Most post-cutover issues are small, a mapped drive here, a bookmark pointing at an old address there, and they surface in the first hours of real use. Being present for that window is the difference between "the migration went fine" and "the new system was a disaster," even when the underlying work was identical.</p>
+
+<h2>What this looks like from your side</h2>
+<p>If your IT provider is doing this well, you will notice mostly paperwork: a schedule, a checklist with your staff's names on it, a rollback plan you were asked to approve, and a boring switch night. If instead the plan is "we'll move everything over the weekend and it should be up Monday," with no parallel period and no written way back, that is the story that ends badly. Downtime during migrations is not bad luck. It is a plan with the safety steps skipped.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cloud%20Setup%20%26%20Migration" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/azure-vs-aws-vs-google-cloud" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Azure, AWS, or Google Cloud: an honest comparison</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/what-cloudflare-does" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">What Cloudflare actually does for your website</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/terraform-first-project" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Your first Terraform project: one server on AWS</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

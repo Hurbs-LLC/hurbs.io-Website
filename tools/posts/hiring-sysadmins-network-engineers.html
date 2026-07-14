@@ -1,0 +1,36 @@
+<p>Hiring a sysadmin or network engineer is a different problem from hiring help desk. This person will hold domain admin, touch the firewall, and make changes that can take the whole company offline. A bad help desk hire annoys people. A bad infrastructure hire causes outages, and the worst ones cause outages nobody can explain because the person also did the documentation. The interview has to actually test whether they can do the work, and most interviews don't.</p>
+
+<h2>Trivia tells you almost nothing</h2>
+
+<p>The typical infrastructure interview is a quiz. What port does LDAP use? What's the difference between OSPF and BGP? Name the FSMO roles. These questions test recall, and recall is the least important skill in the job. Every working engineer looks things up constantly. Meanwhile, a candidate can memorize every acronym on the internet and still freeze the first time a site goes down and the monitoring is red everywhere.</p>
+
+<p>Trivia also selects for the wrong people. Great engineers with ten years of real fires under their belt sometimes blank on textbook definitions they haven't needed since a cert exam. Confident bluffers, on the other hand, do great on quizzes.</p>
+
+<h2>Scenario questions test the actual job</h2>
+
+<p>The job is diagnosis under pressure with incomplete information. So test that. Give a scenario and make them walk you through it out loud:</p>
+
+<ul>
+<li><strong>"Users at one office say everything is slow. Walk me through diagnosing it."</strong> You're listening for method. Do they define "slow" first? Do they check whether it's one user, one app, or everyone? Do they look at the WAN link, DNS resolution, and recent changes before touching anything? A good answer sounds like a decision tree. A bad answer jumps straight to a pet theory.</li>
+<li><strong>"You make a firewall change and 30 seconds later the phones light up. What do you do?"</strong> The only right first move is roll it back. Then investigate. Candidates who start defending the change instead of reverting it are telling you how they'll behave during a real incident.</li>
+<li><strong>"A Windows server is at 100 percent disk and services are failing. Go."</strong> You want triage order: free enough space to stabilize, identify what's eating the disk, then fix the cause, then ask why monitoring didn't catch it at 85 percent.</li>
+<li><strong>"How would you take over an environment with no documentation?"</strong> This one predicts the first 90 days. Good answers involve inventorying before changing anything, mapping dependencies, and writing things down as they go.</li>
+</ul>
+
+<p>Push on their answers with follow-ups: "the ping works, now what?" or "that fixed it, but it comes back the next morning." Real engineers get more engaged as the scenario gets messier. Memorizers run out of script.</p>
+
+<p>Two more questions we always ask. First: "Tell me about an outage you caused." Everyone who has done this work has caused one. A candidate with no story is either too junior to know they caused it or unwilling to own mistakes, and both are problems when this person holds root. The good answer includes what they broke, how they found it, and what they changed so it wouldn't repeat. Second: "What do you document, and when?" Infrastructure people who don't write things down create single points of failure with a pulse.</p>
+
+<h2>How we vet infrastructure people</h2>
+
+<p>When we screen sysadmins and network engineers for clients, working techs run the interview. That matters because the follow-up question is where the truth comes out, and a recruiter reading from a sheet can't ask it. Our screen has three parts:</p>
+
+<ul>
+<li><strong>Resume reality check.</strong> Pick something specific off the resume ("you migrated Exchange to Microsoft 365") and dig in. What broke? What would you do differently? People who did the work have opinions and scars. People who watched someone else do it have summaries.</li>
+<li><strong>Two or three scenarios</strong> like the ones above, matched to the client's environment. If the client runs Fortinet and VMware, the scenarios run Fortinet and VMware.</li>
+<li><strong>Hands-on when the role is senior.</strong> A lab VM with a broken service, or a whiteboard network design: "two offices, one cloud VPC, users need failover, draw it and defend it." Watching someone actually troubleshoot for 20 minutes settles arguments that three interviews can't.</li>
+</ul>
+
+<h2>How to know your process works</h2>
+
+<p>The test is what happens after the hire. Within the first quarter, a good infrastructure hire has found and quietly fixed things you didn't know were broken, written documentation nobody asked for, and started saying "let's check before we change that" in meetings. If instead you're seeing confident changes with no change control, mysterious weekend outages, and answers that shift when you ask twice, the interview tested the wrong thing. Scenario-based screening isn't foolproof, but it fails a lot less often than trivia, because it tests the job instead of the vocabulary.</p>

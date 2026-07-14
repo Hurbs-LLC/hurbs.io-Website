@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rescuing legacy software: modernize without the rewrite | Hurbs LLC</title>
+  <meta name="description" content="The full rewrite usually fails. Strangler patterns, API wrappers, and incremental rescue that ships.">
+  <link rel="canonical" href="https://hurbs.io/blog/legacy-software-rescue">
+  <meta property="og:title" content="Rescuing legacy software: modernize without the rewrite | Hurbs LLC">
+  <meta property="og:description" content="The full rewrite usually fails. Strangler patterns, API wrappers, and incremental rescue that ships.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/legacy-software-rescue">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-blue"></div>
+      <a href="/services/software" class="post-lane-link">CUSTOM SOFTWARE</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Rescuing legacy software: modernize without the rewrite</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Somewhere in your business there's a piece of software everyone is afraid of. Maybe it's a custom system built twelve years ago by a developer who's long gone. Maybe it's an Access database that grew into a monster, or a Visual Basic app running the warehouse. It still works, mostly, which is exactly why it never got replaced. But it only runs on one aging machine, nobody understands the code, and every year it gets harder to hire anyone willing to touch it.</p>
+
+<p>The standard advice is "rewrite it from scratch." We want to talk you out of that, or at least out of doing it the usual way.</p>
+
+<h2>Why full rewrites usually fail</h2>
+
+<p>The big-bang rewrite has a predictable life cycle. It gets scoped at six months and takes two years, because the old system contains a decade of accumulated business rules nobody wrote down: the special pricing for that one customer type, the workaround for the tax edge case, the report the bank requires in exactly that format. The old code is the only complete documentation of how your business actually works, and every one of those rules has to be rediscovered, usually by shipping the new system without it and hearing about it from an angry user.</p>
+
+<p>Meanwhile, the business doesn't stop. New requirements land in the old system while the new one chases a moving target. Budgets run out at 80% done, which in software means the hard 20% never happens. We've been called in to clean up after more than one of these, and the common thread is always the same: everything was bet on a single cutover day that kept sliding.</p>
+
+<p>Rewrites can succeed, but they succeed when they're small, well documented, and lucky. That's not a plan.</p>
+
+<h2>The alternative: incremental rescue</h2>
+
+<p>The approach that actually ships is to replace the system piece by piece while the old one keeps running. The pattern has a name, the strangler fig pattern, after the vine that grows around a tree until it eventually stands on its own. In practice it looks like this:</p>
+
+<h3>Step one: stabilize what exists</h3>
+
+<p>Before improving anything, stop the bleeding. Get the code into version control if it isn't. Get the old system running on hardware or a virtual machine that isn't one power surge from disaster. Set up real backups and test a restore. Document how to build and deploy it, even if the process is ugly. None of this is glamorous, and all of it buys you time to do the rest without a gun to your head.</p>
+
+<h3>Step two: put a wrapper around it</h3>
+
+<p>Most legacy systems have one saving grace: their data is in a database. Even if the code is untouchable, you can usually build a thin API layer that reads and writes that data safely. Suddenly the old system can talk to modern things: your website, a mobile app for field staff, a reporting dashboard, an integration with QuickBooks. The legacy core keeps doing what it does; the wrapper gives it a future. This step alone often delivers most of what people wanted from the rewrite.</p>
+
+<h3>Step three: peel off pieces</h3>
+
+<p>Now replace the system one function at a time, highest pain first. Reporting is often the best first candidate: build new reports against the same database and retire the old ones. Then maybe the customer-facing piece, then invoicing, then scheduling. Each piece is a small project with its own budget and its own finish line. Users move over gradually. If a new piece has problems, you fall back to the old one for that function, not for everything.</p>
+
+<h3>Step four: retire the core, eventually</h3>
+
+<p>After enough pieces move out, what's left of the old system is small enough that replacing it is a normal-sized project instead of a moonshot. Some businesses never fully get there, and that can be fine. A stable, backed-up legacy core doing one boring job behind an API is not a crisis. It's just old, like a building with good bones.</p>
+
+<h2>What this costs and how long it takes</h2>
+
+<p>Incremental rescue usually costs about the same as a rewrite in total, sometimes a bit more. The difference is when you get value. A rewrite pays out nothing until the end, if the end comes. The incremental path pays out at every step: stabilization removes the disaster risk in weeks, the API wrapper unlocks integrations in a month or two, and each replaced piece improves daily life immediately. You can also stop at any point and keep everything you've gained. Try stopping a rewrite at 60% and see what you have.</p>
+
+<h2>How to know it's going right</h2>
+
+<p>The old system gets more boring every quarter, not more terrifying. There's a current backup you've actually restored from. New features get built in new code against the wrapper, never bolted onto the legacy core. And nobody is waiting for a big cutover day, because value has been shipping the whole time. If the plan you're being pitched has a single go-live date eighteen months out, ask harder questions.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Custom%20Software" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-typescript" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Why we build in TypeScript</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/python-business-automation" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Python: the duct tape of business automation</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/when-react-makes-sense" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">When React makes sense (and when plain HTML wins)</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

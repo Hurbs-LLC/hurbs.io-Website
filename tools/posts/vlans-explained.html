@@ -1,0 +1,40 @@
+<p>Picture your office as one big open room. Everyone can see everyone: the front desk, the accountant, the guest waiting on the couch, the security camera in the corner. That's a network without VLANs. Every device can talk to every other device, and one bad visitor can wander anywhere.</p>
+
+<p>A VLAN (virtual LAN) puts up walls. Same building, same wiring, separate rooms. The guest Wi-Fi lives in one room, your payment systems in another, the cameras in a third. They share the physical switch, but traffic can't cross between rooms unless you cut a door on purpose.</p>
+
+<h2>Why one network becomes a problem</h2>
+
+<p>Most small offices start with everything on one flat network because that's what works out of the box. It stays fine right up until it isn't:</p>
+
+<ul>
+<li>A guest's infected laptop can reach your file server, because nothing says it can't.</li>
+<li>A $40 smart TV with firmware from 2019 sits on the same network as payroll.</li>
+<li>Your card readers share space with everything else, which fails PCI requirements and makes your auditor unhappy.</li>
+<li>One chatty device can flood the whole network instead of just its own corner.</li>
+</ul>
+
+<p>None of these are exotic attacks. They're just the natural consequence of no walls.</p>
+
+<h2>The rooms we usually build</h2>
+
+<p>For a typical small office, we set up four or five VLANs:</p>
+
+<ul>
+<li><strong>Staff</strong>: work computers and phones. The main office.</li>
+<li><strong>Guest</strong>: visitor Wi-Fi. Internet access and nothing else. Can't see any other room.</li>
+<li><strong>Devices</strong>: printers, TVs, thermostats, door locks. Things you don't fully trust but need around.</li>
+<li><strong>Cameras</strong>: surveillance gear on its own island, so camera footage never mixes with business traffic and a compromised camera can't pivot anywhere.</li>
+<li><strong>Payments</strong>: card readers and the point-of-sale system, if you take cards. PCI DSS effectively expects this segmentation.</li>
+</ul>
+
+<h2>How the door between rooms works</h2>
+
+<p>Traffic between VLANs goes through your router or firewall, and that's the point. The firewall is where you write the rules: staff can print to the printer VLAN, the guest network can't reach anything internal, cameras can talk to the recorder and nowhere else. Every door is a decision instead of a default.</p>
+
+<h2>What it costs</h2>
+
+<p>Usually nothing in hardware. Any business-grade switch and access point made in the last decade supports VLANs; gear like Ubiquiti, Meraki, and Cisco all do it. The cost is configuration time: a few hours for a small office, done once, documented, and left alone. If your current gear is consumer-grade home equipment, that's the one upgrade this project forces, and it's an upgrade you wanted anyway.</p>
+
+<h2>How you know it's set up right</h2>
+
+<p>Simple test we run after every VLAN job: connect to the guest Wi-Fi and try to reach the file server, a printer, and a camera. All three should fail. Then check the staff network can still do everything it could before. Segmentation you haven't tested is segmentation you're assuming.</p>

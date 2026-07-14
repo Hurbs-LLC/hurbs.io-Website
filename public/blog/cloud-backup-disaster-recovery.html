@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cloud backups and disaster recovery: the plan you hope you never use | Hurbs LLC</title>
+  <meta name="description" content="RPO, RTO, and what a realistic DR plan costs at small-business scale.">
+  <link rel="canonical" href="https://hurbs.io/blog/cloud-backup-disaster-recovery">
+  <meta property="og:title" content="Cloud backups and disaster recovery: the plan you hope you never use | Hurbs LLC">
+  <meta property="og:description" content="RPO, RTO, and what a realistic DR plan costs at small-business scale.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/cloud-backup-disaster-recovery">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-yellow"></div>
+      <a href="/services/cloud" class="post-lane-link">CLOUD SETUP &amp; MIGRATION</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Cloud backups and disaster recovery: the plan you hope you never use</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Every business we walk into says they have backups. Maybe half actually do, and maybe half of those could recover from them under pressure. The gap between "we back things up" and "we could be running again by Monday" is where companies get hurt. Ransomware, a deleted database, a flooded office, a fired employee with a grudge: the cause does not matter much. What matters is two numbers you decided on ahead of time, or did not.</p>
+
+<h2>RPO and RTO in plain English</h2>
+<p>Disaster recovery planning sounds complicated, but the whole field boils down to two questions.</p>
+<p><strong>RPO, recovery point objective: how much work can you afford to lose?</strong> If your last good backup is from midnight and the server dies at 4 PM, you lose 16 hours of invoices, emails, and edits. If that is acceptable, a nightly backup meets your RPO. If losing more than an hour of order data would be a real problem, you need backups (or replication) running much more often, and that costs more.</p>
+<p><strong>RTO, recovery time objective: how long can you afford to be down?</strong> Not how long the restore takes in theory. How long from "everything is broken" to "staff are working again," including the time it takes to notice, decide, find the credentials, and actually do it. A company that can limp along on paper for two days has a very different RTO than a shop where the phones stop making money the moment the system is down.</p>
+<p>Every dollar in a DR budget buys down one of those two numbers. Tighter RPO means more frequent backups. Tighter RTO means standby systems that are ready to take over faster. Decide the numbers first, then buy exactly enough to hit them. Most small businesses land somewhere around "lose at most a few hours, back up within a day," and that is a reasonable, affordable target.</p>
+
+<h2>What a real backup setup looks like</h2>
+<p>The old rule still holds: three copies of your data, on two different types of storage, with one copy off-site. In practice for a small business that usually means the live data, a local backup for fast restores, and a cloud copy for when the building itself is the problem.</p>
+<p>Two details matter more than people think.</p>
+<ul>
+<li><strong>One copy must be unreachable from your network.</strong> Ransomware crews specifically hunt down backups and encrypt or delete them before triggering the attack. A backup drive that is always mounted, or a cloud sync your admin account can delete, does not count. You want immutable or offline copies: cloud object storage with versioning and delete protection, or backups the backup software can write to but nothing can erase for 30 days.</li>
+<li><strong>Restores get tested, on a schedule.</strong> An untested backup is a rumor. Once a quarter, actually restore a file, a mailbox, and ideally a whole server to somewhere harmless, and time it. This is the single step most businesses skip, and it is the one that determines whether the plan works.</li>
+</ul>
+
+<h2>What this costs at small-business scale</h2>
+<p>Less than people fear. For a typical small business with a server or two and a Microsoft 365 or Google Workspace tenant, the moving parts are:</p>
+<ul>
+<li><strong>Cloud backup storage:</strong> typically tens of dollars a month, scaling with how much data you keep and for how long. A few terabytes of backup history is not expensive anymore.</li>
+<li><strong>Backup software licensing:</strong> per-server or per-user, usually a modest monthly line item.</li>
+<li><strong>Microsoft 365 / Google Workspace backup:</strong> a few dollars per user per month. Yes, you need this. Microsoft keeps your service running; they do not promise to recover the mailbox someone emptied six months ago.</li>
+<li><strong>The plan and the testing:</strong> a few hours to set up properly, and a couple of hours a quarter to test. This is labor, not product, and it is where most of the real value lives.</li>
+</ul>
+<p>All in, a solid backup and DR posture for a 10 to 30 person company usually runs in the low hundreds of dollars a month. Compare that to the going rate for a ransomware incident or a week of the whole staff idle, and it is one of the cheapest forms of insurance a business can buy.</p>
+
+<h2>The plan itself: one page, printed</h2>
+<p>A DR plan does not need to be a binder. One page covers it: what gets backed up and how often, where the copies live, who to call, where the passwords and encryption keys are kept (somewhere that survives the disaster, not on the dead server), and the restore steps in order. Print it. If the disaster takes out your file server, the plan stored on the file server goes with it.</p>
+
+<h2>How you know it is done right</h2>
+<p>You can answer four questions without looking anything up. What is our RPO and RTO? Where is the copy that ransomware cannot touch? When did we last test a restore, and how long did it take? Who runs the recovery if the usual person is on a plane? If all four have real answers, you have a plan. If any of them get a shrug, you have hope, and hope is not a strategy we recommend.</p>
+
+<p>We set these up regularly: pick the numbers, build the backup chain, run the first test restore with you, and leave you with the one-page plan.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cloud%20Setup%20%26%20Migration" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/azure-vs-aws-vs-google-cloud" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Azure, AWS, or Google Cloud: an honest comparison</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/what-cloudflare-does" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">What Cloudflare actually does for your website</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/terraform-first-project" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Your first Terraform project: one server on AWS</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

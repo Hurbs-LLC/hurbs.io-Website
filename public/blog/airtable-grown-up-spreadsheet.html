@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Airtable: when a spreadsheet needs to grow up | Hurbs LLC</title>
+  <meta name="description" content="Linked records, views, and forms. The middle ground between Excel and custom software.">
+  <link rel="canonical" href="https://hurbs.io/blog/airtable-grown-up-spreadsheet">
+  <meta property="og:title" content="Airtable: when a spreadsheet needs to grow up | Hurbs LLC">
+  <meta property="og:description" content="Linked records, views, and forms. The middle ground between Excel and custom software.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/airtable-grown-up-spreadsheet">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-green"></div>
+      <a href="/services/digital" class="post-lane-link">DIGITAL TRANSFORMATION</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Airtable: when a spreadsheet needs to grow up</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Every company has one spreadsheet that runs the business. It started as a client list. Now it has 40 columns, color coding only one person understands, a second tab that has to be updated whenever the first one changes, and a warning in cell A1 that says DO NOT SORT. When you find yourself maintaining the same fact in two places, or emailing "which version is current?", the spreadsheet is telling you it wants to be a database. Airtable is the gentlest way to let it become one.</p>
+
+<h2>What Airtable actually is</h2>
+
+<p>Airtable looks like a spreadsheet. Grid, rows, columns, familiar. Underneath it is a real database, which changes three things that matter.</p>
+
+<p>First, columns have types. A date column only accepts dates. A dropdown column only accepts the options you defined. A phone number column holds phone numbers. This sounds small until you remember every spreadsheet where the Status column contains "done", "Done", "DONE", "complete", and "done?". Typed fields are why Airtable data stays clean when six people edit it, and spreadsheets do not.</p>
+
+<p>Second, rows are records, not just lines. Click one and it opens as a card showing everything about that item, with room for attachments and comments. A row in a sheet is where data lives; a record in Airtable is a thing your business knows about.</p>
+
+<p>Third, and this is the big one, tables link to each other.</p>
+
+<h2>Linked records: the feature that ends copy-paste</h2>
+
+<p>Here is the disease linked records cure. Your project tracker has a column for client name, another for client email, another for client phone. Thirty projects for the same client means that phone number typed thirty times. The client changes their number and now your spreadsheet contains a lie in 29 rows.</p>
+
+<p>In Airtable you make two tables: Clients and Projects. Each project has a linked record field pointing at one client. The client's phone number exists in exactly one place, on the client record, and every project shows it through the link. Change it once, it is right everywhere. Open a client and you see all their projects listed automatically, because links work both directions.</p>
+
+<p>This one idea, "each fact lives in one place and everything else points at it," is the entire difference between a spreadsheet and a database. Airtable lets you have it without hiring anyone.</p>
+
+<h2>Views: one table, many audiences</h2>
+
+<p>The other spreadsheet disease is the tab explosion: "Projects - Active", "Projects - By PM", "Projects - Sarah's copy". Each one a diverging fork of the truth.</p>
+
+<p>In Airtable the data lives in one table and each audience gets a view of it. A view is a saved combination of filter, sort, and layout. The operations lead has a grid filtered to active projects. The owner has a calendar view by deadline. The team works from a kanban board grouped by status, dragging cards between columns, which is really just editing the status field. Everyone is looking at the same records dressed differently, so an update made in any view shows up in all of them. The tab explosion just does not happen.</p>
+
+<h2>Forms: how data gets in without you</h2>
+
+<p>Every table can have a form view: a clean web page you send to anyone, no Airtable account needed. Submissions land as new records with the field types enforced, so the data arrives clean. Intake requests, job applications, client onboarding, warranty claims. If your current process is "they email us and someone retypes it," a form view deletes the retyping in an afternoon. Pair it with a notification automation (Airtable has simple built-in ones, or use Zapier) and new submissions ping the right person too.</p>
+
+<h2>The middle ground, priced</h2>
+
+<p>Airtable sits between Excel and custom software, and the honest way to see the middle is with money. Excel you already own. Custom software, even a modest internal app, runs into tens of thousands of dollars to build and needs a developer relationship for its whole life. Airtable is free for small teams and light use; paid plans run roughly ten to twenty-five dollars per user per month, and you build it yourself in days, not months.</p>
+
+<p>Good fits we see constantly: a client and project tracker, an equipment or asset inventory with photos attached, a hiring pipeline, a content calendar, an order tracker for a small operation. The common shape is a few thousand records, a handful of related tables, five to twenty people touching it, and workflows that change often enough that waiting on a developer would kill them.</p>
+
+<h2>Where it tops out</h2>
+
+<p>We recommend Airtable a lot, so take the limits seriously.</p>
+
+<ul>
+<li><strong>Record caps are real.</strong> Plans cap records per base, from a few thousand on the low end to the low hundreds of thousands at the top, and performance gets sluggish well before the ceiling. If you are tracking every transaction rather than every client, you want a real database.</li>
+<li><strong>Per-user pricing punishes wide access.</strong> Twenty-five editors at twenty-something dollars each is real money every month, forever. At some team size, custom software's one-time cost starts winning the math.</li>
+<li><strong>Permissions are coarse.</strong> You can control a lot at the base and table level, but truly granular rules like "reps see only their own accounts' financial fields" get awkward. Businesses with strict data separation outgrow it.</li>
+<li><strong>Complex logic does not belong there.</strong> Multi-step calculations, heavy integrations, anything resembling an algorithm: you will fight the tool. Airtable is a database with a great interface, not a programming environment.</li>
+</ul>
+
+<p>None of this is a reason to skip it. It is a reason to treat Airtable as the tool for this stage, and to notice when the stage ends.</p>
+
+<h2>How you know you did it right</h2>
+
+<p>A good Airtable build has a few tells. Every fact lives in exactly one table and everything else links to it. Nobody keeps a private side-spreadsheet "just in case." New data arrives through forms, not through someone retyping emails. And when a client calls, anyone on the team can pull up their record and see the projects, files, and history in one card. If your team hits that point, you got years of database benefit without writing a line of code. And when you eventually outgrow it, the clean, structured data exports beautifully into whatever comes next, which is more than your old spreadsheet could ever say.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Digital%20Transformation" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/sharepoint-without-sprawl" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">SharePoint without the sprawl</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/slack-or-teams" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Slack or Teams: pick one, set it up right</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/first-power-automate-flow" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Your first Power Automate flow: an approval that emails itself</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

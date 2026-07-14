@@ -1,0 +1,46 @@
+<p>Somebody in your office is copying data from one program into another right now. An order comes in through the website, and someone re-types it into QuickBooks. A new customer fills out a form, and someone pastes their info into the CRM, then into the email tool, then into a spreadsheet. It works, until the day someone fat-fingers a number or skips a row, and now two systems disagree about the same customer.</p>
+
+<p>That re-typing is the problem system integration exists to fix. The idea is simple: instead of a person moving data between apps, the apps talk to each other directly.</p>
+
+<h2>What "integration" actually means</h2>
+
+<p>Most modern software exposes an API, which is just a way for other programs to read and write its data. QuickBooks has one. Shopify has one. Salesforce, HubSpot, Stripe, Google Sheets, almost everything you use has one. An integration is a piece of code (or a tool) that uses those APIs to move data automatically.</p>
+
+<p>There are three common shapes we build:</p>
+
+<ul>
+<li><strong>Polling.</strong> A small script checks System A every few minutes and asks "anything new?" If there is, it writes the new records into System B. Simple, reliable, slightly delayed.</li>
+<li><strong>Webhooks.</strong> System A pushes a notification to your code the instant something happens: "new order placed," "invoice paid," "form submitted." Your code catches it and updates System B immediately. This is how you get real-time sync.</li>
+<li><strong>A middle layer.</strong> When you have three or more systems that all need to stay in sync, connecting each one to each other gets messy fast. Instead, everything reports to one central piece, a small database or service, and each system syncs with that. One source of truth instead of a tangle.</li>
+</ul>
+
+<h2>Off-the-shelf vs. custom</h2>
+
+<p>You do not always need custom code. Tools like Zapier and Make can connect popular apps in an afternoon, and for simple "when this happens, do that" flows, they are the right answer. We set these up all the time and they cost a modest monthly fee.</p>
+
+<p>Where they fall down is volume, complexity, and edge cases. If you are moving thousands of records a day, the per-task pricing gets ugly. If the logic is "sync this order, but only if the customer is tagged wholesale, and split the line items across two invoices," you will fight the tool more than it helps. And when a Zap fails silently at 2 a.m., nobody finds out until the books do not balance.</p>
+
+<p>Custom integration code costs more up front but runs on a cheap server for a few dollars a month, handles your exact rules, and can log every record it touches so you can prove what happened.</p>
+
+<h2>The parts people forget</h2>
+
+<p>Moving the data is the easy 60%. The rest is what separates an integration that works from one that quietly corrupts your records:</p>
+
+<ul>
+<li><strong>Error handling.</strong> APIs go down. What happens to the order that came in during the outage? A good integration retries, queues, and alerts a human when it cannot recover.</li>
+<li><strong>Duplicate protection.</strong> Webhooks sometimes fire twice. Your code needs to notice "I already created this invoice" and skip it.</li>
+<li><strong>Field mapping.</strong> System A calls it "Company," System B calls it "Account Name," and one of them allows 50 characters while the other allows 100. Somebody has to decide what wins.</li>
+<li><strong>Logging.</strong> When accounting asks "why does this invoice say $940 instead of $904," you want a log that shows exactly what came in and what went out.</li>
+</ul>
+
+<h2>Where to start</h2>
+
+<p>Do not try to integrate everything at once. Find the single most painful re-typing task in your business, the one that eats the most hours or causes the most mistakes, and fix that first. Common first wins: website orders into accounting, form leads into the CRM, completed jobs into invoicing.</p>
+
+<p>Write down the flow on paper before anyone writes code: what triggers it, which fields move, what the rules are, and what should happen when something fails. That one-page document is most of the work.</p>
+
+<h2>How to know it's done right</h2>
+
+<p>A good integration is boring. Nobody re-types the data anymore. When something breaks, someone gets an alert within minutes, not a surprise at month-end. You can look at a log and see every record that moved. And when you add a new field or the vendor changes their API, updating it takes hours, not a rebuild.</p>
+
+<p>If your team is still keeping a "shadow spreadsheet" because they do not trust the sync, it is not done right. The whole point is that you stop double-checking.</p>

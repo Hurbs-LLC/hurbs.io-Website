@@ -1,0 +1,86 @@
+<p>pfSense is open-source firewall software that turns a small box with two network ports into a serious edge firewall. It is what we deploy when an office needs more control than a consumer router offers but does not want to pay enterprise licensing every year. By the end of this guide you will have pfSense installed, the setup wizard completed, sensible first firewall rules in place, and the five housekeeping items done that separate a solid install from a future outage.</p>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>Hardware with at least two network interfaces: a purpose-built appliance from Netgate, or any small PC with two NICs. 4 GB of RAM and a small SSD is plenty for an office.</li>
+<li>A USB drive, 4 GB or larger, to write the installer to.</li>
+<li>A monitor and keyboard connected to the box for the initial install.</li>
+<li>A laptop with an Ethernet port to configure it from.</li>
+<li>Your ISP details: whether your WAN is DHCP, static IP, or PPPoE, and the credentials or addresses if it is not plain DHCP.</li>
+<li>A maintenance window. The office will lose internet while you swap the firewall in.</li>
+</ul>
+
+<h2>Step 1: Download and write the installer</h2>
+
+<p>Get the installer from the official source only, which is Netgate's download page for pfSense Community Edition. Choose the AMD64 USB memstick installer image. Then write it to your USB drive. On macOS or Linux, after identifying the right disk device (be certain, this command overwrites the target):</p>
+
+<pre><code>dd if=pfSense-CE-memstick-installer.img of=/dev/diskX bs=1M status=progress</code></pre>
+
+<p>On Windows, a tool like Rufus or balenaEtcher does the same job with a GUI. Boot the firewall box from the USB drive, accept the defaults through the installer (the guided ZFS install is the standard choice), let it copy files, remove the USB drive, and reboot.</p>
+
+<h2>Step 2: Assign WAN and LAN interfaces</h2>
+
+<p>On first boot, pfSense asks which physical port is WAN (the internet side) and which is LAN (the office side). It will list interface names like <code>igb0</code> and <code>igb1</code>, or <code>em0</code> and <code>em1</code>, depending on the hardware. If you are not sure which name maps to which physical port, use the auto-detection option: unplug both cables, start assignment, and plug in the WAN cable when prompted. pfSense sees the link come up and assigns it.</p>
+
+<p>Plug your ISP handoff (modem or ONT) into the WAN port and your laptop into the LAN port. By default the LAN comes up as <code>192.168.1.1/24</code> with DHCP enabled, so your laptop should pull an address automatically.</p>
+
+<h2>Step 3: Run the webConfigurator setup wizard</h2>
+
+<p>From the laptop, browse to:</p>
+
+<pre><code>https://192.168.1.1</code></pre>
+
+<p>Accept the self-signed certificate warning. Log in with the defaults, username <code>admin</code> and password <code>pfsense</code>. The setup wizard launches on first login. Walk through it:</p>
+
+<ul>
+<li><strong>Hostname and domain:</strong> name it something you will recognize in logs, like <code>fw1</code>.</li>
+<li><strong>DNS servers:</strong> enter resolvers you trust, such as <code>1.1.1.1</code> and <code>9.9.9.9</code>, or your ISP's if policy requires.</li>
+<li><strong>Time zone:</strong> set it correctly. Log timestamps matter when you are troubleshooting later.</li>
+<li><strong>WAN configuration:</strong> DHCP for most ISPs, or enter your static IP or PPPoE credentials. Leave the "block private networks" and "block bogon networks" boxes checked on WAN.</li>
+<li><strong>LAN configuration:</strong> keep <code>192.168.1.1/24</code> or move to your planned subnet now. Changing it later means re-doing DHCP and any rules that reference it, so decide once.</li>
+<li><strong>Admin password:</strong> the wizard forces a change. Use a long generated password and store it in your password manager. This is housekeeping item one, done.</li>
+</ul>
+
+<p>After the wizard finishes, confirm the WAN pulled an address and that your laptop can reach the internet.</p>
+
+<h2>Step 4: Set your first firewall rules with aliases</h2>
+
+<p>pfSense ships with a sane default: everything inbound from the internet is blocked, and the LAN can reach anywhere. That is a fine starting posture. Resist the urge to open inbound ports; almost no small office needs any.</p>
+
+<p>Where installs go wrong over time is rule sprawl: dozens of one-off rules with hard-coded IPs nobody remembers. Prevent that from day one with aliases. Under Firewall, then Aliases, create named groups and write rules against the names instead of raw addresses. For example:</p>
+
+<pre><code>Alias: Mgmt_Hosts     Type: Host(s)    Content: 192.168.1.50 (your admin machine)
+Alias: Web_Ports      Type: Port(s)    Content: 80, 443
+Alias: Printer_Net    Type: Network(s) Content: 192.168.20.0/24</code></pre>
+
+<p>Then a rule reads "allow Mgmt_Hosts to This Firewall on 443" instead of a bare IP. Six months later, when the admin machine changes, you edit one alias instead of hunting through the ruleset. Two rules worth adding early: restrict access to the webConfigurator itself to your management hosts, and if you run VLANs, decide explicitly what each VLAN may reach instead of leaving inter-VLAN traffic wide open.</p>
+
+<h2>Step 5: DNS and NTP</h2>
+
+<p>Housekeeping items two and three. Under Services, then DNS Resolver, confirm the resolver is enabled so pfSense answers DNS for the LAN. Check that a lookup works from a client machine. Then under System, then General Setup, confirm your NTP time servers are set (the defaults from the NTP pool are fine) and that the clock is actually synced. Wrong time breaks certificate validation and makes logs useless, and it is embarrassing to burn an hour on an outage before noticing the firewall thinks it is 2009.</p>
+
+<h2>Step 6: Back up the config</h2>
+
+<p>Housekeeping item four, and the one that saves you when hardware dies. The entire pfSense configuration lives in one XML file. Under Diagnostics, then Backup &amp; Restore, download it now and every time you make a meaningful change. Store it with your other IT documentation, not on the firewall itself.</p>
+
+<p>For automatic backups, pfSense includes a free Auto Config Backup service (under Services once you look for AutoConfigBackup) that encrypts and stores config versions offsite whenever the config changes. Turn it on, set a strong encryption passphrase, and store that passphrase in your password manager. A backup you cannot decrypt is a paperweight.</p>
+
+<h2>Step 7: Enable updates and set an update habit</h2>
+
+<p>Housekeeping item five. Under System, then Update, check for updates and apply the current stable release. pfSense will notify you on the dashboard when new versions ship. Our practice for production offices: apply updates promptly for security releases, and for feature releases, wait a week or two after release, read the notes, then apply during a maintenance window. Also skim Status, then System Logs occasionally in the first weeks; noisy blocked traffic is normal, but repeated hits against the webConfigurator from the WAN side means double-checking that nothing is exposed.</p>
+
+<h2>Verify it</h2>
+
+<p>Run through this list before you call the job done:</p>
+
+<ul>
+<li>A LAN client gets a DHCP lease, resolves DNS, and browses the internet.</li>
+<li>From outside the network (a phone on cellular), nothing on your public IP answers. An online port scan against your WAN address should show all ports closed or filtered.</li>
+<li>The webConfigurator is reachable only from your management hosts.</li>
+<li>The admin password is in your password manager, not on a sticky note on the firewall.</li>
+<li>A config backup from today exists somewhere off the box, and automatic backups are enabled.</li>
+<li>The dashboard shows the current version, correct time, and correct time zone.</li>
+</ul>
+
+<p>That is a firewall an office can live behind for years. The install takes an afternoon. The discipline of aliases, backups, and updates is what makes it still trustworthy in year three.</p>

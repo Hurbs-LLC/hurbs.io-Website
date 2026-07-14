@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VLANs, explained like a floor plan | Hurbs LLC</title>
+  <meta name="description" content="One switch, separate networks. Why guest Wi-Fi, cameras, and payments should never share a room.">
+  <link rel="canonical" href="https://hurbs.io/blog/vlans-explained">
+  <meta property="og:title" content="VLANs, explained like a floor plan | Hurbs LLC">
+  <meta property="og:description" content="One switch, separate networks. Why guest Wi-Fi, cameras, and payments should never share a room.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/vlans-explained">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-red"></div>
+      <a href="/services/networks" class="post-lane-link">NETWORKS &amp; INFRASTRUCTURE</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>VLANs, explained like a floor plan</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Picture your office as one big open room. Everyone can see everyone: the front desk, the accountant, the guest waiting on the couch, the security camera in the corner. That's a network without VLANs. Every device can talk to every other device, and one bad visitor can wander anywhere.</p>
+
+<p>A VLAN (virtual LAN) puts up walls. Same building, same wiring, separate rooms. The guest Wi-Fi lives in one room, your payment systems in another, the cameras in a third. They share the physical switch, but traffic can't cross between rooms unless you cut a door on purpose.</p>
+
+<h2>Why one network becomes a problem</h2>
+
+<p>Most small offices start with everything on one flat network because that's what works out of the box. It stays fine right up until it isn't:</p>
+
+<ul>
+<li>A guest's infected laptop can reach your file server, because nothing says it can't.</li>
+<li>A $40 smart TV with firmware from 2019 sits on the same network as payroll.</li>
+<li>Your card readers share space with everything else, which fails PCI requirements and makes your auditor unhappy.</li>
+<li>One chatty device can flood the whole network instead of just its own corner.</li>
+</ul>
+
+<p>None of these are exotic attacks. They're just the natural consequence of no walls.</p>
+
+<h2>The rooms we usually build</h2>
+
+<p>For a typical small office, we set up four or five VLANs:</p>
+
+<ul>
+<li><strong>Staff</strong>: work computers and phones. The main office.</li>
+<li><strong>Guest</strong>: visitor Wi-Fi. Internet access and nothing else. Can't see any other room.</li>
+<li><strong>Devices</strong>: printers, TVs, thermostats, door locks. Things you don't fully trust but need around.</li>
+<li><strong>Cameras</strong>: surveillance gear on its own island, so camera footage never mixes with business traffic and a compromised camera can't pivot anywhere.</li>
+<li><strong>Payments</strong>: card readers and the point-of-sale system, if you take cards. PCI DSS effectively expects this segmentation.</li>
+</ul>
+
+<h2>How the door between rooms works</h2>
+
+<p>Traffic between VLANs goes through your router or firewall, and that's the point. The firewall is where you write the rules: staff can print to the printer VLAN, the guest network can't reach anything internal, cameras can talk to the recorder and nowhere else. Every door is a decision instead of a default.</p>
+
+<h2>What it costs</h2>
+
+<p>Usually nothing in hardware. Any business-grade switch and access point made in the last decade supports VLANs; gear like Ubiquiti, Meraki, and Cisco all do it. The cost is configuration time: a few hours for a small office, done once, documented, and left alone. If your current gear is consumer-grade home equipment, that's the one upgrade this project forces, and it's an upgrade you wanted anyway.</p>
+
+<h2>How you know it's set up right</h2>
+
+<p>Simple test we run after every VLAN job: connect to the guest Wi-Fi and try to reach the file server, a printer, and a camera. All three should fail. Then check the staff network can still do everything it could before. Segmentation you haven't tested is segmentation you're assuming.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Networks%20%26%20Infrastructure" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-ubiquiti" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Why we reach for Ubiquiti in small offices</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/cisco-meraki-ubiquiti" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Cisco, Meraki, or Ubiquiti: matching gear to the job</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/pfsense-firewall-setup" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Set up a pfSense firewall for a small office</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

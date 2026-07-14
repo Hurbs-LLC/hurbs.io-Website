@@ -1,0 +1,110 @@
+<p>A database backup you've never restored is a guess, not a backup. PostgreSQL ships with everything you need to do this right: <code>pg_dump</code> to take backups, <code>pg_restore</code> to bring them back, and cron to make it automatic. In this guide you'll set up a nightly custom-format backup of a Postgres database, learn when plain SQL dumps are the better choice, and rehearse an actual restore so you know the whole thing works before you need it.</p>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>A running PostgreSQL server (version 13 or newer is what we'll assume, but these commands have worked the same way for years).</li>
+<li>Shell access to a machine that can reach the database, with the Postgres client tools installed. <code>pg_dump --version</code> should print something.</li>
+<li>A database user with read access to the database you're backing up. The database owner or a superuser works.</li>
+<li>Somewhere to put the backup files with enough free disk space. Rough rule: budget at least the size of the database, though dumps usually compress well below that.</li>
+</ul>
+
+<h2>Step 1: Take your first dump in custom format</h2>
+
+<p><code>pg_dump</code> connects to a live database and writes out its contents. It doesn't block normal traffic; it takes a consistent snapshot from the moment it starts. The flag that matters most is <code>-F</code>, the output format. Use <code>c</code> for custom format:</p>
+
+<pre><code>pg_dump -Fc -h localhost -U appuser -d appdb -f appdb.dump
+</code></pre>
+
+<p>Breaking that down: <code>-Fc</code> selects custom format, <code>-h</code> and <code>-U</code> are the host and user, <code>-d</code> is the database, and <code>-f</code> is the output file. You'll be prompted for a password unless you've set one up in <code>~/.pgpass</code> (more on that in the cron step).</p>
+
+<p>Custom format is compressed by default and, more importantly, it's selective on restore: you can pull out a single table from it later without touching the rest. That combination is why it's our default.</p>
+
+<h2>Step 2: Know when plain SQL is the better format</h2>
+
+<p>The other common format is plain SQL, which is just a text file of the commands needed to rebuild the database:</p>
+
+<pre><code>pg_dump -h localhost -U appuser -d appdb &gt; appdb.sql
+</code></pre>
+
+<p>Here's how we choose between them:</p>
+
+<ul>
+<li><strong>Custom format (<code>-Fc</code>)</strong>: compressed, restores with <code>pg_restore</code>, lets you restore selected tables, and supports parallel restore with <code>-j</code>. Use it for routine scheduled backups. This is the workhorse.</li>
+<li><strong>Plain SQL</strong>: human-readable, greppable, editable, and restores with plain <code>psql</code> anywhere. Use it when you want to inspect or hand-edit what's inside, or when moving data between very different Postgres versions and you want to see exactly what will run.</li>
+</ul>
+
+<p>One more tool worth knowing: <code>pg_dumpall</code> captures cluster-wide objects like roles and passwords that <code>pg_dump</code> skips. If you ever rebuild a server from scratch, you'll want a <code>pg_dumpall --globals-only</code> dump alongside your database dumps.</p>
+
+<h2>Step 3: Restore with pg_restore</h2>
+
+<p>To restore a custom-format dump into a fresh database:</p>
+
+<pre><code>createdb -h localhost -U appuser appdb_restored
+pg_restore -h localhost -U appuser -d appdb_restored appdb.dump
+</code></pre>
+
+<p>Useful variations:</p>
+
+<pre><code># Restore only one table
+pg_restore -h localhost -U appuser -d appdb_restored -t customers appdb.dump
+
+# Use 4 parallel jobs for a faster restore on big databases
+pg_restore -h localhost -U appuser -d appdb_restored -j 4 appdb.dump
+
+# See what's inside a dump without restoring anything
+pg_restore -l appdb.dump
+</code></pre>
+
+<p>For a plain SQL dump, there's no <code>pg_restore</code> involved. Feed it to psql:</p>
+
+<pre><code>psql -h localhost -U appuser -d appdb_restored -f appdb.sql
+</code></pre>
+
+<h2>Step 4: Schedule it with cron</h2>
+
+<p>First, set up password-less authentication so cron can run unattended. Create a <code>~/.pgpass</code> file for the user the job will run as:</p>
+
+<pre><code>echo "localhost:5432:appdb:appuser:YOUR_PASSWORD" &gt;&gt; ~/.pgpass
+chmod 600 ~/.pgpass
+</code></pre>
+
+<p>The <code>chmod 600</code> matters: Postgres refuses to use the file if it's readable by other users. Next, a small backup script at <code>/usr/local/bin/backup-appdb.sh</code>:</p>
+
+<pre><code>#!/bin/bash
+set -euo pipefail
+
+BACKUP_DIR="/var/backups/postgres"
+STAMP=$(date +%Y-%m-%d)
+
+pg_dump -Fc -h localhost -U appuser -d appdb \
+  -f "$BACKUP_DIR/appdb-$STAMP.dump"
+
+# Keep 14 days of backups
+find "$BACKUP_DIR" -name "appdb-*.dump" -mtime +14 -delete
+</code></pre>
+
+<p>Make it executable with <code>chmod +x</code>, then add a cron entry with <code>crontab -e</code>:</p>
+
+<pre><code># Nightly backup at 2:30 AM
+30 2 * * * /usr/local/bin/backup-appdb.sh
+</code></pre>
+
+<p>Two upgrades worth making once this works: ship the files off the machine (a nightly sync to S3, Backblaze B2, or even another server), because a backup sitting next to the database dies with the database. And make failures loud: have the script send an email or a Slack webhook when it exits non-zero, or use a check-in service that alerts when the job doesn't run.</p>
+
+<h2>Step 5: Rehearse the restore</h2>
+
+<p>This is the step everyone skips, and it's the one that separates having backups from being protected. Once a quarter, do a fire drill:</p>
+
+<ol>
+<li>Grab the most recent dump file, ideally from your offsite copy, not the local one.</li>
+<li>Restore it into a scratch database (a spare server, a laptop, a Docker container, anywhere).</li>
+<li>Connect and check it: row counts on your biggest tables, a few recent records you know should exist, and whether the application can actually start against it.</li>
+<li>Time the whole thing. That number is your real recovery time, and it's worth knowing before an outage, not during one.</li>
+</ol>
+
+<p>The failure modes this catches are all real ones we've seen: the cron job that stopped after a password change, dumps that are 0 bytes because the disk filled, and backups that restore fine but are missing a schema nobody remembered adding. Twenty minutes a quarter buys you the right to sleep through the night.</p>
+
+<h2>Wrap-up</h2>
+
+<p>You now have nightly compressed backups, retention that cleans up after itself, and a tested path back from disaster. For most business databases this setup is genuinely enough. When you outgrow it (multi-terabyte data, or a need to restore to any point in time rather than last night), the next step is continuous archiving with WAL, but don't reach for that complexity until nightly dumps stop being sufficient.</p>

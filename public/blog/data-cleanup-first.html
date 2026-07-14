@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data cleanup: why every analytics project starts here | Hurbs LLC</title>
+  <meta name="description" content="Duplicate customers, three date formats, mystery columns. Cleaning is 80% of the work and worth every hour.">
+  <link rel="canonical" href="https://hurbs.io/blog/data-cleanup-first">
+  <meta property="og:title" content="Data cleanup: why every analytics project starts here | Hurbs LLC">
+  <meta property="og:description" content="Duplicate customers, three date formats, mystery columns. Cleaning is 80% of the work and worth every hour.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/data-cleanup-first">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-yellow"></div>
+      <a href="/services/data-ai" class="post-lane-link">DATA &amp; AI ANALYTICS</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Data cleanup: why every analytics project starts here</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>You ask for a dashboard and the first thing we do is not build a dashboard. We open your data, and we find what's always there: the same customer entered four ways, dates in three formats, and a column called "Status2" that nobody can explain. Then we tell you the thing every analytics shop tells every client eventually: before the charts, there's cleanup. This post explains why that's not padding the invoice, what the mess actually looks like, and how to fix it so it stays fixed.</p>
+
+<h2>What dirty data actually looks like</h2>
+<p>Not corrupted files or hacked systems. Just ordinary entropy from years of humans typing under deadline. The greatest hits:</p>
+<ul>
+<li><strong>Duplicate customers.</strong> "Smith Plumbing," "Smith Plumbing LLC," "SMITH PLBG," and "Smith Plumbing (new)" are one company and four records. Your systems count four customers, split their order history four ways, and your "top 20 customers" report quietly demotes one of your actual top five.</li>
+<li><strong>Three date formats in one column.</strong> 03/04/2025, 2025-03-04, and "March 4" in the same field, usually because the data passed through Excel, an export, and a copy-paste at some point. Is 03/04 March or April? Any tool that charts by date will either error out or, worse, guess.</li>
+<li><strong>Mystery columns.</strong> "Status2," "Flag," "OLD_amount," a column of Xs. The person who added it left in 2022. Nobody dares delete it, nobody trusts it, and every report has to decide what to do about it.</li>
+<li><strong>Free-text category fields.</strong> A "type" field that was never a dropdown, so it holds "Repair," "repair," "Repairs," "rpr," and "repair + parts." That's five categories to a computer and one to a human.</li>
+<li><strong>Meaning drift.</strong> Until 2023, "Revenue" included shipping. After the new system, it doesn't. The column looks continuous. The trend line across the boundary is fiction.</li>
+</ul>
+<p>None of this shows up day to day, because humans auto-correct while reading. Computers don't. Aggregation is where dirty data goes from invisible to load-bearing: every SUM and COUNT and GROUP BY takes the mess at face value.</p>
+
+<h2>Why cleaning is 80% of the work</h2>
+<p>Ask anyone who does analytics for a living and they'll give you roughly the same split: most of the hours in a data project go to acquiring, cleaning, and reshaping data, and a small slice goes to the analysis and charts everyone pictured when the project started. Our experience matches. On a typical dashboard build, the visuals take a day or two. Making the underlying data mean what it claims takes the rest.</p>
+<p>Which is why we insist on doing it, and why the order can't flip. A dashboard on dirty data is worse than no dashboard, because it launders the mess: numbers on a chart look authoritative in a way that a messy spreadsheet never did. The first time the owner spots a number they know is wrong (and they always spot it, it's their business), trust in the whole thing dies, and it doesn't come back with a patch. Cleanup isn't a delay before the real project. It is the real project. The dashboard is the trophy on top.</p>
+
+<h2>How we systematize it so it stays clean</h2>
+<p>Here's the trap most cleanup efforts fall into: someone spends a heroic week fixing the spreadsheet, and six months later it's dirty again, because the faucet that produced the mess is still running. One-time cleanup is mopping with the tap open. The fix has three parts, and the first one is not cleaning.</p>
+<p><strong>Stop new mess at the door.</strong> Every dirty field traces back to an entry point with no guardrails. So: dropdowns instead of free-text for categories, required fields and date pickers on forms, duplicate detection at customer creation ("did you mean Smith Plumbing LLC?"). Most business systems support all of this and almost nobody configures it. An hour of validation settings prevents years of typing variance.</p>
+<p><strong>Make the cleanup a script, not a session.</strong> Instead of hand-fixing cells, we write the rules down as repeatable steps: in Power Query, in SQL, or in a small Python script, depending on the setup. Normalize the dates, apply the category mappings, merge the known duplicates, flag anything new that looks off. Because it's a script, it reruns on next month's data in seconds, and the cleaning logic is documented by existing instead of living in someone's head.</p>
+<p><strong>Give the leftovers an owner.</strong> Rules catch most things. The remainder (a genuinely new duplicate, a weird record only a human can judge) goes on an exceptions list that one named person reviews on a schedule, fifteen minutes a week. Data quality with nobody's name on it degrades. Same rule as dashboards.</p>
+
+<h2>How to know it's done right</h2>
+<p>Four checks. Counts survive scrutiny: when the owner asks "why does this say 340 customers," there's an answer, not an excuse. The mystery columns are gone or documented: every field in the reporting layer has a known meaning, and the "Status2"s are either explained or retired. Last month's data flowed through cleaning without a heroic manual effort. And the reports agree with each other, because they all draw from the same cleaned layer instead of five people's five exports.</p>
+<p>If you're planning a dashboard, a forecast, or any project with the word "analytics" in it, budget for cleanup up front, because you'll pay for it either way: on purpose at the start, or with interest when the numbers turn out wrong. We'd rather find the four Smith Plumbings in week one. If you want to know how bad yours is, we can usually tell you after a day with the data, and the answer is almost always "fixable."</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Data%20%26%20AI%20Analytics" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/first-power-bi-dashboard" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Build your first Power BI dashboard from a spreadsheet</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/looker-studio-dashboards" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Free dashboards with Looker Studio</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/sql-still-runs-business" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">SQL: the 40-year-old skill that still runs your business</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

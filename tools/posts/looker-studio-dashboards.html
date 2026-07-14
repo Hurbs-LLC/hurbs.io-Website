@@ -1,0 +1,34 @@
+<p>If your numbers already live in Google Sheets, you can have a real dashboard today without spending a dollar. Looker Studio (Google's free reporting tool, formerly called Data Studio) connects straight to a Sheet and turns it into a web page with big numbers, trend charts, and tables that update when the Sheet does. By the end of this guide you'll have a one-page dashboard shared with your team by link, with a date picker so people can answer their own "what about last month" questions.</p>
+
+<h2>Prerequisites</h2>
+<ul>
+<li>A Google account. A Google Workspace account is better for sharing inside a company, but a plain Gmail account works.</li>
+<li>A Google Sheet with your data as a flat table: header row on row 1, one row per record underneath, no merged cells, no title rows, no subtotal rows mixed in. If your Sheet has a date column and a number column, you're in business.</li>
+</ul>
+
+<h2>Step 1: Connect your Google Sheet</h2>
+<p>Go to lookerstudio.google.com and sign in. Click <strong>Create</strong>, then <strong>Report</strong>. The connector picker opens: choose <strong>Google Sheets</strong>, then pick your spreadsheet and the worksheet (tab) with your data. Leave "Use first row as headers" checked. Click <strong>Add</strong>, and confirm when it asks about adding data to the report.</p>
+<p>You land on a blank report canvas, usually with a default table already dropped on it. On the right, the <strong>Data</strong> panel lists every column from your Sheet as a field. Green fields are dimensions (categories, dates), blue fields are metrics (numbers). If a number column shows up green, Looker Studio read it as text: go back to the Sheet and make sure that column is actually formatted as numbers, with no stray text like "N/A" mixed in.</p>
+
+<h2>Step 2: Add a scorecard</h2>
+<p>A scorecard is the big single number at the top of every good dashboard. Click <strong>Add a chart</strong> in the toolbar and pick <strong>Scorecard</strong>, then click on the canvas to place it. In the setup panel on the right, set the <strong>Metric</strong> to your main number: revenue, orders, leads, whatever the dashboard is about. It defaults to a sum, which is usually right. You can change the aggregation (sum, average, count) from the metric's edit menu if not.</p>
+<p>Add two or three scorecards across the top. Total revenue, order count, average order value is a classic row. Don't add ten. The whole point of a scorecard row is that someone gets the picture in five seconds.</p>
+
+<h2>Step 3: Add a time series chart</h2>
+<p>Click <strong>Add a chart</strong> and pick <strong>Time series chart</strong>. Place it under the scorecards, wide. Set the <strong>Dimension</strong> to your date column and the <strong>Metric</strong> to your main number. Looker Studio handles the date bucketing for you; if you want monthly instead of daily, click the date dimension in the setup panel and change its granularity to month.</p>
+<p>If the chart comes out blank or the dates look wrong, the date column in your Sheet is the problem. Dates stored as text (or in mixed formats) won't chart. Fix the column in the Sheet, then click <strong>Refresh data</strong> in Looker Studio (under the View menu, or the refresh option in the data source).</p>
+
+<h2>Step 4: Add a table</h2>
+<p>Click <strong>Add a chart</strong>, pick <strong>Table</strong>, and place it in the remaining space. Set the dimension to the category people ask about (customer, product, campaign, location) and the metric to your number. It sorts by the metric, biggest first, out of the box. Turn on totals in the setup panel if you want a sum row at the bottom.</p>
+<p>Charts on the page interact with each other. Click a row in the table and, if cross-filtering is enabled on the charts (it's a toggle in each chart's setup panel), the scorecards and time series filter to that item. That one feature replaces a lot of "can you break this down by customer" emails.</p>
+
+<h2>Step 5: Add a date range control</h2>
+<p>In the toolbar, click <strong>Add a control</strong> and choose <strong>Date range control</strong>. Drop it in the top corner of the page. In its setup, pick a sensible default like "Last 30 days" or "This year to date." Every chart on the page now obeys that picker. Viewers can change it themselves without touching your data, which means you build one dashboard instead of one per question.</p>
+
+<h2>Step 6: Share it with the team</h2>
+<p>Click <strong>View</strong> in the top right to see the dashboard the way your team will, then click <strong>Share</strong>. Sharing works like Google Docs: add specific people by email as viewers, or use link sharing so anyone at your company with the link can view. Give edit access only to whoever maintains the report. You can also set up scheduled email delivery from the Share menu, so the dashboard lands in inboxes as a PDF every Monday morning, which is a nice trick for the people who will never bookmark anything.</p>
+<p>One thing to know about freshness: Looker Studio caches Sheets data, typically refreshing on the order of every 15 minutes, and you can pull fresher data manually with Refresh data. For a business dashboard that's effectively live. Whoever updates the Sheet updates the dashboard, no extra step.</p>
+
+<h2>Verify it</h2>
+<p>Do three checks before you send the link. First, open the link in a private browser window logged in as a normal viewer, and confirm they can see it but not edit it. Second, add a test row to the Sheet, refresh the data, and confirm the totals move. Third, spot-check one scorecard against the Sheet with a quick SUM formula. Ten minutes of verification saves you from shipping a dashboard that's confidently wrong.</p>
+<p>That's a zero-dollar reporting setup that covers a surprising share of what small businesses pay for. Where it runs out of road is when the data isn't in a Sheet: it's in your point of sale, your job software, your accounting system. Getting that data flowing into something reportable is the actual hard part, and it's what we do.</p>

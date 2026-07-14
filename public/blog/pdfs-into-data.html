@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Turn PDFs into data: document processing with AI | Hurbs LLC</title>
+  <meta name="description" content="Invoices, forms, and contracts into spreadsheet rows. What document AI gets right and where humans stay in the loop.">
+  <link rel="canonical" href="https://hurbs.io/blog/pdfs-into-data">
+  <meta property="og:title" content="Turn PDFs into data: document processing with AI | Hurbs LLC">
+  <meta property="og:description" content="Invoices, forms, and contracts into spreadsheet rows. What document AI gets right and where humans stay in the loop.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/pdfs-into-data">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-yellow"></div>
+      <a href="/services/data-ai" class="post-lane-link">DATA &amp; AI ANALYTICS</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Turn PDFs into data: document processing with AI</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Somewhere in your business there's a stack of PDFs that someone types into a system by hand. Vendor invoices keyed into the accounting software. Signed forms transcribed into a database. Contract terms copied into a tracking spreadsheet. It's slow, it's boring, and every keystroke is a chance to turn $1,450 into $1,540. Document processing with AI exists to kill exactly this job, and in the last few years it's gotten good enough that small businesses can afford it.</p>
+
+<h2>The job: documents in, rows out</h2>
+
+<p>The task has a simple shape. On one side, documents that arrive as PDFs, scans, or photos: invoices, purchase orders, intake forms, delivery tickets, contracts. On the other side, structured data: rows in a database or spreadsheet with fields like vendor name, invoice number, date, line items, total. Extraction software reads the document and fills in the fields.</p>
+
+<p>Modern language models changed this space because they read documents more like a person does. Older systems needed the invoice number to be in the same spot on every page. A model like Claude or GPT can be handed a vendor invoice it has never seen, in a layout it has never seen, and asked "return the vendor, date, line items, and total as structured data," and it will usually get it right. That flexibility is the breakthrough: one pipeline can handle invoices from a hundred different vendors, each with their own format.</p>
+
+<h2>Accuracy: the honest numbers</h2>
+
+<p>Here's the part vendors gloss over. Extraction is very good and it is not perfect. On clean, digital PDFs with clear fields, well-built pipelines get the large majority of fields right. Accuracy drops on messy inputs: skewed phone photos, faded thermal-paper receipts, handwriting, tables that wrap across pages, documents where two different numbers could plausibly be "the total."</p>
+
+<p>What matters isn't the error rate in the abstract, it's what an error costs you. A wrong date on an archived form is trivial. A wrong amount on an invoice that flows straight into a payment run is not. So the design question is never "how do we get to 100%," because you won't. It's "how do we catch the errors that matter before they cost money."</p>
+
+<h2>Human-in-the-loop: how real pipelines stay trustworthy</h2>
+
+<p>The answer is a review step, and every production document pipeline we'd put our name on has one. It works like this:</p>
+
+<ul>
+<li>The system extracts the fields and attaches a confidence signal to each document, based on things like whether the math checks out (do the line items sum to the total?), whether required fields came back empty, and whether values look sane (a date in the future, a total ten times this vendor's usual).</li>
+<li>Documents that pass every check flow straight through. No human touches them.</li>
+<li>Documents that fail a check land in a review queue, where a person sees the original document and the extracted fields side by side, fixes what's wrong, and approves. Correcting a flagged document takes seconds; the human isn't retyping, just verifying.</li>
+</ul>
+
+<p>In a typical setup most documents pass straight through and a modest slice needs eyes. The staff time drops from "someone keys everything" to "someone reviews the flagged ones." That's usually an 80-90% reduction in labor, and, counterintuitively, <em>fewer</em> errors than full manual entry, because bored humans typing all day make mistakes too and nobody double-checks them.</p>
+
+<h2>When template-based OCR beats an LLM</h2>
+
+<p>LLMs are the flexible option, not automatically the right one. Traditional template-based OCR, where you define once that "the invoice number lives in this zone of the page," still wins in specific situations:</p>
+
+<ul>
+<li><strong>High volume of one fixed layout.</strong> If you process thousands of pages a month of the same form, the same layout every time, a template is faster, cheaper per page, and utterly predictable. There's no reasoning involved, so there's nothing to reason wrong.</li>
+<li><strong>Cost at scale.</strong> LLM calls are priced per document processed; heavy volume adds up. Template OCR is often cheaper per page once volume is high and layouts are stable.</li>
+<li><strong>Strict determinism.</strong> A template extracts the same field from the same spot every time. An LLM's flexibility means its behavior can shift subtly on edge cases. For regulated workflows where you must explain exactly how a value was captured, deterministic beats clever.</li>
+</ul>
+
+<p>The practical rule: fixed layouts and high volume, use templates. Varied layouts, many vendors, or documents where the information moves around, use an LLM. Plenty of businesses need both, templates for the standard forms and a model for everything else, and there's no prize for purity.</p>
+
+<h2>How to know it's done right</h2>
+
+<p>A document pipeline is working when the manual keying job is gone rather than shrunk to "we still type the hard ones." When every extracted record links back to the original document, so any number can be traced to its source in one click. When the review queue is small, measured, and actually gets worked daily instead of piling up. And when you spot-audit a sample each month and the error rate on <em>approved</em> records is at or below what manual entry used to produce.</p>
+
+<p>If the pipeline just dumps extracted data into your systems with no confidence checks and no review queue, it will work impressively in the demo and burn you within a quarter.</p>
+
+<p>Got a stack of documents and a person who dreads them? Send us a sample of what you're processing and we'll tell you which approach fits and roughly what it would take to build.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Data%20%26%20AI%20Analytics" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/first-power-bi-dashboard" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Build your first Power BI dashboard from a spreadsheet</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/looker-studio-dashboards" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Free dashboards with Looker Studio</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/sql-still-runs-business" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">SQL: the 40-year-old skill that still runs your business</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

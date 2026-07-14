@@ -1,0 +1,42 @@
+<p>Nearly every ugly security story you read follows the same script. A vendor found a flaw, released a fix, and published the details. Attackers read the same publication and wrote tools to exploit it. Then they scanned the internet for machines that hadn't installed the fix yet, and they found plenty, because the fix had been sitting available for months while everyone was busy. The famous breaches mostly weren't clever. They were slow patching.</p>
+
+<p>That's the whole case for automated patching. Not that updates are exciting. They're the opposite of exciting, which is exactly why they need to happen without depending on anyone remembering.</p>
+
+<h2>Why "we install updates when we get to it" fails</h2>
+
+<p>Manual patching fails in predictable ways. The person responsible goes on vacation. The reminder gets snoozed. One machine is always in use at update time and gets skipped, then skipped again, and eighteen months later it's the one that gets popped. Users click "Remind me later" indefinitely because the restart is annoying at every individual moment. None of this is laziness. It's what happens when a recurring chore has no system behind it.</p>
+
+<p>The exposure window is what matters. Attackers routinely start exploiting a flaw within days of the fix being published, sometimes within hours for the big ones. A patching habit that runs monthly-when-someone-remembers leaves you exposed for the exact stretch when exploitation is most active.</p>
+
+<h2>How automated patching actually works</h2>
+
+<p>The same management agent we use for monitoring also handles updates. The process looks like this:</p>
+
+<p><strong>Inventory.</strong> The system knows every enrolled machine, its operating system, and what's installed. You can't patch what you can't see, which is why enrollment coverage comes first.</p>
+
+<p><strong>Policy.</strong> We define rules instead of doing one-off installs. For example: security updates approved automatically, installed within a set number of days of release, machines restart during a maintenance window at night, laptops that were asleep catch up next time they're online. Users get a warning and a chance to save work; they don't get a permanent veto.</p>
+
+<p><strong>Staging.</strong> Updates occasionally break things, and pretending otherwise is how you learn about it on payroll day. So patches roll out in waves: a small pilot group of machines first, then the rest a few days later if nothing screams. For servers running critical software, we take a backup point first and patch during a planned window.</p>
+
+<p><strong>Reporting.</strong> The dashboard shows which machines are current and which are behind, and machines that keep failing to update generate tickets a human investigates. A patch job that silently fails every month is worse than no automation, because everyone assumes it's handled.</p>
+
+<h2>What gets patched first</h2>
+
+<p>Not all updates are equal, and the priority order is fairly universal:</p>
+
+<ul>
+<li><strong>Anything internet-facing.</strong> Firewalls, VPN appliances, remote access tools, public web servers. These are what attackers scan for, and appliance flaws are exploited brutally fast. This layer gets patched on an emergency basis when serious flaws drop.</li>
+<li><strong>Browsers and operating systems.</strong> Chrome, Edge, Windows, macOS. Browsers especially, since they touch hostile content all day. Fortunately these also have the most mature auto-update machinery; the job is enforcing and verifying it.</li>
+<li><strong>The everyday app layer.</strong> PDF readers, Zoom, Java if you're unlucky enough to still need it, and the long tail of installed software. This layer is where manual patching completely breaks down and third-party patch automation earns its keep.</li>
+<li><strong>Firmware and the forgotten devices.</strong> Printers, network switches, wireless access points, the NAS in the closet. Patched less often, but not never. Most offices have never updated these once.</li>
+</ul>
+
+<p>One category deserves special caution: line-of-business applications. Your accounting or practice management software often certifies specific versions and breaks on others. Those we patch deliberately, on the vendor's guidance, not automatically. Automation with judgment, not automation instead of it.</p>
+
+<h2>The restart problem</h2>
+
+<p>Most complaints about patching are really complaints about restarts at bad moments. The fix is scheduling, not skipping. Overnight maintenance windows for desktops and servers, catch-up rules for laptops, and clear warnings before a forced restart. When updates happen at 3 a.m. on a schedule everyone knows about, the friction mostly disappears, and with it the temptation to defer forever.</p>
+
+<h2>How to know it's done right</h2>
+
+<p>Ask for the patch compliance report. A healthy environment shows the large majority of machines fully patched within days of a normal release cycle, a short and shrinking list of stragglers with named reasons, and evidence that emergency fixes for actively exploited flaws went out fast, in days, not months. If nobody can produce that report, patching is happening on hope. Hope is exactly what those breach write-ups all had in common.</p>

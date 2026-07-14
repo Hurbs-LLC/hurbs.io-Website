@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Set up CI/CD with GitHub Actions | Hurbs LLC</title>
+  <meta name="description" content="A workflow file that tests every push and deploys on merge. Automation your future self will thank you for.">
+  <link rel="canonical" href="https://hurbs.io/blog/github-actions-cicd">
+  <meta property="og:title" content="Set up CI/CD with GitHub Actions | Hurbs LLC">
+  <meta property="og:description" content="A workflow file that tests every push and deploys on merge. Automation your future self will thank you for.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/github-actions-cicd">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-blue"></div>
+      <a href="/services/software" class="post-lane-link">CUSTOM SOFTWARE</a>
+      <span class="post-type">STEP-BY-STEP GUIDE</span>
+    </div>
+    <h1>Set up CI/CD with GitHub Actions</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>If deploying your app involves a person remembering steps, it will eventually be deployed wrong. CI/CD fixes that: every push runs your tests automatically (continuous integration), and code that passes on your main branch deploys itself (continuous deployment). GitHub Actions is the easiest place to start because it's built into GitHub, free for a generous amount of usage on public and private repos, and configured with one YAML file in your repo. In this guide you'll set up a workflow that tests every push and pull request for a Node project, then add a deploy job that only runs on main.</p>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>A project in a GitHub repository.</li>
+<li>A test command that runs locally. For Node, that means <code>npm test</code> does something real. Even one test counts.</li>
+<li>A way to deploy from the command line (a CLI like <code>wrangler</code>, <code>flyctl</code>, or an rsync/SSH script). The deploy step just automates whatever you already do by hand.</li>
+</ul>
+
+<h2>Step 1: Understand the moving parts</h2>
+
+<p>Three terms and you know the whole system:</p>
+
+<ul>
+<li>A <strong>workflow</strong> is a YAML file in <code>.github/workflows/</code> that says when to run and what to do.</li>
+<li>A <strong>job</strong> is a set of steps that runs on a fresh virtual machine GitHub spins up for you.</li>
+<li>A <strong>step</strong> is either a shell command or an <strong>action</strong>, which is a reusable building block published by GitHub or the community (checking out code, installing Node, and so on).</li>
+</ul>
+
+<h2>Step 2: Create the CI workflow</h2>
+
+<p>In your repo, create <code>.github/workflows/ci.yml</code>:</p>
+
+<pre><code>name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test</code></pre>
+
+<p>What each piece does:</p>
+
+<ul>
+<li><code>on:</code> triggers the workflow on any push to main and on every pull request. PRs get tested before they merge, and main gets tested after.</li>
+<li><code>actions/checkout</code> clones your repo onto the runner.</li>
+<li><code>actions/setup-node</code> installs Node 20 and caches your npm downloads so later runs are faster.</li>
+<li><code>npm ci</code> installs exactly what <code>package-lock.json</code> says. Use it instead of <code>npm install</code> in CI: it's faster and it fails loudly if the lockfile is out of sync instead of silently changing versions.</li>
+<li><code>npm test</code> runs your tests. If any step exits nonzero, the job fails and GitHub marks the commit with a red X.</li>
+</ul>
+
+<p>Commit the file and push. Go to the Actions tab in your repo and you'll see the run in progress, with live logs for every step.</p>
+
+<h2>Step 3: Add a deploy job gated on main</h2>
+
+<p>Now extend the same file with a second job that deploys, but only after tests pass and only on the main branch:</p>
+
+<pre><code>  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main' &amp;&amp; github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy
+        run: npm run deploy
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}</code></pre>
+
+<p>The two lines that make this safe:</p>
+
+<ul>
+<li><code>needs: test</code> means the deploy job waits for the test job and never runs if tests fail. Broken code cannot ship through this pipeline.</li>
+<li>The <code>if:</code> condition restricts deploys to pushes on main. Pull requests get tested but never deployed.</li>
+</ul>
+
+<p>Replace <code>npm run deploy</code> with your actual deploy command. For a Cloudflare Workers site that's <code>npx wrangler deploy</code>; for a server it might be a script that rsyncs files and restarts a service. Whatever you type by hand today goes here.</p>
+
+<h2>Step 4: Store credentials as secrets</h2>
+
+<p>Your deploy command almost certainly needs a token or key. Do not put it in the YAML. In your repo, go to Settings, then Secrets and variables, then Actions, and add a repository secret (for example <code>DEPLOY_TOKEN</code>). The <code>${{ secrets.DEPLOY_TOKEN }}</code> syntax in the workflow injects it as an environment variable at runtime. Secrets are encrypted, masked in logs, and not exposed to workflows triggered from forks.</p>
+
+<h2>Step 5: Protect the main branch</h2>
+
+<p>The pipeline only helps if people can't route around it. In Settings, then Branches, add a branch protection rule (or ruleset) for main that requires the test check to pass before merging. Now a PR with failing tests physically cannot merge, and since deploys only happen from main, nothing broken reaches production.</p>
+
+<h2>Verify it</h2>
+
+<p>Run the full loop once, on purpose:</p>
+
+<ol>
+<li>Open a branch, break a test, and push a PR. The check should go red and the merge button should lock.</li>
+<li>Fix the test, push again, watch it go green, and merge.</li>
+<li>Watch the Actions tab: the test job runs on main, then the deploy job runs, then your change is live.</li>
+</ol>
+
+<p>If all three happen without you touching a server, you have CI/CD. From here you can add more later (linting, multiple Node versions, staging environments), but resist the urge to build a cathedral. A pipeline that tests every change and deploys main automatically already puts you ahead of most small shops we walk into.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Custom%20Software" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-typescript" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Why we build in TypeScript</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/python-business-automation" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Python: the duct tape of business automation</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/when-react-makes-sense" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">When React makes sense (and when plain HTML wins)</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data migrations: the plan that prevents the horror story | Hurbs LLC</title>
+  <meta name="description" content="Mapping, cleaning, dry runs, and cutover. How data moves between systems without losing rows.">
+  <link rel="canonical" href="https://hurbs.io/blog/data-migration-planning">
+  <meta property="og:title" content="Data migrations: the plan that prevents the horror story | Hurbs LLC">
+  <meta property="og:description" content="Mapping, cleaning, dry runs, and cutover. How data moves between systems without losing rows.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/data-migration-planning">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-blue"></div>
+      <a href="/services/software" class="post-lane-link">CUSTOM SOFTWARE</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Data migrations: the plan that prevents the horror story</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Every data migration horror story starts the same way: "we'll just export from the old system and import into the new one over the weekend." Then Monday comes, half the customer balances are wrong, the sales team can't find their open deals, and the old system is already turned off. Migrations go bad not because moving data is hard, but because people treat it as an afterthought to the shiny new software. The move itself deserves a plan, and the plan is not complicated. It just has to actually exist.</p>
+
+<p>Here's the plan we use, whether it's moving a CRM, an accounting system, an inventory database, or years of files.</p>
+
+<h2>Step one: map every field</h2>
+
+<p>Before anything moves, build a mapping document: a spreadsheet with one row per field in the old system and where it lands in the new one. "Customer Name" maps to "Account Name." "Phone2" maps to "Mobile." Do this and three uncomfortable truths surface immediately:</p>
+
+<ul>
+<li><strong>Fields with no destination.</strong> The old system tracked something the new one has no place for. Decide now: add a custom field, stuff it in a notes field, or consciously drop it. "We'll figure it out later" means losing it.</li>
+<li><strong>Destinations with no source.</strong> The new system requires fields the old one never had. Somebody has to decide the default.</li>
+<li><strong>Fields that don't quite match.</strong> Old system: one address field. New system: street, city, state, ZIP as separate fields. That's parsing work, and it's better discovered on paper than at midnight during cutover.</li>
+</ul>
+
+<p>The mapping document becomes the contract for the whole migration. Every later argument gets settled by pointing at it.</p>
+
+<h2>Step two: clean before you move</h2>
+
+<p>Old systems accumulate garbage: duplicate customers, test records named "asdf," phone numbers in four formats, addresses in the name field, customers who went out of business in 2015. Migrating garbage means paying to move it and then living with it in the new system, where it makes everyone trust the new tool a little less.</p>
+
+<p>Clean in the old system or in the export, before import. Deduplicate, standardize formats, archive dead records instead of migrating them. This is also the moment to decide how much history to bring. Seven years of closed invoices might belong in an archive export you keep on file, not in your new system's active database.</p>
+
+<h2>Step three: dry runs on copies, never on the real thing</h2>
+
+<p>This is the step that prevents the horror story. Take a full copy of the old system's data, run the entire migration into a test environment of the new system, and see what breaks. Something always breaks: an import that chokes on a stray comma, dates that come across in the wrong format, a required field that's blank in 300 records.</p>
+
+<p>Fix the process, then run it again from scratch. Repeat until a dry run completes cleanly end to end. The whole point is that by cutover day, the migration is a rehearsed procedure, not an experiment. If your migration has never been run start to finish on a copy, it has never been tested at all.</p>
+
+<h2>Step four: validate with counts and spot checks</h2>
+
+<p>After each dry run (and the real one), prove the data arrived intact instead of assuming it:</p>
+
+<ul>
+<li><strong>Record counts.</strong> 4,812 customers out of the old system should be 4,812 in the new one (minus whatever you intentionally archived, and you know that number from step two). Same for invoices, contacts, products, every table.</li>
+<li><strong>Sum checks.</strong> Total accounts receivable in the old system should equal total AR in the new one, to the penny. Totals catch truncated imports and mangled numbers that counts miss.</li>
+<li><strong>Spot checks by humans.</strong> Have the people who use the data daily pull up twenty records they know well: the biggest customer, the weird account, the one with the long history. They'll spot wrongness a query never would.</li>
+</ul>
+
+<p>Write the expected numbers down before the migration and check them after. A validation you improvise afterward tends to confirm whatever happened.</p>
+
+<h2>Step five: plan the cutover, and the retreat</h2>
+
+<p>Cutover is the switch from old to new, and it needs a written runbook: who does what, in what order, starting when. Freeze changes in the old system first (anything entered after the final export is lost, so pick a quiet window and tell everyone). Run the rehearsed migration, run the validation checks, then have your spot-checkers sign off before anyone announces success.</p>
+
+<p>And decide the rollback rule in advance: if validation fails past a certain point, everyone goes back to the old system and you try again another day. That is only possible if the old system stays intact and untouched. Keep it running, read-only if the software allows it, for at least a month or two after cutover. The old system is your rollback plan and your reference for "wait, what was this customer's setting before?" Do not cancel it, wipe it, or let the subscription lapse until the new system has survived a full business cycle, including a month-end close.</p>
+
+<h2>How to know it's done right</h2>
+
+<p>The counts matched, the totals matched to the penny, and the users signed off before go-live rather than filing surprises afterward. Cutover felt boring, because it was the fourth time the procedure ran, just the first time it counted. And weeks later, when someone asks about an old record, the answer comes from the new system, not from a scramble to resurrect the old one. Boring is the goal. The horror stories all start with a weekend and a hunch.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Custom%20Software" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-typescript" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Why we build in TypeScript</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/python-business-automation" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Python: the duct tape of business automation</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/when-react-makes-sense" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">When React makes sense (and when plain HTML wins)</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

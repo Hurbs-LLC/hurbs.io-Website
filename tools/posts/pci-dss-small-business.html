@@ -1,0 +1,41 @@
+<p>Somewhere in the stack of paperwork you signed to start taking credit cards, you agreed to comply with PCI DSS, the Payment Card Industry Data Security Standard. Most owners find this out later, usually when their payment processor emails about a "compliance questionnaire" with a deadline and a monthly non-compliance fee attached. The standard itself is a few hundred pages. The good news is that for most small businesses, your actual obligations are a small slice of it, and the size of that slice depends almost entirely on how you take cards.</p>
+
+<h2>What you actually agreed to</h2>
+
+<p>PCI DSS isn't a law. It's a contractual requirement that flows from the card brands (Visa, Mastercard, and the rest) through your payment processor to you. The core deal: if you store, process, or transmit card data, you protect it according to the standard. Break the deal and there's a breach, and you can face fines, forensic investigation costs, and losing the ability to take cards at all. Most small merchants demonstrate compliance once a year through a Self-Assessment Questionnaire, an SAQ, plus in some cases quarterly vulnerability scans by an Approved Scanning Vendor (ASV).</p>
+
+<h2>SAQ types in plain English</h2>
+
+<p>The SAQ alphabet soup is really a menu of "how much card data do you touch?" Less touching, shorter questionnaire. The ones small businesses actually see:</p>
+
+<ul>
+<li><strong>SAQ A</strong> (the short one, a couple dozen questions): you take cards online and fully outsource payment to someone like Stripe Checkout, a hosted payment page, or a redirect to your processor. Card numbers never hit your website or systems.</li>
+<li><strong>SAQ A-EP</strong> (much longer): your e-commerce site doesn't store card data but your own web page assembles the payment form. Your site is now in scope for a lot more, including ASV scans. Small design choices in how a checkout is built decide whether you land in A or A-EP, which is worth a conversation with your developer before launch.</li>
+<li><strong>SAQ B / B-IP:</strong> card-present merchants using standalone dial-out or IP-connected terminals with no electronic storage of card data.</li>
+<li><strong>SAQ P2PE:</strong> you use a validated point-to-point encryption terminal (more on this below). The questionnaire shrinks to roughly the same weight class as SAQ A.</li>
+<li><strong>SAQ C:</strong> a point-of-sale system connected to the internet. Longer, and your POS environment is in scope.</li>
+<li><strong>SAQ D</strong> (the whole standard, hundreds of questions): you store card data electronically or nothing else fits. If you're a small business filling out SAQ D, something about your setup should probably change instead.</li>
+</ul>
+
+<p>Your processor's portal usually tells you which SAQ they expect from you. It's worth confirming it matches reality, because they guess from your account type.</p>
+
+<h2>Scope is the whole game</h2>
+
+<p>Everything in PCI hinges on "scope": which of your systems can touch card data. Every in-scope system has to meet the requirements: hardening, patching, logging, restricted access, scanning. So the winning strategy is not "secure everything to PCI level." It's "shrink the number of systems that touch card data toward zero," then secure the little that's left.</p>
+
+<p><strong>Network segmentation</strong> is the classic move for card-present businesses. If your POS terminals sit on the same flat network as the office computers, the guest Wi-Fi, and the smart TV in the break room, all of it is arguably in scope. Put payment devices on their own VLAN with firewall rules allowing them to talk only to the payment processor, and scope collapses to that one small segment. On business-grade network gear this is a configuration project, not a hardware purchase, and it's one of the highest-value afternoons of network work a retail or restaurant business can buy.</p>
+
+<p><strong>P2PE and validated terminals</strong> shrink scope even harder. A validated point-to-point encryption terminal encrypts the card the instant it's read, inside tamper-resistant hardware, and nothing on your network can decrypt it. Your systems carry only ciphertext, so they largely fall out of scope, and you qualify for the short SAQ P2PE. Many modern processor-supplied terminals (the Square, Clover, and similar ecosystems, and P2PE offerings from the traditional processors) get you this or close to it. When a client asks us how to make PCI easy, the honest answer is usually "buy the validated terminal and stop letting card numbers near anything you own."</p>
+
+<h2>The rules that bite small merchants regardless of SAQ</h2>
+
+<ul>
+<li><strong>Never store card numbers.</strong> Not in a spreadsheet, not in the CRM notes field, not on the paper form the front desk keeps "for recurring billing." If you need cards on file, use your processor's tokenization or stored-card feature. Storage of the CVV security code is prohibited outright, full stop.</li>
+<li><strong>Don't take card numbers by email.</strong> Customers will try. Have a payment link ready instead, and delete the email if one arrives.</li>
+<li><strong>Change default passwords</strong> on terminals, routers, and POS systems, and keep them patched.</li>
+<li><strong>Inspect terminals.</strong> Card skimmers attached to real terminals are a genuine small-business problem. Know what your device looks like and check it.</li>
+</ul>
+
+<h2>How to know it's done right</h2>
+
+<p>You know which SAQ you file and why, in one sentence ("we use validated P2PE terminals" or "our checkout is fully hosted by Stripe"). Card numbers exist nowhere in your business: no drawer, no spreadsheet, no inbox. Payment devices live on their own network segment, or nothing you own touches card data at all. ASV scans, if your SAQ requires them, run quarterly and pass. And the annual questionnaire takes an afternoon instead of a panic, because the setup was designed to keep you out of scope in the first place. That design work is the part worth paying for once, so the compliance part stays boring forever.</p>

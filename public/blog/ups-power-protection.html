@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UPS and power: the $200 box that saves the $20,000 server | Hurbs LLC</title>
+  <meta name="description" content="Runtime math, clean shutdowns, and surge protection. Power is the outage cause everyone forgets.">
+  <link rel="canonical" href="https://hurbs.io/blog/ups-power-protection">
+  <meta property="og:title" content="UPS and power: the $200 box that saves the $20,000 server | Hurbs LLC">
+  <meta property="og:description" content="Runtime math, clean shutdowns, and surge protection. Power is the outage cause everyone forgets.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/ups-power-protection">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-red"></div>
+      <a href="/services/networks" class="post-lane-link">NETWORKS &amp; INFRASTRUCTURE</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>UPS and power: the $200 box that saves the $20,000 server</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Every summer in Houston we get the same calls after a storm rolls through: the server will not boot, the database is corrupted, the NAS is doing a consistency check that says "8 hours remaining." The cause is almost always the same. Power blinked, the equipment lost it mid-write, and nothing was there to catch it. The fix is a UPS, an uninterruptible power supply, which is a battery that sits between the wall and your equipment. It is a couple hundred dollars, and it routinely saves gear and data worth a hundred times that.</p>
+
+<h2>What a UPS actually does</h2>
+<p>A UPS does two jobs. First, it bridges outages: when the power drops, the battery takes over instantly and your equipment never notices. Second, it conditions power: sags, surges, and the flicker-flicker-flicker of a storm all get smoothed out before they reach your electronics. That second job matters more than people think, because dirty power kills hardware slowly. Power supplies that eat a few years of sags and spikes die young.</p>
+<p>What a UPS is not: a generator. A typical unit gives you minutes of runtime, not hours. The goal is not to keep working through a blackout. The goal is to ride out the 5-second blips that make up most power events, and, for anything longer, to shut your equipment down cleanly instead of yanking the cord.</p>
+
+<h2>Runtime math: VA, watts, and honest minutes</h2>
+<p>UPS shopping is where people get misled, so here is the decoder. Units are marketed by VA rating: 1000VA, 1500VA, and so on. The number you actually care about is watts, which is the real power it can deliver, and it is always lower than the VA number. A typical 1500VA unit is rated for somewhere around 900 to 1000 watts. Check the watt rating on the spec sheet, not the big number on the box.</p>
+<p>Then there is runtime, and this is the part nobody reads closely. Runtime depends entirely on load, and it is not linear. A 1500VA unit might run a 150-watt load for 30 or 40 minutes but a 700-watt load for only 5 to 10. Every vendor publishes a runtime chart per model; APC and CyberPower, the two brands you will see everywhere, both have runtime calculators on their sites. Add up the actual wattage of what you are plugging in (the server's real draw, not its power supply's maximum), find that load on the chart, and believe the chart, not the marketing.</p>
+<p>The honest sizing rule we use: enough runtime to cover the common blips with margin, plus enough time for a clean shutdown. For most small-business server closets, that means 10 to 15 minutes of runtime at your real load. Buying double the runtime costs a bit more once. Buying too little costs you a corrupted database at 2 a.m.</p>
+
+<h2>Clean shutdown: the feature people skip</h2>
+<p>Here is the part that separates a UPS install from a UPS purchase. The battery buys you minutes. If the outage lasts longer than that and nothing happens, the battery dies and your server hits the floor just as hard as if there were no UPS at all, only later.</p>
+<p>The fix is shutdown integration. Business UPS units have a USB or network port and free software (APC PowerChute, CyberPower PowerPanel, or the excellent open-source NUT for Linux and NAS boxes) that tells connected machines "we are on battery, and it is getting low." You configure it so that after, say, five minutes on battery, the server saves everything and powers off gracefully. Synology and QNAP NAS units support this natively in their settings. Hypervisors can shut down their VMs first, then themselves. Set it up, then test it by pulling the UPS's wall plug and watching the whole sequence run. If you have never tested it, you do not have it.</p>
+
+<h2>Surge strips are not the same thing</h2>
+<p>A surge protector is a one-way bouncer: it clips voltage spikes and that is all. No battery, no help during a sag or an outage, and the protection quietly wears out after it absorbs enough hits. Surge strips are fine for monitors and desk lamps. Anything that holds data (server, NAS, network gear, the main workstation with the accounting software) belongs on battery. One more detail: every UPS has both battery-backed outlets and surge-only outlets on the back. Plug the important gear into the battery side. We find servers plugged into the surge-only side of their own UPS more often than we would like.</p>
+
+<h2>Batteries die on a schedule</h2>
+<p>UPS batteries are consumables. They last roughly three to five years, less in a hot closet, and they fail quietly: the unit looks fine until the day it is needed and delivers 40 seconds instead of 15 minutes. Most units self-test and will beep or flag a bad battery, but that only helps if someone hears it. Put battery replacement on the calendar the day you install the unit. Replacement cartridges are user-swappable on almost every small-business model and cost a fraction of a new unit.</p>
+
+<h2>How to know it is done right</h2>
+<p>Walk into the closet and check five things. Everything critical is on battery outlets, not surge-only. The load is comfortably under the unit's watt rating with a runtime chart that says you have your 10-plus minutes. The shutdown software is installed, configured, and has been tested with an actual pulled plug. The battery has a known install date and a replacement reminder. And the network gear, the modem, router, and switch, is on a UPS too, because a server that shuts down cleanly is good, but phones and internet that stay up through a blip are what keep the office working. Total spend for all of it is usually a few hundred dollars. The server it protects is not.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Networks%20%26%20Infrastructure" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-ubiquiti" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Why we reach for Ubiquiti in small offices</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/cisco-meraki-ubiquiti" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Cisco, Meraki, or Ubiquiti: matching gear to the job</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/pfsense-firewall-setup" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Set up a pfSense firewall for a small office</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

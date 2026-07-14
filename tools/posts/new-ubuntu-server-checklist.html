@@ -1,0 +1,78 @@
+<p>A fresh Ubuntu server from any cloud provider comes up in a bad default state: you log in as root with a password, every port is answerable, and nothing updates itself. Bots start guessing SSH passwords against new servers within minutes of them getting a public IP. We watch it happen in the logs on every box we set up. This checklist is the first 30 minutes we spend on every new Ubuntu server, in order, with the actual commands. At the end you will have a server with key-only SSH on a locked-down firewall, automatic security patches, and brute-force protection.</p>
+
+<h2>Prerequisites</h2>
+<ul>
+<li>A fresh Ubuntu 22.04 or 24.04 server and its root credentials (or a provider-created sudo user).</li>
+<li>A terminal on your own computer with an SSH client. macOS and Linux have one built in; Windows has it in PowerShell.</li>
+<li>About 30 minutes.</li>
+</ul>
+
+<h2>Step 1: Log in and update everything</h2>
+<p>First contact, then patch, because a fresh image is already weeks behind on updates:</p>
+<pre><code>ssh root@203.0.113.10
+apt update &amp;&amp; apt upgrade -y</code></pre>
+<p>If the upgrade pulls in a new kernel, reboot now (<code>reboot</code>) and log back in. Get it out of the way before you build on top.</p>
+
+<h2>Step 2: Create your own user with sudo</h2>
+<p>Day-to-day work should never happen as root. Create a normal user and put it in the sudo group:</p>
+<pre><code>adduser mason
+usermod -aG sudo mason</code></pre>
+<p><code>adduser</code> walks you through setting a password; the other fields can stay blank. Confirm the new account can actually elevate before you go further:</p>
+<pre><code>su - mason
+sudo whoami   # should print: root
+exit</code></pre>
+<p>Do not skip that test. In a few steps we lock root out, and you want to be certain the new account works first.</p>
+
+<h2>Step 3: Set up SSH keys</h2>
+<p>Passwords can be guessed; keys realistically cannot. If you do not already have a key pair on your own computer, make one there (not on the server):</p>
+<pre><code>ssh-keygen -t ed25519</code></pre>
+<p>Accept the default location and set a passphrase. Then copy the public key to the new user on the server:</p>
+<pre><code>ssh-copy-id mason@203.0.113.10</code></pre>
+<p>Now confirm key login works in a new terminal window, while keeping your current session open as a safety line:</p>
+<pre><code>ssh mason@203.0.113.10</code></pre>
+<p>If it logs you in without asking for the account password (your key passphrase does not count), you are good.</p>
+
+<h2>Step 4: Turn off root login and password authentication</h2>
+<p>This is the step that ends the password-guessing game entirely. Edit the SSH daemon config:</p>
+<pre><code>sudo nano /etc/ssh/sshd_config</code></pre>
+<p>Find these lines, uncomment them if needed, and set:</p>
+<pre><code>PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes</code></pre>
+<p>On newer Ubuntu, files under <code>/etc/ssh/sshd_config.d/</code> can override the main config, and cloud images often ship one that re-enables password auth. Check and fix:</p>
+<pre><code>grep -r PasswordAuthentication /etc/ssh/sshd_config.d/</code></pre>
+<p>Then restart SSH:</p>
+<pre><code>sudo systemctl restart ssh</code></pre>
+<p>Keep your existing session open and test a fresh login in another terminal. If you locked yourself out, that open session (or your provider's web console) is the way back in.</p>
+
+<h2>Step 5: Turn on the firewall</h2>
+<p>Ubuntu ships ufw, an uncomplicated firewall, disabled. Default-deny everything inbound except SSH:</p>
+<pre><code>sudo ufw allow OpenSSH
+sudo ufw enable
+sudo ufw status</code></pre>
+<p>Allow the SSH rule before enabling, in that order, or you cut your own line. Later, open only what the server actually serves, for example <code>sudo ufw allow 443/tcp</code> for a web server. Everything else stays closed.</p>
+
+<h2>Step 6: Turn on automatic security updates</h2>
+<p>Servers get forgotten. Unattended-upgrades installs security patches on its own so a forgotten server is not also an unpatched one:</p>
+<pre><code>sudo apt install unattended-upgrades
+sudo dpkg-reconfigure --priority=low unattended-upgrades</code></pre>
+<p>Answer Yes at the prompt. The default configuration applies security updates only, which is the right setting: security patches are low-risk, and you still control feature upgrades yourself.</p>
+
+<h2>Step 7: Install fail2ban</h2>
+<p>With password auth off, brute-force attempts cannot succeed, but fail2ban makes attackers go away instead of hammering your logs forever. It watches for repeated failures and temporarily bans the source IP at the firewall:</p>
+<pre><code>sudo apt install fail2ban
+sudo systemctl enable --now fail2ban</code></pre>
+<p>The defaults protect SSH out of the box. Check it is watching:</p>
+<pre><code>sudo fail2ban-client status sshd</code></pre>
+<p>Give a public server a day and this will show banned IPs. That is the internet background noise you just tuned out.</p>
+
+<h2>Verify it</h2>
+<p>Run through this list from your own machine:</p>
+<ul>
+<li><code>ssh root@203.0.113.10</code> is refused.</li>
+<li><code>ssh mason@203.0.113.10</code> works with your key, and <code>ssh -o PubkeyAuthentication=no mason@203.0.113.10</code> is refused instead of asking for a password.</li>
+<li><code>sudo ufw status</code> shows active, with only the ports you meant to open.</li>
+<li><code>sudo fail2ban-client status sshd</code> shows the jail running.</li>
+<li><code>systemctl status unattended-upgrades</code> shows active.</li>
+</ul>
+<p>That is the baseline. It does not make a server invincible, but it removes the failure modes that account for most compromised small-business servers: root passwords, open ports, and patches nobody applied. From here, whatever you install on the box starts from solid ground. And if you have servers running right now that never got this treatment, that is a quick job to put right.</p>

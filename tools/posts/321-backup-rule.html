@@ -1,0 +1,50 @@
+<p>Ask a business owner if they have backups and most say yes. Ask when they last restored a file from those backups and the room goes quiet. That gap is where companies get hurt. A backup you have never restored from is a guess, not a plan.</p>
+
+<h2>The rule itself</h2>
+<p>The 3-2-1 rule is old, simple, and still right:</p>
+<ul>
+<li><strong>3 copies</strong> of your data. The live copy counts as one, so you need two more.</li>
+<li><strong>2 different types of media or systems.</strong> Not two folders on the same server. A NAS in the office plus cloud storage, or an external drive plus a backup service.</li>
+<li><strong>1 copy offsite.</strong> Fire, flood, and theft take out everything in the building at once. Houston businesses know this better than most. If all your copies are in one office, you have one copy.</li>
+</ul>
+<p>The reasoning is boring math. Any single copy can fail. Drives die, ransomware encrypts, an employee deletes the wrong folder. Independent copies on independent systems mean one failure does not take everything.</p>
+
+<h2>What usually passes for backup</h2>
+<p>Here is what we actually find when we walk into a small business:</p>
+<ul>
+<li>An external USB drive that fills up eight months ago and stopped, silently.</li>
+<li>OneDrive or Google Drive sync, which is not backup. If ransomware encrypts a file, the sync service happily uploads the encrypted version. If someone deletes a folder, it deletes everywhere.</li>
+<li>A backup job on the server that has been throwing errors since a Windows update, emailing alerts to an inbox nobody checks.</li>
+</ul>
+<p>None of these people were careless. They set something up once, it worked once, and nobody looked again. Backup is not a setup task. It is a maintenance task.</p>
+
+<h2>Restore is the whole point</h2>
+<p>Nobody actually wants backups. They want restores. The backup is just the receipt.</p>
+<p>A restore drill is the only way to know your receipt is good. Here is the drill we run for clients, and you can run it yourself:</p>
+<ol>
+<li>Pick a real file that changed recently. An invoice, a spreadsheet, a contract.</li>
+<li>Restore it from backup to a different location. Do not overwrite the original.</li>
+<li>Open it. Confirm it is the right version, not a copy from six months ago.</li>
+<li>Time the whole thing and write the time down.</li>
+</ol>
+<p>Then, once or twice a year, do the bigger version: restore a whole folder, or spin up a server backup on spare hardware or a cloud VM and confirm it boots. This is where you learn the ugly stuff, like the backup that technically completed but skipped the accounting database because the file was locked.</p>
+<p>The number that comes out of the drill matters as much as the pass or fail. If a full restore takes three days and your business cannot survive three days down, your backup is fine and your plan is broken. Fix the plan before you need it.</p>
+
+<h2>Ransomware changed the offsite copy</h2>
+<p>Modern ransomware crews go hunting for backups first. If your offsite copy is a mapped drive or a NAS the server can write to, the attacker can encrypt it right along with everything else. The offsite copy needs to be one of these:</p>
+<ul>
+<li><strong>Immutable cloud storage</strong>, where backups cannot be altered or deleted for a set number of days, even with admin credentials. Most serious backup products support this now.</li>
+<li><strong>Truly offline</strong>, like rotated drives that physically leave the building. Old school, still works, depends on a human doing it every week.</li>
+</ul>
+<p>Some people call this 3-2-1-1: the extra 1 is an immutable or offline copy. Whatever you call it, assume an attacker with admin passwords will try to delete your backups, and make sure they cannot.</p>
+
+<h2>How to know it is done right</h2>
+<p>You do not need to be technical to audit this. Ask whoever handles your IT these five questions:</p>
+<ol>
+<li>Where are our three copies, exactly? Name the systems.</li>
+<li>Which copy is offsite, and can ransomware with admin access delete it?</li>
+<li>When did the last backup actually complete, and who gets told when one fails?</li>
+<li>When did we last restore a file, and did it work?</li>
+<li>How long would a full restore take after a total loss?</li>
+</ol>
+<p>Confident, specific answers with recent dates mean you are in good shape. Vague answers, or a pause before question four, mean you have backup software but not a backup plan. The fix is usually a day of work and a recurring calendar entry, which is cheap compared to the alternative.</p>

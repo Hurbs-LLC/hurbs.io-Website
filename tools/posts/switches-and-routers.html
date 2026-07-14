@@ -1,0 +1,29 @@
+<p>Somewhere in your office there is a shelf or a closet with a stack of blinking boxes, and if you are like most business owners, you know the internet stops when one of them stops and that is about it. That is fine right up until something breaks, or a vendor quotes you gear you cannot evaluate. Ten minutes with a clear mental model fixes that. Here is what each box actually does.</p>
+
+<h2>The switch: traffic inside your building</h2>
+<p>A switch connects devices to each other inside your network. Computers, printers, desk phones, security cameras, wireless access points: they all plug into switch ports, and the switch moves traffic between them. When your front-desk computer sends a job to the printer down the hall, that traffic goes through the switch and never touches the internet at all.</p>
+<p>A switch is fast, simple, and mostly dumb on purpose. It learns which device is on which port and delivers traffic directly, like a mailroom clerk who knows every desk in the building. It does not decide what is allowed. It just moves things.</p>
+<p>Two things worth knowing when you buy one. First, port count: count every wired device, add the wall jacks you might use later, and buy headroom, because a full switch means another project. Second, PoE, power over Ethernet: a PoE switch sends electricity down the same cable as the data, which is how desk phones, cameras, and ceiling-mounted Wi-Fi access points get power without an outlet nearby. If you have any of those, you want PoE ports.</p>
+
+<h2>The router: traffic between networks</h2>
+<p>A router connects your network to other networks, and for a small business that almost always means one thing: the internet. When your computer loads a website, the switch hands that traffic to the router, and the router sends it out through your ISP connection and steers the reply back to the right device.</p>
+<p>The router is also where your network's identity lives. It hands out internal addresses to your devices (that is DHCP), it translates all of them onto your single public internet address (that is NAT), and it usually holds settings like which traffic gets priority. If the switch is the mailroom, the router is the shipping dock: everything leaving the building or arriving from outside goes through it.</p>
+<p>One box, one job: you generally have one router, sitting between your ISP's modem and everything else. You might have several switches hanging off it as the building grows.</p>
+
+<h2>The firewall: the rules</h2>
+<p>A firewall decides what traffic is allowed. Traffic from inside going out, replies coming back in, and, most importantly, anything from the internet trying to reach into your network uninvited. A firewall inspects traffic against rules and drops what does not belong.</p>
+<p>Here is where the boxes blur, and it is the source of most confusion: in small-business gear, the router and the firewall are usually the same physical device. Products from Fortinet, SonicWall, Ubiquiti, and similar vendors route traffic and enforce firewall rules in one box, and vendors call that box a "firewall," a "security gateway," or a "router" depending on the brochure. Functionally, routing is the job of moving traffic between networks, and firewalling is the job of policing it. One device commonly does both.</p>
+<p>The practical takeaway: the free router your ISP gave you does routing with a bare-minimum firewall and almost no visibility. A business-grade firewall in the same spot gives you real rules, logging, content filtering, and the ability to separate guest Wi-Fi from your business network. That upgrade is usually the single highest-value swap in a small office.</p>
+
+<h2>Where each box sits</h2>
+<p>Trace the wire from the street and the layout explains itself:</p>
+<ol>
+<li><strong>Modem (or ONT for fiber):</strong> the ISP's box. It converts their signal on the wire into Ethernet. It is the property line of your network.</li>
+<li><strong>Router/firewall:</strong> plugs into the modem. Everything inside the building lives behind it.</li>
+<li><strong>Switch:</strong> plugs into the router. All your wired devices plug into the switch.</li>
+<li><strong>Wireless access points:</strong> plug into the switch (ideally a PoE port) and put your Wi-Fi devices onto the same network as everything else. Wi-Fi is not a separate system, it is wireless ports on your network.</li>
+</ol>
+<p>Modem, then firewall, then switch, then devices. When something is down, you can now troubleshoot in order: if the modem has no signal, it is the ISP's problem. If the modem is fine but nothing gets out, look at the router/firewall. If the internet works at one desk but not another, it is probably a switch port or a cable.</p>
+
+<h2>How to know your setup is right</h2>
+<p>A healthy small-business network has a business-grade firewall behind the modem instead of relying on the ISP box, a switch with open ports to spare, PoE where phones or access points need it, guest Wi-Fi separated from business traffic, and a simple diagram taped inside the network cabinet that says what each box is and what plugs into it. If nobody in the building can name which box is which, that diagram alone is worth the visit. We label everything when we install it, because the next person to open that cabinet, even if it is us, should not have to guess.</p>

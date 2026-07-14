@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NAS for small business: your own private cloud | Hurbs LLC</title>
+  <meta name="description" content="Shared drives, snapshots, and offsite sync. When a NAS beats cloud storage bills.">
+  <link rel="canonical" href="https://hurbs.io/blog/nas-private-cloud">
+  <meta property="og:title" content="NAS for small business: your own private cloud | Hurbs LLC">
+  <meta property="og:description" content="Shared drives, snapshots, and offsite sync. When a NAS beats cloud storage bills.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/nas-private-cloud">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-red"></div>
+      <a href="/services/networks" class="post-lane-link">NETWORKS &amp; INFRASTRUCTURE</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>NAS for small business: your own private cloud</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Every month, the per-user cloud storage bill goes up a little. Another seat here, an upgrade to the bigger tier there because the design folder outgrew the plan. Meanwhile the files everyone actually shares, the project archives, the scans, the photos from every job since 2018, just sit there costing money to store twice: once in the cloud and once on whoever's laptop synced them. For a lot of small businesses, the better answer is a NAS: your own private cloud, in your own building, that you buy once.</p>
+
+<h2>What a NAS is</h2>
+<p>NAS stands for network attached storage. It is a small box with several hard drives that plugs into your network switch and serves files to everyone in the office. The mainstream small-business brands are Synology and QNAP, with UGREEN and others coming up behind them. You buy the box, add drives, and every computer in the office sees a shared drive: the company drive, the same for everyone, with permissions per folder so accounting stays out of reach of the shop floor.</p>
+<p>Modern NAS units do a lot more than serve files. They run remote access apps so you can reach files from home or a phone, sync folders to laptops the way Dropbox does, host camera recordings, and act as the backup target for every computer in the building. A capable 4-bay unit plus drives generally lands somewhere in the range of $700 to $1,500 one time, depending on capacity.</p>
+
+<h2>The features that matter: snapshots and replication</h2>
+<p>Two capabilities separate a real business NAS setup from a glorified external drive.</p>
+<p><strong>Snapshots.</strong> The NAS can record the state of a shared folder on a schedule, hourly if you like, using almost no extra space. Somebody deletes a folder, overwrites the master spreadsheet, or ransomware on one PC starts encrypting the share: you roll the folder back to 10 a.m. and move on. On Synology this is the Snapshot Replication package on Btrfs volumes; QNAP has an equivalent. Turn it on day one. It is the feature people thank us for later.</p>
+<p><strong>Offsite replication.</strong> The NAS can copy itself, on a schedule, to somewhere outside the building: a second NAS at another location or the owner's house, or a cloud backup service. Fire, flood, and theft take out the building, not your data. Synology's Hyper Backup, QNAP's HBS 3, or a sync to a cloud bucket all get this done. A NAS with no offsite copy is a single point of failure with extra steps.</p>
+
+<h2>When a NAS beats per-user cloud bills</h2>
+<p>Cloud storage is priced per user per month, forever. A NAS is priced per box, roughly once every five to seven years. The crossover math is not complicated. Take ten people paying in the neighborhood of $10 to $20 each per month for storage tiers: that is $1,200 to $2,400 a year, every year. The NAS plus drives costs about one year of that, and the offsite piece costs a fraction of the old bill.</p>
+<p>A NAS tends to win when your data is big and shared: design files, CAD, photo and video archives, scanned documents, years of completed-project folders. This is bulk storage that everyone needs occasionally and nobody needs to co-edit in a browser. Cloud storage tends to win for documents people actively collaborate on, for teams that are rarely in the same building, and when nobody wants to own a physical box. Most of our clients land on a hybrid: Microsoft 365 or Google Workspace for live documents and email, a NAS for the heavy archives and the backups. You shrink the cloud tier instead of endlessly upgrading it.</p>
+
+<h2>RAID is not a backup</h2>
+<p>This is the sentence we repeat until it sticks. Your NAS will use RAID, which spreads data across drives so that one drive can die and the box keeps running. That protects you against exactly one thing: a drive failure. It does nothing about deletion, ransomware, theft, fire, a failed NAS unit, or a botched update, because RAID faithfully replicates every mistake across all the drives instantly.</p>
+<p>So a NAS still needs the standard 3-2-1 arrangement: three copies of the data, on two different devices, one of them offsite. The NAS itself is one copy. Snapshots defend against oops and ransomware. Replication offsite covers the disasters. A business that buys a RAID box and calls backups "done" has bought a very reliable way to lose everything at once.</p>
+
+<h2>How to know it is done right</h2>
+<p>A properly deployed NAS looks like this. Folder permissions match your org: each team sees its own folders, and the everything-open free-for-all is gone. Snapshots run on a schedule and someone has actually restored a file from one as a test. Offsite replication runs nightly and sends an email when it fails, and somebody reads that email. Drive-failure alerts go to a real inbox, because a NAS can run degraded for months in silence until the second drive dies. And remote access, if enabled, goes through the vendor's secure relay or a VPN, not a port forwarded straight to the internet. If your NAS checks all of those boxes, you own a private cloud. If it checks none, you own a warm box of hard drives, and it is worth an afternoon to fix that.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Networks%20%26%20Infrastructure" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-ubiquiti" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Why we reach for Ubiquiti in small offices</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/cisco-meraki-ubiquiti" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Cisco, Meraki, or Ubiquiti: matching gear to the job</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/pfsense-firewall-setup" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Set up a pfSense firewall for a small office</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

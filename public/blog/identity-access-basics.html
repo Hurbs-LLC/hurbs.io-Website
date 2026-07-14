@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Identity and access: one login, fewer passwords, less risk | Hurbs LLC</title>
+  <meta name="description" content="SSO, roles, and least privilege, explained for people who just want fewer password resets.">
+  <link rel="canonical" href="https://hurbs.io/blog/identity-access-basics">
+  <meta property="og:title" content="Identity and access: one login, fewer passwords, less risk | Hurbs LLC">
+  <meta property="og:description" content="SSO, roles, and least privilege, explained for people who just want fewer password resets.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/identity-access-basics">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-yellow"></div>
+      <a href="/services/cloud" class="post-lane-link">CLOUD SETUP &amp; MIGRATION</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Identity and access: one login, fewer passwords, less risk</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Count the passwords in your business. Email, accounting software, the CRM, payroll, the shared drive, the scheduling tool, whatever your industry runs on. Most small businesses land somewhere between 15 and 40 separate logins per employee. Nobody can remember that many, so people reuse one password everywhere, keep a spreadsheet called "passwords.xlsx," or stick a note under the keyboard. Then someone quits and the office manager spends an afternoon trying to remember every place that person had an account, and inevitably misses two. Identity and access management is the unglamorous fix for all of that, and it is more within reach for a small business than the enterprise-sounding name suggests.</p>
+
+<h2>SSO: one front door instead of forty</h2>
+<p>Single sign-on means your staff log into one place, usually Microsoft 365 or Google Workspace since you likely already pay for one of them, and that account becomes the key to everything else. The CRM, the accounting tool, the HR system: instead of each keeping its own password, they hand the login question to your main identity provider. Click "Sign in with Microsoft," done.</p>
+<p>The everyday win is fewer passwords and fewer reset tickets, and resets are consistently one of the biggest time sinks in small-business IT. The bigger win is control. One account per person means one place to protect with multi-factor authentication, one place to watch for suspicious logins, and one switch to flip when someone leaves. Disable the account and every connected app locks at the same moment. No afternoon of hunting, no forgotten CRM login still working three months after the goodbye cake.</p>
+<p>Most business software supports this today. On cheaper plans some vendors charge extra for SSO, which is annoying but usually still worth it for the apps that hold money or customer data.</p>
+
+<h2>Roles: stop granting access one favor at a time</h2>
+<p>In most small companies, access is handed out ad hoc. Someone needs into the shared drive, they ask, an admin clicks a button, and nobody ever revisits it. Five years later, who can see what is a mystery, and the answer is usually "way more people than you think."</p>
+<p>Role-based access flips that. You define a handful of roles that match how the business actually works: technician, office staff, bookkeeper, manager. Each role carries a set list of access. A new hire gets assigned a role and instantly has exactly what that job needs, nothing bolted on over the years by accident. When someone changes jobs internally, you change their role, and the old access falls away instead of piling up. For a 15-person company this is four or five roles and an afternoon of decisions, not an enterprise project.</p>
+
+<h2>Least privilege: the seatbelt</h2>
+<p>Least privilege is a simple principle: every person, and every app, gets the minimum access needed to do the job, and nothing more. The bookkeeper does not need the customer database. The marketing intern does not need payroll. Nobody does day-to-day work from an administrator account, including the owner.</p>
+<p>This is not about trusting your people less. It is about limiting the blast radius when, not if, a password gets phished. If an attacker lands in an account that can only see that person's own work, you have an incident. If they land in an account that can reach everything because access was never trimmed, you have a disaster. Same click on the same fake email, wildly different outcome, and the difference was decided months earlier by how access was set up.</p>
+
+<h2>What good looks like at small-business scale</h2>
+<p>You do not need enterprise identity software. A realistic setup for a company of 5 to 50 people:</p>
+<ul>
+<li>Microsoft 365 or Google Workspace as the single identity provider, with multi-factor authentication required for everyone, no exceptions.</li>
+<li>Every business app that supports "Sign in with Microsoft/Google" switched over to it.</li>
+<li>A shared password manager for the stragglers that do not support SSO, so at least those passwords are strong, unique, and revocable.</li>
+<li>Four or five defined roles, and a one-page list of which role gets which apps.</li>
+<li>A written onboarding and offboarding checklist. Offboarding especially: disable the account, confirm the app list, transfer the mailbox and files, done in under an hour.</li>
+</ul>
+
+<h2>How to know it is done right</h2>
+<p>Three tests. First, ask what happens when someone quits: the right answer is "we disable one account and they are out of everything," and it should take minutes. Second, pick an employee at random and ask what they have access to: someone should be able to answer from the role list, not by logging into eight admin panels to check. Third, count the password reset requests: after SSO lands, they should drop off a cliff, because there is only one password left to forget, and even that one gets typed less.</p>
+<p>If any of those tests fail today, this is a very fixable problem. We set this up for small businesses regularly, and the offboarding test alone usually justifies the work the first time someone leaves.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cloud%20Setup%20%26%20Migration" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/azure-vs-aws-vs-google-cloud" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Azure, AWS, or Google Cloud: an honest comparison</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/what-cloudflare-does" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">What Cloudflare actually does for your website</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/terraform-first-project" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Your first Terraform project: one server on AWS</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

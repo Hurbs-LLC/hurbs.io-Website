@@ -1,0 +1,40 @@
+<p>Ten years ago, a Mac in the office was the designer's machine in the corner, and IT pretended it didn't exist. Now it's normal. The owner has a MacBook, sales runs Windows laptops, the new marketing hire won't work on anything but a Mac, and accounting needs Windows because the payroll software says so. Nobody planned a mixed fleet. It just happened.</p>
+
+<p>The good news: managing both platforms in one office stopped being painful a few years ago, if you set it up deliberately. The bad news: most small offices didn't set it up deliberately, so the Macs float outside every system and every policy.</p>
+
+<h2>Why mixed fleets go wrong</h2>
+
+<p>The failure pattern is always the same. The company builds its IT around Windows: domain accounts or Microsoft 365 sign-ins, antivirus, patching, backup. Then Macs arrive one at a time, each set up by whoever bought it, signed into a personal Apple ID, with no management agent, no disk encryption policy, and no backup. On paper the company "manages its computers." In reality it manages the Windows ones, and the Macs holding the owner's email and the marketing team's files are on their own.</p>
+
+<p>That's not a Mac problem. It's a coverage problem. The fix is picking tools that treat both platforms as first-class, so every machine ends up in the same systems regardless of the logo on the lid.</p>
+
+<h2>What actually works cross-platform</h2>
+
+<p><strong>Identity.</strong> Both platforms sign into Microsoft 365 or Google Workspace just fine. Email, files, calendars, and Teams or Meet behave nearly identically on macOS and Windows. Your cloud account is the anchor, not the operating system. Get everyone on the same identity platform with multi-factor authentication and half the battle is done.</p>
+
+<p><strong>Device management.</strong> This is the piece small offices skip. Microsoft Intune manages both Windows and macOS, and it's included in Microsoft 365 Business Premium, so many companies already own it without using it. Apple-heavy shops sometimes justify a dedicated Mac tool like Jamf, but for a typical small office with a handful of Macs, one cross-platform tool beats two specialized ones. Either way, every company Mac should be enrolled through Apple Business Manager, which is free and lets machines auto-enroll into your management system on first boot.</p>
+
+<p><strong>Security basics.</strong> Disk encryption exists on both sides: BitLocker on Windows, FileVault on Mac. Both can and should be enforced by policy, with recovery keys escrowed to your management system instead of a sticky note. Modern endpoint protection tools cover both platforms with one agent and one dashboard. Macs get less malware than Windows machines but are not immune, and phishing doesn't care what you run.</p>
+
+<p><strong>Patching.</strong> Windows Update and macOS software updates can both be enforced remotely. The trick is having a system that reports on both, so you can see in one place that every machine, Mac or PC, is current. Without that, Mac updates depend on each user clicking "Later" for six months.</p>
+
+<h2>The honest friction points</h2>
+
+<p>A few things genuinely are harder in a mixed office, and pretending otherwise helps nobody:</p>
+
+<ul>
+<li><strong>Line-of-business software.</strong> Some industry apps are Windows-only, full stop. If your estimating or accounting package only runs on Windows, the people who use it get Windows machines, or they remote into a Windows box. Don't fight this with emulation hacks.</li>
+<li><strong>File servers.</strong> Old on-premises Windows file shares work from Macs but with more quirks. Moving shared files to SharePoint or Google Drive makes the platform question disappear.</li>
+<li><strong>Peripherals.</strong> Label printers, scanners, and specialty hardware sometimes have lazy or missing Mac drivers. Check before buying, not after.</li>
+<li><strong>Support knowledge.</strong> Whoever supports your office needs to actually know both platforms. "We'll figure out the Mac" is how the owner's laptop ends up unbackuped for three years.</li>
+</ul>
+
+<h2>Standardize choices, not brands</h2>
+
+<p>The goal isn't forcing everyone onto one platform. It's forcing every machine into the same systems. Our rule for clients: employees can have a preference between two or three standard models, one of which can be a Mac, but every machine gets purchased by the company, enrolled in management before it's handed over, encrypted, backed up, and signed into company identity. No personal Apple IDs on company Macs. No personal Microsoft accounts on company PCs.</p>
+
+<p>Do that and the day-to-day work barely doubles at all. Onboarding a Mac and onboarding a PC become the same checklist with different screenshots.</p>
+
+<h2>How to know it's handled</h2>
+
+<p>Ask whoever manages your IT three questions. Can you show me every company computer, Mac and Windows, in one dashboard? Are all of them encrypted, with recovery keys stored somewhere other than the machine itself? If the marketing MacBook got stolen tonight, could you lock or wipe it remotely by morning? If any answer is a pause and a "well, for the Windows ones," your Macs are unmanaged, and that's usually where the most important data in the company lives.</p>

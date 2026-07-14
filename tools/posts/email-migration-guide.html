@@ -1,0 +1,29 @@
+<p>Moving your company's email to a new platform, say from an old POP mailbox at your web host to Microsoft 365, or from Google Workspace to Microsoft, is one of those projects that terrifies business owners for a good reason: email is the one system where losing data is unforgivable. Ten years of client correspondence, contracts sitting in sent folders, that one thread that proves what was agreed. The good news is that mailbox moves are a solved problem. Done in the right order, nobody loses a message and most people barely notice the switch.</p>
+
+<h2>The two ways to migrate</h2>
+<p><strong>Cutover migration</strong> moves everyone at once. You copy all the mailboxes to the new platform, then flip the switch on a Friday evening, and Monday morning everyone logs into the new system. This is the right call for most small businesses, roughly up to 50 mailboxes. One weekend of work, one round of communication, done.</p>
+<p><strong>Staged migration</strong> moves people in batches over weeks, with both systems running side by side. Larger companies do this because moving 300 mailboxes in one weekend is not realistic, and because they can absorb the extra complexity of two coexisting systems. For a small business, staged mode mostly adds ways for things to go sideways: mail routing between two platforms, calendar invites crossing systems, double the support questions. If you are small enough to cut over, cut over.</p>
+
+<h2>The order of operations</h2>
+<p>Every clean migration follows the same shape:</p>
+<ol>
+<li><strong>Inventory first.</strong> List every mailbox, every shared mailbox, every distribution list, every alias. The forgotten alias is the classic migration casualty: invoices@ has been quietly forwarding to the bookkeeper for years, nobody lists it, and after the migration those messages bounce. Also list everything else that sends mail as your domain, like the scanner that emails PDFs and the website contact form, because they will need reconfiguring too.</li>
+<li><strong>Copy the data early.</strong> Migration tools sync mailbox contents to the new platform while everyone keeps working in the old one. Mail, folders, and in most cases calendars and contacts move over. This first big copy can take days for large mailboxes; that is fine, it runs in the background.</li>
+<li><strong>Flip MX records.</strong> More on this below. This is the actual moment of migration.</li>
+<li><strong>Final sync.</strong> After the flip, run one more pass to catch messages that arrived at the old system during the transition. This step is why nobody loses mail: everything that landed on either side ends up in the new mailbox.</li>
+<li><strong>Reconnect the people.</strong> Update Outlook profiles, phones, and the scanner. This is the visible part of the migration and the part worth staffing well on Monday morning.</li>
+</ol>
+
+<h2>MX record timing, the part people fear</h2>
+<p>MX records are the DNS entries that tell the internet where mail for your domain gets delivered. Changing them is how mail starts flowing to the new platform. Two things take the fear out of it.</p>
+<p>First, lower the TTL in advance. Every DNS record carries a time-to-live, which is how long the rest of the internet caches it. If your MX records have a TTL of 24 hours, some mail servers will keep delivering to the old system for up to a day after you change them. So a few days before the cutover, drop the TTL to something short, like 300 seconds. Then the actual switch propagates in minutes instead of a day.</p>
+<p>Second, understand that in-flight mail does not vanish. During the transition window, some messages land on the old system and some on the new. The final sync sweeps the stragglers across. And if anything is briefly misconfigured, sending mail servers retry delivery for hours or days before giving up, so a short hiccup delays mail rather than losing it.</p>
+<p>While you are in DNS, redo your SPF, DKIM, and DMARC records for the new platform. Miss this and your mail delivers fine but starts landing in customers' spam folders, which is a worse failure mode because nobody tells you.</p>
+
+<h2>The archive question</h2>
+<p>Every migration surfaces the same discovery: years of old mail living in PST files on individual PCs, or in an ancient account nobody has opened since 2019. Decide what happens to it before cutover, not after.</p>
+<p>Our default answer is bring it along. Storage on modern platforms is generous, 50 to 100 GB per mailbox on typical business plans, and imported archives become searchable in the same place as current mail. PST files in particular should not survive the migration as PST files: they corrupt easily, they live on machines that are not backed up, and they are invisible to any legal or compliance search. Import them and be done. If some mail truly must be kept but never touched, export it once, store it with your backups, and write down where it is.</p>
+
+<h2>How to know it is done right</h2>
+<p>A well-run migration has a checklist and a verification pass, not vibes. Before anyone declares victory: send and receive a test message on every mailbox, confirm every alias and distribution list delivers, confirm the scanner and website forms still send, spot-check that old mail and calendars made it across, and confirm SPF, DKIM, and DMARC pass on a message header check. Then keep the old system readable, not receiving, just readable, for a couple of weeks as a safety net.</p>
+<p>If whoever is running your migration talks about TTLs, final syncs, and the alias inventory without being prompted, you are in good hands. If the plan is "we'll change the DNS and see," schedule it for a weekend you were planning to ruin anyway, or get someone who has done this before.</p>

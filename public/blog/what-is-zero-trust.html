@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zero trust, minus the buzzwords | Hurbs LLC</title>
+  <meta name="description" content="Verify every request, trust no network. What zero trust means in practice for a 20-person company.">
+  <link rel="canonical" href="https://hurbs.io/blog/what-is-zero-trust">
+  <meta property="og:title" content="Zero trust, minus the buzzwords | Hurbs LLC">
+  <meta property="og:description" content="Verify every request, trust no network. What zero trust means in practice for a 20-person company.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/what-is-zero-trust">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-green"></div>
+      <a href="/services/cybersecurity" class="post-lane-link">CYBERSECURITY</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Zero trust, minus the buzzwords</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Zero trust might be the most oversold phrase in security right now. Every vendor slaps it on the box, your insurance form asks about it, and the definitions you find read like they were written to win a buzzword bingo card. Underneath the marketing there's a genuinely useful idea, and for a 20-person company it mostly translates to settings you already pay for. Here's the idea without the fog.</p>
+
+<h2>The old model: castle and moat</h2>
+<p>Traditional network security assumed there was an inside and an outside. The firewall was the moat. Anything outside was dangerous, anything inside was trusted, and once you were in (in the office, or on the VPN), you could reach the file server, the printers, the accounting system, mostly without further challenge.</p>
+<p>That model quietly died. Your files are in Microsoft 365 or Google Workspace, your accounting is a website, half the team works from home some days, and your data flows through laptops and phones on networks you've never seen. There is no "inside" anymore. Worse, the model fails catastrophically when it fails: one phished password or one infected laptop, and the attacker is inside the moat with the run of the castle. Nearly every ransomware disaster we've been called into followed exactly that script: one foothold, then a free walk to everything else.</p>
+
+<h2>The idea, in one sentence</h2>
+<p>Zero trust means no request is trusted because of where it comes from; every request gets verified on its own. Being on the office Wi-Fi proves nothing. Every access to every system checks: is this really the right person (strong authentication), on a healthy device (patched, encrypted, running your security agent), asking for something their role actually needs (least privilege)? And the checking keeps happening, rather than one login granting all-day, all-systems access.</p>
+<p>The mental flip that matters: assume breach. Design as if one account or laptop is already compromised, and ask what the attacker could reach from there. In a castle-and-moat network the answer is "everything." In a zero-trust setup the answer is "that one account's slice, until the anomaly gets flagged." You're not promising break-ins never happen. You're making sure one stolen password isn't the whole company.</p>
+
+<h2>What it means in practice for a 20-person company</h2>
+<p>You don't buy zero trust in a box, no matter what the box says. It's a series of settings and habits, most of which live in licenses you already have. In rough order of value:</p>
+<ul>
+<li><strong>MFA everywhere, enforced.</strong> Verifying every request starts with verifying identity, and passwords alone don't. Authenticator apps for everyone, hardware keys for admins. This is the foundation; nothing else on this list matters much without it.</li>
+<li><strong>Sign-in rules that consider context.</strong> Microsoft 365 Business Premium includes Conditional Access: block sign-ins from countries you don't operate in, require MFA on every new device, flag impossible travel. Google Workspace has context-aware access on its higher tiers. This is the "keep verifying" part, running automatically.</li>
+<li><strong>Device health checks.</strong> A valid password from a compromised laptop is still a compromised session. Use Intune or Google's device management to require that company data is only reachable from devices that are enrolled, encrypted, patched, and running your EDR. Start with a simple rule like "must be enrolled and encrypted" and tighten from there.</li>
+<li><strong>Least privilege on accounts.</strong> Audit who can touch what. The bookkeeper doesn't need admin rights, nobody does day-to-day work from an admin account, and the marketing hire can't open the finance share. Every permission someone doesn't need is free attack surface you're donating.</li>
+<li><strong>Least privilege on the network.</strong> If you still run a flat office network where every device can talk to every other device, split it: guest Wi-Fi truly separate, servers reachable only on the ports they serve, the smart thermostat and cameras on their own segment. Any business-grade firewall or switch can do this with VLANs.</li>
+<li><strong>Retire the moat-flavored VPN.</strong> A classic VPN that drops remote users onto the full internal network is castle-and-moat with extra steps. If people only need cloud apps, they may not need a VPN at all. If they need internal systems, per-app access tools (Cloudflare Access, Tailscale, Twingate) grant reach to the specific application, not the whole network, and check identity and device on the way in.</li>
+</ul>
+
+<h2>What zero trust is not</h2>
+<p>It's not a product, so any quote for "a zero trust" should get a raised eyebrow. It's not a project with an end date; it's a direction you keep tightening. It's not paranoia toward your employees; the "trust" being zeroed is network location, not people. And it doesn't have to make daily work miserable. Done right it's often smoother: sign in once with MFA on a healthy laptop, and the checks ride along silently after that. If a rollout makes everyone's day slower, the design is wrong, not the idea.</p>
+
+<h2>Where to start, and how to know you're getting there</h2>
+<p>Don't try to do the list in a quarter. The order above is the priority order: MFA enforced this month, sign-in rules and device enrollment next, then the permissions audit, then network segmentation as time allows. Each step is independently worth having even if you never finish the list.</p>
+<p>The test that cuts through all of it is one question: if an attacker had one employee's password right now, what could they reach? Walk it honestly. If the answer is "email, files, and everything on the network, from any computer on earth," you're still castle-and-moat. If the answer is "nothing without the second factor, and even then only that user's apps, only from an enrolled device, with the odd sign-in flagged," then congratulations: you're doing zero trust, whatever the vendors call it.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cybersecurity" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/what-is-edr" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">EDR, XDR, antivirus: what actually protects endpoints now</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/who-watches-at-3am" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Who’s watching your network at 3 a.m.?</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/ransomware-defense-layers" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Ransomware defense: the five layers that matter</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

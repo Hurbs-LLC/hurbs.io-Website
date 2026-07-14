@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hybrid cloud for small business: keep the server, add the cloud | Hurbs LLC</title>
+  <meta name="description" content="Some things belong in the closet, some in the cloud. How to split them sensibly.">
+  <link rel="canonical" href="https://hurbs.io/blog/hybrid-cloud-small-business">
+  <meta property="og:title" content="Hybrid cloud for small business: keep the server, add the cloud | Hurbs LLC">
+  <meta property="og:description" content="Some things belong in the closet, some in the cloud. How to split them sensibly.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/hybrid-cloud-small-business">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-yellow"></div>
+      <a href="/services/cloud" class="post-lane-link">CLOUD SETUP &amp; MIGRATION</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Hybrid cloud for small business: keep the server, add the cloud</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>The cloud pitch you keep hearing has one ending: everything moves, the server closet empties out, and your whole business runs from someone else's data center. For plenty of small businesses, that ending is wrong. You may have a server that earns its spot in the closet: it runs the machine on the shop floor, it holds huge files your team opens all day, or it runs software that flat-out performs better ten feet from the people using it. Keeping it does not make you behind the times. Keeping it and adding cloud where cloud is better has a name: hybrid, and it is how a lot of real businesses should run.</p>
+
+<h2>What hybrid actually means</h2>
+<p>Hybrid cloud just means some of your systems run on hardware you own and some run in a cloud provider, connected so they work as one environment. Your staff should not have to know or care where a given thing lives. In practice that means a secure link between the office and the cloud, one set of logins for both sides, and one backup and monitoring approach that covers everything. The word gets dressed up in enterprise marketing, but the small-business version is simple: keep what belongs local, move what belongs remote, and wire them together properly.</p>
+
+<h2>What belongs in the cloud</h2>
+<p><strong>Email and calendars.</strong> This one is settled. If you are still running an on-premise mail server, moving to Microsoft 365 or Google Workspace is the single highest-value cloud move available, and it is usually where we start.</p>
+<p><strong>Anything the public reaches.</strong> Your website, customer portal, or anything else exposed to the internet is safer and steadier in the cloud, where bandwidth is real and your office IP is not the front door.</p>
+<p><strong>Backups.</strong> Every business needs a copy of its data somewhere that cannot burn, flood, or get encrypted along with the office. Cloud backup is the cheapest insurance in IT. Even businesses that keep everything else local should have this, and it makes the closet server dramatically less scary, because losing the hardware no longer means losing the data.</p>
+<p><strong>Anything used from everywhere.</strong> If your team works from home, from job sites, or from multiple locations, the systems they share generally fight you when hosted in one office and served out through its single internet connection. Shared documents, project tools, and remote-friendly apps want to be in the cloud.</p>
+
+<h2>What often belongs in the closet</h2>
+<p><strong>Big files used all day.</strong> A CAD shop, a video house, or a print operation moving multi-gigabyte files does not want each open and save crossing the internet. A local file server on a gigabit network is faster than any cloud connection you can reasonably buy, and this stays true no matter how good the cloud gets.</p>
+<p><strong>Anything wired to physical equipment.</strong> Machine controllers, camera systems, door access, lab instruments, point-of-sale back ends. If it talks to hardware in the building, it usually needs to live in the building, both for speed and so it keeps working when the internet does not.</p>
+<p><strong>Latency-sensitive legacy apps.</strong> Some older line-of-business applications make thousands of small database calls per screen and were built assuming the server is one millisecond away. Moved to the cloud, they crawl. If the app matters and cannot be replaced, the server stays local, and that is a legitimate engineering decision, not stubbornness.</p>
+<p><strong>Workloads where the math says so.</strong> A steady, always-on workload on hardware you already own can genuinely be cheaper than renting the equivalent cloud VM for years. Cloud wins on flexibility and on not owning hardware; it does not automatically win on monthly cost for stable loads.</p>
+
+<h2>How to split it sensibly</h2>
+<p>Do not decide system by system on gut feel. Walk your list and ask three concrete questions about each one. Who uses it, and from where? Office-only points local, everywhere points cloud. What does it talk to? Things that talk to local hardware stay local, things that talk to the internet go cloud, and things that talk to each other constantly should live together, wherever that is. What happens when it goes down? This one cuts both ways: cloud systems die when your internet does, local systems die when your hardware does, so put each thing where its likely failure hurts least, and get a backup internet connection if the cloud side becomes critical.</p>
+<p>That last point deserves emphasis. Once real work depends on the cloud half, your internet connection becomes business infrastructure. A second connection from a different carrier, even a modest one for failover, is part of the hybrid design, not an extra.</p>
+
+<h2>The glue that makes it one environment</h2>
+<p>Hybrid done badly is two separate worlds with two sets of passwords and a gap between them where problems hide. The glue work is what makes it hybrid rather than just scattered. One identity: your local logins and your cloud logins should be the same account, which for Microsoft shops means syncing Active Directory to Entra ID so one password, one disable button, and one MFA policy cover everything. One network: a site-to-site VPN or similar link so cloud systems and office systems reach each other securely without anything being exposed to the open internet. One backup plan and one monitoring view across both sides, so nothing is anyone's blind spot.</p>
+
+<h2>How to know your hybrid setup is right</h2>
+<p>The test is invisibility. Staff open the things they need without thinking about where those things run. One password works everywhere, and when someone leaves, one action shuts off all their access. When the internet drops, the shop floor keeps running; when the closet server drops, nobody loses data and email does not blink. And the setup is written down somewhere, so it does not live only in one person's head. If your current environment fails those tests, the fix is rarely "move everything" in either direction. It is drawing the line in the right place and building the glue. That is work we do a lot of, and it is very fixable.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cloud%20Setup%20%26%20Migration" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/azure-vs-aws-vs-google-cloud" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Azure, AWS, or Google Cloud: an honest comparison</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/what-cloudflare-does" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">What Cloudflare actually does for your website</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/terraform-first-project" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Your first Terraform project: one server on AWS</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

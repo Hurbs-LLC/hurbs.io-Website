@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Roll out MFA to a small business without a mutiny | Hurbs LLC</title>
+  <meta name="description" content="App-based codes, hardware keys, and the rollout order that gets adoption instead of eye-rolls.">
+  <link rel="canonical" href="https://hurbs.io/blog/mfa-rollout-guide">
+  <meta property="og:title" content="Roll out MFA to a small business without a mutiny | Hurbs LLC">
+  <meta property="og:description" content="App-based codes, hardware keys, and the rollout order that gets adoption instead of eye-rolls.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/mfa-rollout-guide">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-green"></div>
+      <a href="/services/cybersecurity" class="post-lane-link">CYBERSECURITY</a>
+      <span class="post-type">STEP-BY-STEP GUIDE</span>
+    </div>
+    <h1>Roll out MFA to a small business without a mutiny</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Stolen passwords are still the number one way small businesses get breached, and MFA (multi-factor authentication) is the cheapest fix in security. The technology is not the hard part; MFA takes an afternoon to switch on. The hard part is rolling it out to twenty busy people without a revolt, a locked-out owner, or a quiet exemption list that grows until the whole thing is theater. This guide is the rollout plan we use. At the end you'll have MFA enforced on every account, a working recovery process, and no mutiny.</p>
+
+<h2>Prerequisites</h2>
+<ul>
+<li>Admin access to your identity platform: Microsoft 365 (Entra ID) or Google Workspace for most small businesses.</li>
+<li>A list of your business apps, even a rough one. You'll formalize it in Step 1.</li>
+<li>A licensing check: Microsoft 365 Business Premium unlocks Conditional Access, which makes enforcement much cleaner. Basic tiers still get you Security Defaults, which is enough to start.</li>
+<li>Two or three hardware security keys (YubiKey or similar, roughly $25 to $75 each) for admin accounts.</li>
+<li>Four to six weeks of calendar. The tech takes a day; the humans take the rest.</li>
+</ul>
+
+<h2>Step 1: Inventory every app that has a login</h2>
+<p>You can't protect accounts you forgot exist. Make a spreadsheet with columns for app name, who uses it, whether it supports MFA, and whether it can use single sign-on through Microsoft or Google. Walk through:</p>
+<ul>
+<li>Email and files: Microsoft 365 or Google Workspace. This is the crown jewels; an attacker in email can reset every other password you have.</li>
+<li>Money: banking portals, payroll, QuickBooks or Xero, payment processors.</li>
+<li>Operations: your CRM, industry-specific software, scheduling, e-signature.</li>
+<li>Infrastructure: domain registrar, DNS, website host, firewall and Wi-Fi admin consoles, backup portal. These get forgotten constantly and they're high-value.</li>
+<li>Social media accounts, which are a favorite takeover target.</li>
+</ul>
+<p>Wherever an app supports "Sign in with Microsoft" or "Sign in with Google," plan to use it. Every app behind SSO inherits MFA from the central account automatically, which shrinks the rollout from twenty apps to one.</p>
+
+<h2>Step 2: Pick your methods, and set the defaults deliberately</h2>
+<p>Not all second factors are equal. Set these as policy before anyone enrolls:</p>
+<ul>
+<li><strong>Default for everyone: an authenticator app.</strong> Microsoft Authenticator or Google Authenticator, with push notifications and number matching where supported (the prompt shows a number the user must type, which kills the "spam them with prompts until they approve one" attack). Free, works offline for codes, phish-resistant enough for most roles.</li>
+<li><strong>Admins and finance: hardware security keys.</strong> Anyone with global admin rights, and anyone who can move money, gets a YubiKey as their primary factor. Keys are immune to phishing pages; a fake login site can't extract anything from them. Buy each of these people two, one for the desk and one for the safe.</li>
+<li><strong>Avoid SMS where possible.</strong> Text-message codes are vulnerable to SIM-swapping and phishing relays. Some banks only offer SMS, and SMS still beats nothing, so take it where it's the only option. Just don't let it be the company default when better options are free.</li>
+</ul>
+<p>Plan for the edge cases now, not during enrollment week: shared accounts (fix by moving to individual logins, or park the TOTP secret in your password manager's shared vault as a stopgap), warehouse staff without company phones (hardware keys or a printed policy decision, made openly), and personal-phone objections (the authenticator app reveals nothing to the employer; put that in the FAQ, and offer a hardware key to anyone still uncomfortable).</p>
+
+<h2>Step 3: Run a pilot group for two weeks</h2>
+<p>Pick five or so people: yourself, one skeptic, one non-technical user, one remote worker, and someone from finance. Enroll them, then let them live with it for two weeks while you collect every complaint and confusion. The pilot always surfaces something: an old copier that can't authenticate to send scans to email once security defaults tighten, a line-of-business app that needs an app password, a user whose personal phone is too old for the authenticator app.</p>
+<p>Fix those, then write the two documents the rest of the rollout depends on: a one-page enrollment guide with screenshots for your exact tenant, and a short FAQ answering the pilot group's actual questions. Deliberately include the skeptic's objections; the rest of the company has the same ones.</p>
+
+<h2>Step 4: Open a two-week enrollment window</h2>
+<p>Announce it from the owner, not from IT, with three things: why (one sentence about stolen passwords, and that the insurance renewal requires it, which it probably does), what to do (the one-page guide), and the dates. Give people a two-week window to enroll on their own schedule, with drop-in help available. In Microsoft 365, use registration campaigns or Conditional Access in report-only mode so you can watch enrollment numbers without locking anyone out yet.</p>
+<p>Chase stragglers personally in week two. A short "need a hand with this?" message clears most of them; the last two or three usually just need someone to sit with them for five minutes. Aim for over 90% enrolled before the deadline so enforcement day is a formality instead of a fire.</p>
+
+<h2>Step 5: Enforce on a named date</h2>
+<p>Announced deadlines with no enforcement teach people that deadlines are decoration. On the named date, turn it on for real: Security Defaults, or a Conditional Access policy requiring MFA for all users on all apps if you have Business Premium. Pick a Tuesday morning, never a Friday, so the stragglers hit the wall while help is available and nobody is locked out over a weekend.</p>
+<p>Hold the line on exemptions. Every "just exclude me, I'm careful" request, especially from the top, creates exactly the account attackers want most. The owner goes first and says so. The only legitimate exclusions are documented break-glass accounts (next step) and specific service accounts handled with their own controls.</p>
+
+<h2>Step 6: Set up recovery before you need it</h2>
+<p>Lost phones are the moment MFA rollouts die, because a bad recovery process either strands users for days or becomes the hole attackers walk through. Set up three things:</p>
+<ol>
+<li><strong>Two factors per person, minimum.</strong> Enrolling a second method (backup key, secondary device, or printed one-time recovery codes stored somewhere sane) at signup time turns most lost phones into a non-event.</li>
+<li><strong>A break-glass admin account.</strong> One emergency global admin, excluded from MFA policy, with a very long random password stored offline (a sealed envelope in a safe works), and an alert configured to fire on any use of it. This is what saves you when the MFA service itself has a bad day or the only admin loses both keys.</li>
+<li><strong>A verification rule for resets.</strong> Whoever handles "I lost my phone, reset my MFA" must verify identity by a known-good channel: a video call, a callback to the number on file, or in person. Never reset based on an email or chat message alone; attackers impersonating locked-out employees to the help desk is now a standard playbook, and it has cracked far bigger companies than yours.</li>
+</ol>
+
+<h2>Verify it</h2>
+<p>You're done when all of these are true:</p>
+<ul>
+<li>The enforcement policy shows active for all users, and the exemption list contains exactly the documented break-glass account and nothing else.</li>
+<li>A test login from a fresh browser prompts for MFA on Microsoft or Google, and on your critical non-SSO apps (bank, payroll) individually.</li>
+<li>Every admin authenticates with a hardware key, and each has a registered backup.</li>
+<li>You've rehearsed a recovery: take a volunteer's "lost" phone scenario end to end and confirm they're working again within the hour, with identity verified properly.</li>
+<li>The break-glass credentials are sealed, stored, and the use-alert has been tested.</li>
+</ul>
+<p>Check the sign-in logs a month later for anything still authenticating without MFA (legacy protocols like IMAP are the usual culprit; disable them) and you can close the project. This one control blocks the large majority of account-takeover attacks your business will ever face, and now it's actually on everywhere.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cybersecurity" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/what-is-edr" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">EDR, XDR, antivirus: what actually protects endpoints now</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/who-watches-at-3am" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Who’s watching your network at 3 a.m.?</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/ransomware-defense-layers" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Ransomware defense: the five layers that matter</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<p>Terraform lets you describe servers in a text file and then have them built for you, exactly as written, every time. Instead of clicking through the AWS console and hoping you remember what you clicked, you keep a file that is the documentation and the build script at once. By the end of this guide you will have installed Terraform, written a configuration that launches one small EC2 server on AWS, brought it up, confirmed it exists, and torn it back down so it costs you nothing.</p>
+
+<h2>Prerequisites</h2>
+<ul>
+<li>An AWS account. A t3.micro instance is covered by the free tier on new accounts, and otherwise costs about a cent an hour. We will destroy it at the end.</li>
+<li>An AWS access key and secret key for a user with permission to manage EC2. Create these in the IAM section of the AWS console.</li>
+<li>A Mac or Linux machine with a terminal. Windows works too with minor differences we will note.</li>
+<li>A text editor. Anything works.</li>
+</ul>
+
+<h2>Step 1: Install Terraform</h2>
+<p>On a Mac with Homebrew:</p>
+<pre><code>brew tap hashicorp/tap
+brew install hashicorp/tap/terraform</code></pre>
+<p>On Ubuntu or Debian, add HashiCorp's package repository and install from it. The exact commands are on HashiCorp's install page and change occasionally, so we will not paste a stale copy here; follow the <a href="https://developer.hashicorp.com/terraform/install">official install instructions</a> for your distribution. On Windows, download the zip from the same page and put terraform.exe somewhere on your PATH.</p>
+<p>Confirm it works:</p>
+<pre><code>terraform version</code></pre>
+<p>You should see a version number, something in the 1.x range.</p>
+
+<h2>Step 2: Give Terraform your AWS credentials</h2>
+<p>Terraform reads AWS credentials the same way the AWS CLI does. The simplest route is environment variables:</p>
+<pre><code>export AWS_ACCESS_KEY_ID="your-access-key-id"
+export AWS_SECRET_ACCESS_KEY="your-secret-access-key"</code></pre>
+<p>If you already use the AWS CLI and have run <code>aws configure</code>, Terraform will pick up those saved credentials automatically and you can skip this step. Never write keys into your Terraform files. Files get committed to version control, and leaked AWS keys get found and abused within minutes.</p>
+
+<h2>Step 3: Write main.tf</h2>
+<p>Make a new folder for the project and create a file called <code>main.tf</code> inside it. Terraform reads every <code>.tf</code> file in the folder, but one file is plenty for this.</p>
+<pre><code>terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~&gt; 5.0"
+    }
+  }
+}
+
+provider "aws" {
+  region = "us-east-1"
+}
+
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"] # Canonical
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*"]
+  }
+}
+
+resource "aws_instance" "web" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t3.micro"
+
+  tags = {
+    Name = "terraform-first-server"
+  }
+}</code></pre>
+<p>Reading it top to bottom: the <code>terraform</code> block says which plugin we need, in this case the AWS provider. The <code>provider</code> block says which region to build in. The <code>data</code> block looks up the newest official Ubuntu 24.04 image published by Canonical, so we do not hardcode an image ID that goes stale. The <code>resource</code> block is the actual server: one t3.micro running that Ubuntu image, with a name tag so you can spot it in the console.</p>
+
+<h2>Step 4: terraform init</h2>
+<p>From inside the project folder:</p>
+<pre><code>terraform init</code></pre>
+<p>This downloads the AWS provider plugin into a hidden <code>.terraform</code> folder and creates a lock file that pins the exact provider version. You run init once per project, and again any time you add a new provider. The output should end with "Terraform has been successfully initialized."</p>
+
+<h2>Step 5: terraform plan</h2>
+<pre><code>terraform plan</code></pre>
+<p>Plan is the dry run, and it is the reason people love Terraform. It compares your file against what actually exists in AWS and prints exactly what it would change, without changing anything. Right now it should say it will add 1 resource: your instance, with all its settings listed. Values marked "known after apply" are things AWS assigns at creation time, like the server's IP address.</p>
+<p>Get in the habit of reading plans before applying, every time. On a real project, plan is what stops you from accidentally destroying a production database because of a typo.</p>
+
+<h2>Step 6: terraform apply</h2>
+<pre><code>terraform apply</code></pre>
+<p>Apply shows you the plan again and asks for confirmation. Type <code>yes</code>. Terraform then calls the AWS API, waits for the instance to come up, and finishes with "Apply complete! Resources: 1 added." The whole thing usually takes under a minute.</p>
+<p>Terraform also writes a file called <code>terraform.tfstate</code> in your folder. That file is Terraform's memory of what it built and how it maps to your configuration. Do not edit it, do not delete it, and on real projects, do not commit it to version control, because it can contain sensitive values. Teams store state remotely, in an S3 bucket for example, but local state is fine for learning.</p>
+
+<h2>Step 7: Verify it</h2>
+<p>Ask Terraform what it knows about the server:</p>
+<pre><code>terraform show</code></pre>
+<p>You will see the full details of the instance, including its ID and public IP. You can also open the AWS console, go to EC2 in the us-east-1 region, and see "terraform-first-server" running in the instance list. Same server, built from a text file.</p>
+<p>Now try the loop that makes Terraform useful. Edit <code>main.tf</code> and change the Name tag to something else, then run <code>terraform plan</code>. It reports one resource to change in place, showing the old and new tag. That diff-driven workflow is the entire idea: change the file, review the plan, apply.</p>
+
+<h2>Step 8: terraform destroy</h2>
+<p>You are paying for the instance while it runs, so tear it down:</p>
+<pre><code>terraform destroy</code></pre>
+<p>Destroy shows you everything it will remove, in this case one instance, and asks for confirmation. Type <code>yes</code> and Terraform terminates the server. This clean teardown is an underrated feature. Every experiment you build with Terraform can be deleted completely, with no forgotten resources quietly billing you for months. We find those forgotten resources in client accounts constantly, and they are almost always things someone clicked together by hand.</p>
+
+<h2>Where to go from here</h2>
+<p>A real setup adds a security group so you can actually reach the server, an SSH key pair so you can log in, and an <code>output</code> block that prints the public IP after apply. Each of those is a few more lines in the same file, and the workflow never changes: write, plan, apply. Once your infrastructure lives in files, you can review changes before they happen, rebuild environments from scratch, and stop depending on whoever remembers what got clicked in the console two years ago. That is the point, and it is worth the learning curve. If you would rather have your environment set up this way without climbing the curve yourself, that is work we do.</p>

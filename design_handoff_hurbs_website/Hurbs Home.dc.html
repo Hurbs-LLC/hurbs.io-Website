@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#FAF6EC;font-family:Archivo,system-ui,sans-serif}a{color:#516EB4}a:hover{color:#C84E3F}</style>
+</helmet>
+<div style="background:#FAF6EC;color:#2B2620;min-height:100vh">
+  <div data-screen-label="Nav" style="display:flex;align-items:center;justify-content:space-between;padding:22px 56px;border-bottom:2px solid #2B2620">
+    <a href="Hurbs Home.dc.html" style="display:block"><img src="assets/hurbs.svg" alt="Hurbs LLC" style="height:30px;width:auto;display:block"></a>
+    <div style="display:flex;align-items:center;gap:30px;font:600 15px Archivo,sans-serif">
+      <a href="#services" style="color:#2B2620;text-decoration:none" style-hover="color:#C84E3F">Services</a>
+      <a href="Hurbs About.dc.html" style="color:#2B2620;text-decoration:none" style-hover="color:#C84E3F">About</a>
+      <a href="Hurbs Contact.dc.html" style="color:#2B2620;text-decoration:none" style-hover="color:#C84E3F">Contact</a>
+      <a href="mailto:mason@hurbs.io" style="color:#2B2620;text-decoration:none;font-weight:700;border-bottom:3px solid #E4DB5B" style-hover="color:#C84E3F">mason@hurbs.io</a>
+    </div>
+  </div>
+  <div data-screen-label="Hero" style="padding:96px 56px 84px">
+    <div style="font:700 14px Archivo,sans-serif;letter-spacing:.2em;color:#6E945E;margin-bottom:26px">GROWING INNOVATION — SINCE 2012</div>
+    <h1 style="font:400 108px/1 'Alfa Slab One',serif;margin:0 0 12px;color:#C84E3F;text-shadow:0.05em 0 0 #E4DB5B,0.1em 0 0 #6E945E,0.15em 0 0 #516EB4;letter-spacing:.01em">HONEST IT</h1>
+    <p style="font:600 30px/1.3 Archivo,sans-serif;margin:0 0 30px;color:#2B2620">for businesses that would rather not think about IT.</p>
+    <p style="font:400 19px/1.6 Archivo,sans-serif;color:#57503F;max-width:600px;margin:0 0 40px">Mason Herbel's crew fixes, builds, and protects your tech — remotely from Houston, or on your doorstep anywhere in the country.</p>
+    <div style="display:flex;align-items:center;gap:24px">
+      <a href="mailto:mason@hurbs.io" style="background:#C84E3F;color:#FAF6EC;text-decoration:none;padding:17px 32px;font:800 18px Archivo,sans-serif;border-radius:999px" style-hover="color:#FAF6EC;background:#A93D30">Email Mason →</a>
+      <span style="font:600 17px Archivo,sans-serif;color:#57503F">(832) 457-4317</span>
+    </div>
+  </div>
+  <div id="services" data-screen-label="Services" style="padding:0 56px 72px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:4px solid #2B2620;padding-bottom:14px">
+      <h2 style="font:400 34px 'Alfa Slab One',serif;margin:0">The services</h2>
+      <span style="font:600 14px Archivo,sans-serif;letter-spacing:.14em;color:#8A8170">CLICK ONE — EACH HAS ITS OWN PAGE</span>
+    </div>
+    <sc-for list="{{ services }}" as="s" hint-placeholder-count="8">
+      <a href="{{ s.href }}" style="display:flex;align-items:center;gap:22px;padding:22px 8px;border-bottom:2px solid #2B2620;text-decoration:none;color:#2B2620" style-hover="background:#F3EDDD;color:#2B2620">
+        <span style="font:400 17px 'Alfa Slab One',serif;color:{{ s.numColor }};width:44px">{{ s.num }}</span>
+        <div style="width:12px;height:12px;background:{{ s.color }}"></div>
+        <span style="font:700 24px 'Bricolage Grotesque',sans-serif;flex:1">{{ s.title }}</span>
+        <span style="font:400 15px Archivo,sans-serif;color:#57503F">{{ s.hint }}</span>
+        <span style="font:700 22px Archivo,sans-serif">→</span>
+      </a>
+    </sc-for>
+  </div>
+  <sc-if value="{{ showStats }}" hint-placeholder-val="{{ true }}">
+  <div data-screen-label="Stats" style="background:#2B2620;color:#FAF6EC;padding:64px 56px">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:40px;text-align:center">
+      <div><div style="font:400 52px 'Alfa Slab One',serif;color:#E4DB5B">2012</div><div style="font:500 15px Archivo,sans-serif;color:#A89F92;margin-top:6px">fixing &amp; building since</div></div>
+      <div><div style="font:400 52px 'Alfa Slab One',serif;color:#C87F6F">50</div><div style="font:500 15px Archivo,sans-serif;color:#A89F92;margin-top:6px">states we'll show up in</div></div>
+      <div><div style="font:400 52px 'Alfa Slab One',serif;color:#8FAE7E">1</div><div style="font:500 15px Archivo,sans-serif;color:#A89F92;margin-top:6px">email — and it's Mason's</div></div>
+      <div><div style="font:400 52px 'Alfa Slab One',serif;color:#7C93C9">0</div><div style="font:500 15px Archivo,sans-serif;color:#A89F92;margin-top:6px">phone trees, ever</div></div>
+    </div>
+  </div>
+  </sc-if>
+  <div data-screen-label="CTA" style="background:#E4DB5B;text-align:center;padding:72px 56px;border-top:2px solid #2B2620">
+    <div style="font:700 14px Archivo,sans-serif;letter-spacing:.18em;margin-bottom:16px;color:#57503F">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" style="font:400 54px 'Alfa Slab One',serif;color:#2B2620;text-decoration:none;border-bottom:6px solid #C84E3F" style-hover="color:#C84E3F">mason@hurbs.io</a>
+    <div style="font:600 17px Archivo,sans-serif;color:#57503F;margin-top:24px">or (832) 457-4317 — Houston, TX</div>
+  </div>
+  <div data-screen-label="Footer" style="background:#2B2620;color:#A89F92;padding:32px 56px;display:flex;justify-content:space-between;font:400 14px Archivo,sans-serif">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showStats&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const colors = { red: '#C84E3F', yellow: '#E4DB5B', green: '#6E945E', blue: '#516EB4' };
+    const numColors = { red: '#C84E3F', yellow: '#9A8F1E', green: '#6E945E', blue: '#516EB4' };
+    const list = [
+      ['01','red','it-support','IT Support & Managed Services','Help desk, monitoring, the works'],
+      ['02','yellow','cloud','Cloud Setup & Migration','Azure, AWS, Google Cloud'],
+      ['03','green','cybersecurity','Cybersecurity','Backups, monitoring, training'],
+      ['04','blue','software','Custom Software','Programmers on deck'],
+      ['05','red','networks','Networks & Infrastructure','Built clean, documented'],
+      ['06','yellow','data-ai','Data & AI Analytics','Numbers you can act on'],
+      ['07','green','digital','Digital Transformation','Old process, new tools'],
+      ['08','blue','staffing','Staffing & Recruiting','The right tech hires, vetted']
+    ];
+    return {
+      showStats: this.props.showStats ?? true,
+      services: list.map(([num, c, slug, title, hint]) => ({
+        num, title, hint, color: colors[c], numColor: numColors[c],
+        href: 'Hurbs Service.dc.html#' + slug
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

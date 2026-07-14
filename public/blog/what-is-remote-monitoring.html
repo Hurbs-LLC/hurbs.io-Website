@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Remote monitoring, explained: how we see problems before you do | Hurbs LLC</title>
+  <meta name="description" content="What RMM software watches, what alerts mean, and why the quiet fixes are the ones you pay for.">
+  <link rel="canonical" href="https://hurbs.io/blog/what-is-remote-monitoring">
+  <meta property="og:title" content="Remote monitoring, explained: how we see problems before you do | Hurbs LLC">
+  <meta property="og:description" content="What RMM software watches, what alerts mean, and why the quiet fixes are the ones you pay for.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/what-is-remote-monitoring">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-red"></div>
+      <a href="/services/it-support" class="post-lane-link">IT SUPPORT &amp; MANAGED SERVICES</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Remote monitoring, explained: how we see problems before you do</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Most people find out their server drive is failing when it fails. They find out backups stopped running when they need one. They find out a machine is infected when it starts acting strange in front of a customer. By the time a problem is visible to you, it has usually been building for days or weeks. Remote monitoring exists to catch it during those weeks instead.</p>
+
+<p>When an IT company says they "monitor" your systems, they mean a small agent, a piece of software called an RMM (remote monitoring and management) tool, runs quietly on every computer and server. It reports health data back to a dashboard we watch, and it raises alerts when something crosses a threshold. Here's what that actually covers and why it's the least visible thing you pay for.</p>
+
+<h2>What the agent watches</h2>
+
+<p>The specifics vary by tool, but a well-configured RMM agent tracks:</p>
+
+<ul>
+<li><strong>Disk health and space.</strong> Drives report early-warning data (SMART status) before they die, and a disk creeping past 90% full will start breaking things soon. Both are trivially fixable when caught early.</li>
+<li><strong>Backup job results.</strong> Not "is backup software installed" but "did last night's job actually complete." Silent backup failure is the single most dangerous quiet problem in small business IT.</li>
+<li><strong>Patch status.</strong> Which machines are missing security updates, and for how long.</li>
+<li><strong>Antivirus and security state.</strong> Is protection running, current, and reporting anything suspicious.</li>
+<li><strong>Resource trends.</strong> A server whose memory usage climbs every day is telling you something. So is a laptop pinned at 100% disk for an hour every morning.</li>
+<li><strong>Services and uptime.</strong> If the database service behind your line-of-business app stops at 2 a.m., we want a ticket at 2:01, not a phone call at 8:05.</li>
+<li><strong>Event logs.</strong> Repeated failed logins, disk errors, application crashes. Individually boring, meaningful in patterns.</li>
+</ul>
+
+<p>The agent also gives us remote access, with your standing permission, so most of what it finds can be fixed without anyone driving anywhere or interrupting your day.</p>
+
+<h2>What an alert actually means</h2>
+
+<p>An alert is not an emergency. It's a threshold crossing. "Drive C on the front-desk PC is 92% full" is an alert. So is "backup job on the server has failed two nights in a row" and "this laptop hasn't checked in for 14 days." Part of doing monitoring well is tuning: a badly configured RMM fires hundreds of meaningless alerts a day, and the humans watching it go numb. A well-configured one is quiet enough that every alert gets looked at.</p>
+
+<p>When you're evaluating an IT provider, this is a fair question to ask: what happens when an alert fires? The honest answer should involve a ticket being created and a person triaging it within a defined window, not "the system emails us."</p>
+
+<h2>The quiet fixes are the product</h2>
+
+<p>Here's the awkward part of the monitoring business: when it works, you see nothing. The failing drive gets replaced during a scheduled window before it dies. The full disk gets cleaned up on a Tuesday night. The stopped backup gets restarted the morning after it failed, not the morning you needed the restore. From your side, the office just... works, and the invoice arrives, and it's natural to wonder what you're paying for.</p>
+
+<p>You're paying for the outages that didn't happen. We can't prove a negative, but we can show our work: a good provider will share a monthly or quarterly report listing what was caught and fixed. Drives replaced, disks cleaned, backup failures corrected, patches applied. If your current provider charges for monitoring and can't show you that list, ask why.</p>
+
+<h2>What monitoring doesn't do</h2>
+
+<p>Worth being honest about the limits. RMM tools watch machine health; they are not a full security operation. They won't read your email for phishing, they don't replace backups (they verify them), and they can't see a problem on a device that was never enrolled, which is why the marketing laptop someone bought at Best Buy and never told anyone about is always the one that catches fire. Monitoring coverage is only as good as enrollment discipline.</p>
+
+<p>And no monitoring agent should be a mystery to you. You have the right to know what's installed on your machines, what it can see, and what remote access it grants. We tell clients exactly that, in writing, because software with remote access to your computers deserves that transparency.</p>
+
+<h2>How to know it's done right</h2>
+
+<p>Three checks. First, ask for the device list from the monitoring dashboard and compare it against the computers you actually own; gaps mean unprotected machines. Second, ask what happened after the last backup failure, with dates, because there was one, and the answer tells you whether alerts turn into action. Third, ask when a human last looked at the alerts. If the honest answer is "the system handles it," you have a dashboard, not monitoring. The tool is maybe a fifth of it. The habit of someone reading it every day is the rest.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20IT%20Support%20%26%20Managed%20Services" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/microsoft-365-small-business" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Microsoft 365 for small business: what you actually need</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/google-workspace-vs-microsoft-365" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Google Workspace or Microsoft 365? How to pick</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/windows-and-mac-one-office" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Running Windows and Mac in one office</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

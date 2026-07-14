@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dark web monitoring: useful signal or scare tactic? | Hurbs LLC</title>
+  <meta name="description" content="What credential monitoring actually finds and what to do when your domain shows up.">
+  <link rel="canonical" href="https://hurbs.io/blog/dark-web-monitoring">
+  <meta property="og:title" content="Dark web monitoring: useful signal or scare tactic? | Hurbs LLC">
+  <meta property="og:description" content="What credential monitoring actually finds and what to do when your domain shows up.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/dark-web-monitoring">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-green"></div>
+      <a href="/services/cybersecurity" class="post-lane-link">CYBERSECURITY</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Dark web monitoring: useful signal or scare tactic?</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>You've probably seen the pitch. An email or a sales call announces that your company's credentials were "found on the dark web," usually followed by an offer to sell you monitoring for a monthly fee. The framing is designed to scare you, and honestly, sometimes the vendor sending it barely knows what they found. So is dark web monitoring a real security tool or a sales gimmick? The unsatisfying answer is both, depending on who's doing it and what happens after the alert.</p>
+
+<h2>What the monitoring actually watches</h2>
+
+<p>Forget the movie version of the dark web. What these services mostly index is stolen credential data: the fallout from years of breaches at other companies. When LinkedIn, Dropbox, Adobe, or any of thousands of smaller sites got breached, the stolen databases of emails and passwords ended up traded, sold, and eventually dumped in giant public collections. A newer and nastier source is infostealer malware: programs that infect a personal or work computer and quietly upload every saved browser password, which then get sold in bulk logs.</p>
+
+<p>A monitoring service watches these dumps and marketplaces for your domain. When "jane@yourcompany.com" with a password appears in a new collection, you get an alert. That's the product. The free, respectable baseline is Troy Hunt's Have I Been Pwned, which lets you verify your whole domain and get notified when it shows up in a new breach. Paid services from the identity and security vendors add fresher sources, infostealer log coverage, and integration into a ticketing workflow.</p>
+
+<h2>Why the alerts are usually old news, and why they still matter</h2>
+
+<p>Here's the part the scare-tactic sales pitch leaves out: most hits are stale. If your office manager used her work email to sign up for a site that got breached in 2016, that record will float around forever, and every new monitoring vendor will "discover" it and try to alarm you with it. A ten-year-old password from a long-dead account is low risk on its own.</p>
+
+<p>The risk is password reuse. Attackers take those old email-and-password pairs and try them everywhere: your Microsoft 365 login, your VPN, your bank. This is called credential stuffing, it's fully automated, and it works because people reuse passwords for years. So the real question an alert raises is never "is the dark web scary?" It's "is that password, or a close cousin of it like the same word with a new number on the end, still valid anywhere we care about?"</p>
+
+<p>Infostealer hits are the exception to the "usually stale" rule. If a current employee's credentials show up in a stealer log, that means a machine they use was infected recently, and everything saved in that browser is compromised. That alert is a fire alarm, not a smoke test.</p>
+
+<h2>What to actually do when your domain shows up</h2>
+
+<p>An alert without a response process is just anxiety on a subscription plan. Here's the playbook we run:</p>
+
+<ol>
+<li><strong>Identify the account.</strong> Is this a current employee, a former employee, or a shared mailbox? Former-employee hits still matter if that mailbox or its password pattern lives on anywhere.</li>
+<li><strong>Rotate the password.</strong> Reset the affected account's password immediately, even if the exposed one looks old. It costs five minutes and closes the question. Also revoke active sessions so a logged-in attacker gets kicked out, not grandfathered in.</li>
+<li><strong>Check for reuse.</strong> Ask the user directly, without blame, whether that password or a variant is used anywhere else for work: banking portals, vendor sites, the domain registrar. Rotate everywhere it was.</li>
+<li><strong>Investigate if it's fresh.</strong> For infostealer hits or recent breach data, review the account's sign-in logs (Microsoft 365 and Google Workspace both show these) for logins from unfamiliar locations, and scan or reimage the machine involved.</li>
+<li><strong>Confirm MFA is on.</strong> If multi-factor authentication was already enforced on the account, a leaked password alone gets an attacker very little. If it wasn't, this is your prompt.</li>
+</ol>
+
+<h2>The honest verdict</h2>
+
+<p>Dark web monitoring is a useful, cheap signal when three things are true: the alerts reach someone who will act within a day, the response playbook above actually runs, and it sits on top of the controls that matter more. Those controls, in order: MFA enforced on every account, a password manager so people stop reusing passwords, and unique passwords the manager generates. Do those three things and a credential dump becomes a cleanup chore instead of an incident.</p>
+
+<p>What it is not: a substitute for any of that, or a reason to panic-buy anything. If a vendor's opening move is a scary report about 2016 breach data with no context and no remediation steps, they're selling fear, and you should read that as a signal about the vendor.</p>
+
+<h2>How to know it's set up right</h2>
+
+<p>Your domain is registered with a monitoring source, free or paid. Alerts route to a person or a ticket queue, not an unread inbox. There's a written five-step response like the one above, and it has actually been exercised at least once. MFA coverage is at 100% of accounts, because that's what turns these alerts from emergencies into maintenance. We set this up as part of standard security onboarding, and the whole thing takes an afternoon.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cybersecurity" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/what-is-edr" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">EDR, XDR, antivirus: what actually protects endpoints now</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/who-watches-at-3am" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Who’s watching your network at 3 a.m.?</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/ransomware-defense-layers" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Ransomware defense: the five layers that matter</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Business Wi-Fi that reaches the back office | Hurbs LLC</title>
+  <meta name="description" content="AP placement, channels, and coverage mapping. Why more access points on lower power beats one loud one.">
+  <link rel="canonical" href="https://hurbs.io/blog/business-wifi-design">
+  <meta property="og:title" content="Business Wi-Fi that reaches the back office | Hurbs LLC">
+  <meta property="og:description" content="AP placement, channels, and coverage mapping. Why more access points on lower power beats one loud one.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/business-wifi-design">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-red"></div>
+      <a href="/services/networks" class="post-lane-link">NETWORKS &amp; INFRASTRUCTURE</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Business Wi-Fi that reaches the back office</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>The complaint always sounds the same. Wi-Fi is great in the conference room and useless in the back office. Someone in shipping props their laptop against a window to get a signal. The usual fix people try is buying a bigger, louder router and cranking it up. That almost never works, and understanding why is the key to Wi-Fi that actually covers the building.</p>
+
+<h2>Wi-Fi is a two-way conversation</h2>
+
+<p>An access point with a powerful radio can shout across the building. Your laptop and phone cannot shout back. Their radios are small and battery-limited. So you end up with bars on the screen but a connection that crawls: the device hears the AP fine, the AP barely hears the device. That is why one loud access point in the front office leaves the back office miserable no matter what the marketing box promised.</p>
+
+<p>Walls make it worse, and not all walls equally. Drywall costs you a little. Concrete, brick, metal shelving, refrigeration units, and anything with water in it (including aquariums and crowded rooms of people) cost you a lot. A warehouse full of metal racking is one of the hardest environments in networking, and a dentist's office with lead-lined walls around the X-ray room is a close second.</p>
+
+<h2>More APs on lower power beats one loud one</h2>
+
+<p>The counterintuitive rule of business Wi-Fi: turn the power down and add more access points. Several modest APs, each covering its own zone, beat one screamer every time. Each device talks to a nearby AP, the two-way conversation works in both directions, and as people move through the building their devices roam from one AP to the next.</p>
+
+<p>Lower power also matters for roaming. If every AP is at maximum, devices cling to the first AP they connected to long after they have walked out of its useful range, because they can still faintly hear it. With power tuned down, the far AP fades out and the device hops to the near one, which is what you want.</p>
+
+<p>As a rough starting point, plan one ceiling-mounted AP per 1,500 to 2,000 square feet of typical office space, and adjust for walls and density. A training room that seats forty people needs its own AP even if the square footage says otherwise, because forty devices in one room is a capacity problem, not a coverage problem.</p>
+
+<h2>Placement: ceilings, not closets</h2>
+
+<p>Access points are designed to radiate downward and outward from a ceiling. The worst common placements we walk into: on top of a server rack in a closed closet, behind a monitor, on the floor behind a filing cabinet, or all clustered in the front of the building because that is where the internet comes in.</p>
+
+<p>Good placement looks like this: APs mounted on the ceiling, roughly centered over the areas people actually work, spaced so coverage zones overlap a little at the edges. Hallway placement is tempting because cabling is easy, but a long row of APs in one hallway covers the hallway beautifully and the rooms off it poorly. Put them over the rooms.</p>
+
+<p>Since business APs are powered over Ethernet, placement is a cabling job. Each AP needs one Cat6 run back to a PoE switch. Budget for that cabling; it is most of the labor cost and all of the reliability.</p>
+
+<h2>Channels and bands, the short version</h2>
+
+<p>Wi-Fi runs on a few bands and each behaves differently.</p>
+
+<ul>
+<li><strong>2.4 GHz</strong> travels far and punches through walls, but it is slow and crowded. There are only three channels that do not overlap (1, 6, and 11), and everything from microwaves to your neighbor's network fights for them. Keep it around for old devices and far corners, but do not build your plan on it.</li>
+<li><strong>5 GHz</strong> is faster and has many more channels, at the cost of shorter range. This is where most of your traffic should live, and it is another argument for more APs: shorter range per AP is fine when each zone has its own.</li>
+<li><strong>6 GHz</strong>, on Wi-Fi 6E and Wi-Fi 7 gear, adds a wide, clean band with even shorter range. Nice to have in dense offices with new devices, not a requirement for most.</li>
+</ul>
+
+<p>The channel-planning rule: neighboring APs should sit on different channels so they do not talk over each other. On 2.4 GHz that means alternating between 1, 6, and 11 like tiles on a floor. On 5 GHz there is more room to spread out. Modern controller-managed systems like UniFi or Meraki can auto-assign channels, and that is usually a fine starting point, but check what they picked. Auto is not always smart in a building with noisy neighbors.</p>
+
+<h2>The coverage walk</h2>
+
+<p>No Wi-Fi job is done until someone walks the building and measures. Not glances at bars: measures. A free app like a Wi-Fi analyzer on a phone or laptop shows signal strength in dBm as you walk. The working target is around -65 dBm or better everywhere people work. At -75 dBm and beyond, connections get flaky.</p>
+
+<p>Walk every workspace, including the corners nobody thinks about until the day they matter: the storage room where inventory counts happen, the loading dock where drivers scan packages, the kitchen where half the staff eats lunch on their phones. Note the dead spots, then fix them by moving an AP or adding one, and walk it again.</p>
+
+<h2>How to know it was done right</h2>
+
+<p>Good business Wi-Fi is boring. Nobody props laptops against windows. Video calls do not drop when someone walks from their desk to the conference room. The guest network is separate from the one your file server lives on. And somewhere there is a simple record of where each AP is, what channel it is on, and where its cable lands, so the next change takes minutes instead of archaeology.</p>
+
+<p>If your back office is still a dead zone, the fix is almost never a louder router. It is a plan, a few modest APs in the right places, and a walk around the building to prove it worked.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Networks%20%26%20Infrastructure" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-ubiquiti" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Why we reach for Ubiquiti in small offices</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/cisco-meraki-ubiquiti" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Cisco, Meraki, or Ubiquiti: matching gear to the job</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/pfsense-firewall-setup" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Set up a pfSense firewall for a small office</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

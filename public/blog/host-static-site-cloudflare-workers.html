@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Host a static site on Cloudflare Workers | Hurbs LLC</title>
+  <meta name="description" content="Wrangler setup, assets config, custom domain, and deploy. A fast site with no server to babysit.">
+  <link rel="canonical" href="https://hurbs.io/blog/host-static-site-cloudflare-workers">
+  <meta property="og:title" content="Host a static site on Cloudflare Workers | Hurbs LLC">
+  <meta property="og:description" content="Wrangler setup, assets config, custom domain, and deploy. A fast site with no server to babysit.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/host-static-site-cloudflare-workers">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-yellow"></div>
+      <a href="/services/cloud" class="post-lane-link">CLOUD SETUP &amp; MIGRATION</a>
+      <span class="post-type">STEP-BY-STEP GUIDE</span>
+    </div>
+    <h1>Host a static site on Cloudflare Workers</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>If your website is plain HTML, CSS, and JavaScript, you do not need a web server, a VPS, or a monthly hosting bill. Cloudflare Workers will serve a static site from Cloudflare's edge network, fast everywhere, with a generous free tier that covers most small-business sites entirely. By the end of this guide you will have your site deployed to a live URL, with local preview working and a path to your own custom domain.</p>
+
+<p>Cloudflare's older product for this was called Pages. It still works, but Cloudflare is steering new static projects toward Workers with static assets, so that is what we set up here.</p>
+
+<h2>Prerequisites</h2>
+<ul>
+<li>A folder containing your finished site, with an <code>index.html</code> at the top level. We will assume it is called <code>public/</code>.</li>
+<li>Node.js 18 or newer installed (<code>node --version</code> to check).</li>
+<li>A free Cloudflare account (sign up at cloudflare.com if you do not have one).</li>
+<li>A terminal and about 20 minutes.</li>
+</ul>
+
+<h2>Step 1: Set up the project and install Wrangler</h2>
+<p>Wrangler is Cloudflare's command-line tool. Everything runs through it. Make a project folder, put your site files in a <code>public</code> subfolder, and install Wrangler locally.</p>
+<pre><code>mkdir my-site &amp;&amp; cd my-site
+npm init -y
+npm install wrangler --save-dev</code></pre>
+<p>Your folder should look like this:</p>
+<pre><code>my-site/
+├── package.json
+├── node_modules/
+└── public/
+    ├── index.html
+    ├── css/
+    └── js/</code></pre>
+<p>The folder name <code>public</code> is just a convention. Any name works as long as the config in the next step matches it.</p>
+
+<h2>Step 2: Create wrangler.jsonc</h2>
+<p>Create a file named <code>wrangler.jsonc</code> in the project root. This is the whole configuration for a static site:</p>
+<pre><code>{
+  "name": "my-site",
+  "compatibility_date": "2025-01-01",
+  "assets": {
+    "directory": "./public"
+  }
+}</code></pre>
+<p>Three settings, three jobs. <code>name</code> becomes part of your free <code>workers.dev</code> URL, so pick something you do not mind being public. <code>compatibility_date</code> pins the Workers runtime behavior; setting it to roughly today's date is correct for a new project. <code>assets.directory</code> tells Cloudflare which folder to upload and serve.</p>
+<p>One useful option if your site is a single-page app that handles its own routing:</p>
+<pre><code>{
+  "name": "my-site",
+  "compatibility_date": "2025-01-01",
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "single-page-application"
+  }
+}</code></pre>
+<p>For an ordinary multi-page site, leave <code>not_found_handling</code> out and missing pages return a normal 404.</p>
+
+<h2>Step 3: Preview locally with wrangler dev</h2>
+<p>Before deploying anything, run the site locally exactly as Cloudflare will serve it:</p>
+<pre><code>npx wrangler dev</code></pre>
+<p>Wrangler starts a local server, usually at <code>http://localhost:8787</code>. Open that in a browser and click around the whole site. Check that images load and internal links work. Broken paths here will be broken in production too, and this is the cheap place to find them. Press <code>x</code> or Ctrl+C to stop it.</p>
+
+<h2>Step 4: Deploy</h2>
+<p>First deployment needs a login. Wrangler opens a browser window and asks you to authorize it against your Cloudflare account:</p>
+<pre><code>npx wrangler login</code></pre>
+<p>Then ship it:</p>
+<pre><code>npx wrangler deploy</code></pre>
+<p>Wrangler uploads the contents of <code>public/</code> and prints your live URL, something like:</p>
+<pre><code>Deployed my-site
+  https://my-site.your-subdomain.workers.dev</code></pre>
+<p>That URL is live worldwide within seconds. Future updates are the same one command: edit your files, run <code>npx wrangler deploy</code> again. Wrangler only uploads files that changed, so redeploys are quick.</p>
+
+<h2>Step 5: Add your custom domain</h2>
+<p>The <code>workers.dev</code> URL is fine for testing, but you want your own domain on it. Your domain needs to be on Cloudflare first: in the Cloudflare dashboard, add the domain as a site and update the nameservers at your registrar to the pair Cloudflare gives you. Nameserver changes usually take effect within a few hours.</p>
+<p>Once the domain is active in Cloudflare, you can attach it in the config. Add a <code>routes</code> entry to <code>wrangler.jsonc</code>:</p>
+<pre><code>{
+  "name": "my-site",
+  "compatibility_date": "2025-01-01",
+  "assets": {
+    "directory": "./public"
+  },
+  "routes": [
+    { "pattern": "www.example.com", "custom_domain": true }
+  ]
+}</code></pre>
+<p>Then run <code>npx wrangler deploy</code> again. Cloudflare creates the DNS record and issues the TLS certificate automatically, so HTTPS works with no extra steps. You can also do the same thing in the dashboard under your Worker's Settings, in the domains and routes section, if you prefer clicking to editing config.</p>
+
+<h2>Verify it</h2>
+<p>Run through this short list and you are done:</p>
+<ul>
+<li><code>https://www.example.com</code> loads your site over HTTPS with a valid certificate (the padlock in the browser).</li>
+<li>Internal links, images, and stylesheets all load. Open the browser dev tools Network tab and confirm nothing returns 404.</li>
+<li>A nonsense URL like <code>/does-not-exist</code> returns a 404 rather than a blank page.</li>
+<li>Make a small visible edit, run <code>npx wrangler deploy</code>, and confirm the change appears live within a minute.</li>
+</ul>
+<p>Total ongoing cost for a typical small-business site: nothing. The Workers free tier covers a large number of requests per day, far beyond what most brochure sites ever see, and there is no server for anyone to patch or reboot. If you would rather hand off the setup, the domain move, and the deploys, this is exactly the kind of job we do.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cloud%20Setup%20%26%20Migration" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/azure-vs-aws-vs-google-cloud" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Azure, AWS, or Google Cloud: an honest comparison</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/what-cloudflare-does" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">What Cloudflare actually does for your website</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/terraform-first-project" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Your first Terraform project: one server on AWS</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

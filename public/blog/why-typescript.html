@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Why we build in TypeScript | Hurbs LLC</title>
+  <meta name="description" content="Types catch the bugs your tests miss. Why TypeScript is our default for anything past a script.">
+  <link rel="canonical" href="https://hurbs.io/blog/why-typescript">
+  <meta property="og:title" content="Why we build in TypeScript | Hurbs LLC">
+  <meta property="og:description" content="Types catch the bugs your tests miss. Why TypeScript is our default for anything past a script.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/why-typescript">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-blue"></div>
+      <a href="/services/software" class="post-lane-link">CUSTOM SOFTWARE</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Why we build in TypeScript</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>If you've hired anyone to build software in the last few years, you've probably heard the word TypeScript. Maybe a developer told you the project "should be in TypeScript" and you nodded along. Here's what that actually means, why we default to it for almost everything we build, and why it matters to you as the person paying the invoice.</p>
+
+<h2>What TypeScript actually is</h2>
+
+<p>JavaScript is the language that runs in every web browser and powers a huge share of servers through Node.js. TypeScript is JavaScript with one big addition: types. A type is a label that says what kind of thing a piece of data is. This variable is a number. This function takes a customer record and returns an invoice. That field can be empty, so check it before you use it.</p>
+
+<p>Plain JavaScript doesn't enforce any of that. You can pass a customer name where the code expected a customer ID, and JavaScript will happily run it. The bug shows up later, at runtime, usually in front of a user. TypeScript catches it before the code ever runs. The compiler reads the whole project and flags every place where the pieces don't fit together.</p>
+
+<p>The important part: TypeScript compiles down to plain JavaScript. It runs everywhere JavaScript runs. You're not buying into some exotic platform. You're adding a safety layer on top of the most widely used language in the world.</p>
+
+<h2>Types catch the bugs tests miss</h2>
+
+<p>People sometimes argue that good tests make types unnecessary. We've never seen that hold up on a real project. Tests check the cases someone thought to write. Types check every line, every time, automatically.</p>
+
+<p>The bugs that bite hardest in business software are boring ones. A field that's sometimes null. A date stored as a string in one place and a Date object in another. An API response that changed shape and nobody noticed until the reports came out wrong. Tests rarely cover those because nobody imagined them. The type checker doesn't have to imagine anything. It knows the shape of every piece of data and complains the moment two shapes disagree.</p>
+
+<p>In practice, a whole category of production bugs just disappears. Not all bugs. Logic errors still exist, and you still need tests for those. But the "undefined is not a function" class of failure, the one that pages someone at 2 a.m., mostly goes away.</p>
+
+<h2>Why this matters to your budget</h2>
+
+<p>You're not paying for TypeScript because it's trendy. You're paying for what it does to the cost curve over time.</p>
+
+<ul>
+<li><strong>Changes get cheaper.</strong> When we rename a field or change how invoices are calculated, the compiler lists every single place in the codebase that needs updating. In plain JavaScript, we'd find those places by hunting, or worse, by users finding them for us.</li>
+<li><strong>Handoffs get safer.</strong> Someday a different developer will touch this code. Maybe us in two years, maybe someone else. Types are documentation that can't go stale, because the compiler enforces them. A new developer can see exactly what every function expects.</li>
+<li><strong>Fewer emergency calls.</strong> Bugs caught at compile time cost minutes. Bugs caught in production cost hours of diagnosis plus whatever the outage cost your business.</li>
+</ul>
+
+<h2>Where we skip it</h2>
+
+<p>We're not religious about this. A ten-line script that moves files or pokes an API once a day doesn't need a compiler. For quick automation we'll often reach for plain JavaScript or Python and get it done in an afternoon.</p>
+
+<p>The line for us is roughly this: if the code will live longer than a month, if more than one person will ever read it, or if it handles money or customer data, it gets types. Anything past a throwaway script, we build in TypeScript. The setup cost is an hour. The payoff runs for the life of the project.</p>
+
+<h2>How to know it's done right</h2>
+
+<p>If someone builds TypeScript software for you, a few questions tell you whether they used it properly or just checked a box:</p>
+
+<ul>
+<li><strong>Ask about "strict mode."</strong> TypeScript has a strictness setting. With it off, you get maybe a third of the benefit. Any serious shop turns it on from day one. The honest answer here is "yes, strict is on."</li>
+<li><strong>Ask how often they use "any."</strong> The <code>any</code> type is an escape hatch that turns the checker off for a piece of data. A little is normal at the edges. A codebase full of it is JavaScript wearing a costume.</li>
+<li><strong>Ask if the build fails on type errors.</strong> It should. If type errors are warnings that everyone ignores, the safety layer isn't doing anything.</li>
+</ul>
+
+<p>You don't need to understand the answers deeply. You just need to hear confident, specific answers instead of hand-waving. We build in TypeScript by default because it makes the software cheaper to own, not just cheaper to ship. That's the standard we'd want if we were the ones writing the check.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Custom%20Software" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/python-business-automation" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Python: the duct tape of business automation</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/when-react-makes-sense" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">When React makes sense (and when plain HTML wins)</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/build-rest-api-node" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Build a REST API with Node.js and Express</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

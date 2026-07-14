@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>REST or GraphQL: how we choose | Hurbs LLC</title>
+  <meta name="description" content="Most business apps want REST. Where GraphQL earns its complexity.">
+  <link rel="canonical" href="https://hurbs.io/blog/rest-vs-graphql">
+  <meta property="og:title" content="REST or GraphQL: how we choose | Hurbs LLC">
+  <meta property="og:description" content="Most business apps want REST. Where GraphQL earns its complexity.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/rest-vs-graphql">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-blue"></div>
+      <a href="/services/software" class="post-lane-link">CUSTOM SOFTWARE</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>REST or GraphQL: how we choose</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>If you're having software built, somebody on the technical side is going to decide how the front end talks to the back end. The two names you'll hear are REST and GraphQL. Developers argue about this endlessly online, which makes it sound like a hard decision. For most business software, it isn't. Here's how we choose, and what the choice costs you either way.</p>
+
+<h2>What each one is, without the jargon</h2>
+
+<p><strong>REST</strong> is the traditional style. The server exposes a set of URLs, each representing a thing: <code>/customers</code>, <code>/customers/42</code>, <code>/customers/42/invoices</code>. The app asks for a URL, the server sends back that thing as JSON. It's been the standard way to build APIs for about twenty years, and nearly every service you've heard of (Stripe, Twilio, QuickBooks) offers a REST API.</p>
+
+<p><strong>GraphQL</strong> is a query language Facebook released in 2015. Instead of many URLs, there's one endpoint, and the app sends a description of exactly the data it wants: "give me this customer's name, their last five invoices, and the status of each." The server assembles precisely that shape and returns it in one response.</p>
+
+<p>Both get the job done. The difference is where the complexity lives and who pays for it.</p>
+
+<h2>Our default is REST, and here's why</h2>
+
+<p>Most business applications have one front end talking to one back end, built by one small team. The screens are known. The data shapes are known. In that world, REST's simplicity wins on every axis that affects your budget:</p>
+
+<ul>
+<li><strong>Any developer can work on it.</strong> REST is universal knowledge. You will never struggle to find someone who can maintain a REST API. GraphQL narrows the hiring pool and adds a learning curve for every new person who touches the project.</li>
+<li><strong>Less machinery.</strong> A REST endpoint is a route and a function. GraphQL needs a schema layer, resolvers, and client tooling before you've served your first byte. That's setup time you pay for and infrastructure that can break.</li>
+<li><strong>Easier to debug and secure.</strong> With REST, caching, rate limiting, monitoring, and permissions map cleanly onto URLs, and the whole industry's tooling assumes that model. GraphQL pushes all of that inside a single endpoint, where each piece takes custom work. It also introduces its own failure modes, like a client writing a deeply nested query that hammers your database, which you then have to defend against with query-depth limits.</li>
+<li><strong>Boring is a feature.</strong> Twenty years of REST means twenty years of solved problems. When something goes wrong at 4 p.m. on a Friday, you want the technology with a decade of Stack Overflow answers behind it.</li>
+</ul>
+
+<h2>Where GraphQL earns its complexity</h2>
+
+<p>GraphQL isn't hype. Facebook built it for a real problem, and if you have that problem, it pays for itself. The signals:</p>
+
+<ul>
+<li><strong>Many different clients with different needs.</strong> A web app, an iOS app, an Android app, and a partner integration all consuming the same backend, each wanting different slices of the data. With REST you end up either sending everyone everything (wasteful, slow on mobile) or building custom endpoints per client (a maintenance mess). GraphQL lets each client ask for exactly what it needs from one schema. This is the canonical case.</li>
+<li><strong>Deeply nested, interconnected data.</strong> If your screens routinely need "project, with its tasks, each task's assignee, and each assignee's current workload," REST forces either several round trips or bloated purpose-built endpoints. GraphQL fetches the whole tree in one request.</li>
+<li><strong>Front end and back end teams that move at different speeds.</strong> With a GraphQL schema in place, front end developers can build new screens and pull new combinations of data without waiting for anyone to add an endpoint. On larger teams, that decoupling is real velocity.</li>
+</ul>
+
+<p>Notice what those have in common: scale and variety. Multiple clients, multiple teams, sprawling data. If you're reading this as the owner of a business commissioning an internal tool or a customer portal, you almost certainly have one client and one team, and none of those pressures apply yet.</p>
+
+<h2>The costs people don't mention</h2>
+
+<p>When someone pitches GraphQL for a small project, ask what it's buying you. The honest ledger includes the debit side: more setup, more specialized knowledge, caching that no longer comes free from HTTP, and security work that REST gives you cheaply. On a big multi-client platform those costs amortize into nothing. On a two-screen internal tool, they're the most expensive part of the project.</p>
+
+<p>The reverse mistake exists too. If a project genuinely has four client apps and everyone is drowning in one-off endpoints, insisting on REST out of habit means paying the mess tax forever. Tool choice follows the shape of the problem, not the résumé of the builder.</p>
+
+<h2>How to know the choice was made right</h2>
+
+<p>You don't need to referee this decision yourself. You need to hear a reason. Ask whoever's building your software why they picked what they picked. "REST, because you've got one app and one team, and it keeps maintenance cheap" is a good answer. "GraphQL, because you'll have a web app, two mobile apps, and a partner API sharing this backend" is also a good answer. "GraphQL, because it's what modern companies use" is the sound of your budget funding someone's learning project.</p>
+
+<p>We build REST by default and reach for GraphQL when the client list and the data shape demand it. That's not a hot take. It's just matching the tool to the job, which is most of what good software work is.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Custom%20Software" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-typescript" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Why we build in TypeScript</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/python-business-automation" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Python: the duct tape of business automation</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/when-react-makes-sense" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">When React makes sense (and when plain HTML wins)</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

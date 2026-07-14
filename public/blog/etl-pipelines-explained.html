@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ETL pipelines, explained with a coffee run | Hurbs LLC</title>
+  <meta name="description" content="Extract, transform, load. How data moves from your systems into reports without hand-copying.">
+  <link rel="canonical" href="https://hurbs.io/blog/etl-pipelines-explained">
+  <meta property="og:title" content="ETL pipelines, explained with a coffee run | Hurbs LLC">
+  <meta property="og:description" content="Extract, transform, load. How data moves from your systems into reports without hand-copying.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/etl-pipelines-explained">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-yellow"></div>
+      <a href="/services/data-ai" class="post-lane-link">DATA &amp; AI ANALYTICS</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>ETL pipelines, explained with a coffee run</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Somebody in your office copies numbers from one system and pastes them into another. Maybe it's sales figures into a spreadsheet, maybe it's timesheet hours into the invoicing tool. It happens every week, it takes an hour or two, and every so often a number lands in the wrong row and nobody notices until a customer calls. There's a name for the thing that replaces that job: an ETL pipeline.</p>
+
+<p>ETL stands for extract, transform, load. The jargon makes it sound complicated. It isn't. Here's the whole idea, explained with a coffee run.</p>
+
+<h2>The coffee run</h2>
+
+<p>Say you're the person who does the office coffee run. Every morning the routine is the same.</p>
+
+<p><strong>Extract:</strong> you walk around and collect everyone's order. Dave wants a large black coffee, Maria wants an oat milk latte, the new guy wants something with four modifiers. You're pulling raw information out of its source: people's heads.</p>
+
+<p><strong>Transform:</strong> the coffee shop doesn't want to hear "the thing Maria always gets." So you rewrite the orders into the shop's language. You group the three drip coffees together, translate "the usual" into "medium roast, room for cream," and put it all in the order the barista expects. Same information, reshaped so the destination can use it.</p>
+
+<p><strong>Load:</strong> you hand the finished list to the barista. The order enters their system, drinks come out.</p>
+
+<p>That's ETL. Pull data out of a source, reshape it to match what the destination expects, deliver it. A data pipeline is just software doing the coffee run on a schedule, without getting bored, and without writing "Dabe" instead of "Dave."</p>
+
+<h2>What this looks like in a real business</h2>
+
+<p>A concrete example we see constantly. A company takes orders in Shopify, does accounting in QuickBooks, and tracks customers in a CRM. The owner wants one report: revenue by customer by month, with costs included.</p>
+
+<p>A pipeline handles it like this:</p>
+
+<ul>
+<li><strong>Extract:</strong> every night, the pipeline pulls yesterday's orders from Shopify, expenses from QuickBooks, and customer records from the CRM, using each system's API. No human logs in and exports anything.</li>
+<li><strong>Transform:</strong> it cleans up the mess. Shopify calls a customer "ACME Corp" while the CRM says "Acme Corporation," so the pipeline matches them. Dates get standardized. Refunds get subtracted. Test orders get dropped.</li>
+<li><strong>Load:</strong> the clean rows land in one database (or even a shared spreadsheet, for a small operation), and the report reads from there. When the owner opens it Monday morning, the numbers are already current through last night.</li>
+</ul>
+
+<p>Nobody hand-copied anything. That's the entire pitch.</p>
+
+<h2>Scheduling: the runs happen without you</h2>
+
+<p>Pipelines run on a schedule, like a coffee run that happens at 9am sharp whether or not you remembered. Nightly is the most common cadence for small-business reporting, because most decisions don't need up-to-the-minute data and nightly runs are cheap and simple. Hourly is common for inventory and orders. Real-time is possible but rarely worth the cost for a small company.</p>
+
+<p>Tools that do this range from simple to industrial. Off-the-shelf connectors like Fivetran or Airbyte can sync common systems with almost no code. A custom Python script on a scheduler covers the odd cases. Most small businesses need a mix: connectors for the standard stuff, a small script for the one weird system that has no connector.</p>
+
+<h2>Failure alerts: the part people skip</h2>
+
+<p>Here's where the coffee analogy earns its keep. Suppose one morning the coffee shop is closed. A good runner comes back and tells everyone "no coffee today, shop's closed." A bad runner silently comes back empty-handed and lets people discover it themselves.</p>
+
+<p>Pipelines fail the same way. Shopify changes its API, a password expires, a server hiccups. The failure itself isn't the problem; every pipeline fails eventually. The problem is <strong>silent</strong> failure. A pipeline that dies quietly leaves your report showing last Tuesday's numbers, and you make this week's decisions on last week's data without knowing it.</p>
+
+<p>So every pipeline we build gets two safeguards:</p>
+
+<ul>
+<li><strong>Alerts on failure.</strong> If a run breaks, someone gets an email or a Slack message that morning, naming which step failed. Fixing a known failure takes minutes. Discovering an unknown one takes weeks.</li>
+<li><strong>Freshness checks.</strong> The report itself shows when the data was last updated. If it says "as of 3 days ago," anyone reading it knows to be suspicious.</li>
+</ul>
+
+<h2>How to know it's done right</h2>
+
+<p>A pipeline is working when the manual copy-paste job is fully gone, not just reduced. When the numbers in the report match the numbers in the source systems, and someone has actually checked that instead of assuming it. When a failure produces an alert within a day, not a surprise within a month. And when someone other than the person who built it knows how to restart it.</p>
+
+<p>If your business still has a human coffee runner for data, moving orders between systems by hand every week, that job can almost certainly be automated for less than it costs you in staff time each year. We build these regularly and can usually tell you within one conversation how big or small the job would be.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Data%20%26%20AI%20Analytics" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/first-power-bi-dashboard" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Build your first Power BI dashboard from a spreadsheet</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/looker-studio-dashboards" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Free dashboards with Looker Studio</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/sql-still-runs-business" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">SQL: the 40-year-old skill that still runs your business</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

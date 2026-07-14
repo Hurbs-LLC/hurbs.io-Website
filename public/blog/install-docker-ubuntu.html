@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Install Docker on Ubuntu and run your first container | Hurbs LLC</title>
+  <meta name="description" content="Repository setup, install, permissions, hello-world, and a real service in a container.">
+  <link rel="canonical" href="https://hurbs.io/blog/install-docker-ubuntu">
+  <meta property="og:title" content="Install Docker on Ubuntu and run your first container | Hurbs LLC">
+  <meta property="og:description" content="Repository setup, install, permissions, hello-world, and a real service in a container.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/install-docker-ubuntu">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-yellow"></div>
+      <a href="/services/cloud" class="post-lane-link">CLOUD SETUP &amp; MIGRATION</a>
+      <span class="post-type">STEP-BY-STEP GUIDE</span>
+    </div>
+    <h1>Install Docker on Ubuntu and run your first container</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Docker packages an application and everything it needs into a container, a sealed box that runs the same on your laptop, your office server, and a cloud VM. It is how a lot of modern software expects to be run, and installing it on Ubuntu is a fifteen-minute job when you do it right. This guide installs Docker from Docker's own package repository, sets up your user so you can run it without sudo, and finishes with a real service: an nginx web server answering on a port you chose.</p>
+
+<h2>Prerequisites</h2>
+<ul>
+<li>An Ubuntu machine, 22.04 or 24.04, either a physical box, a VM, or a cloud server. A fresh install is ideal but not required.</li>
+<li>A user account with sudo privileges.</li>
+<li>Terminal access, either directly or over SSH.</li>
+</ul>
+<p>One note before we start: Ubuntu's default repositories carry a package called <code>docker.io</code>, and there is also a snap version. Both tend to lag behind. Docker's own repository is what Docker documents and supports, it stays current, and it is what we install on every client machine. That is the route this guide takes.</p>
+
+<h2>Step 1: Remove anything that conflicts</h2>
+<p>If someone previously installed Docker from Ubuntu's repositories, clear it out so the packages do not fight:</p>
+<pre><code>sudo apt-get remove docker.io docker-doc docker-compose podman-docker containerd runc</code></pre>
+<p>If none of those are installed, apt says so and moves on. That is fine. Your images and containers, if you had any, are not deleted by this.</p>
+
+<h2>Step 2: Add Docker's apt repository</h2>
+<p>First, make sure the tools for fetching the repository key are present, then download Docker's signing key:</p>
+<pre><code>sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc</code></pre>
+<p>The key is how apt verifies that packages really came from Docker. Now add the repository itself:</p>
+<pre><code>echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release &amp;&amp; echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+sudo apt-get update</code></pre>
+<p>The command substitutions fill in your CPU architecture and your Ubuntu release name automatically, so the same lines work on 22.04 and 24.04, Intel or ARM. If the final <code>apt-get update</code> runs without errors and mentions download.docker.com, the repository is in place. These commands follow the pattern in <a href="https://docs.docker.com/engine/install/ubuntu/">Docker's official Ubuntu install docs</a>, which is the page to check if anything here has shifted since we wrote it.</p>
+
+<h2>Step 3: Install Docker</h2>
+<pre><code>sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</code></pre>
+<p>Five packages: the Docker engine itself, the command-line client, the container runtime underneath, and the build and compose plugins you will want sooner or later. The service starts automatically on Ubuntu. Confirm it:</p>
+<pre><code>sudo systemctl status docker</code></pre>
+<p>You want to see "active (running)". Press q to exit the status view. Docker is also enabled to start on boot by default, which is what you want on a server.</p>
+
+<h2>Step 4: Run Docker without sudo</h2>
+<p>Out of the box, only root can talk to Docker. Typing sudo in front of every command gets old fast, so add your user to the docker group:</p>
+<pre><code>sudo usermod -aG docker $USER</code></pre>
+<p>Group changes only apply to new sessions, so log out and back in, or run <code>newgrp docker</code> to pick it up in your current shell. One honest caveat: membership in the docker group is effectively root access on that machine, because Docker can mount any part of the filesystem into a container. On your own workstation that is a fair trade. On a shared server, be deliberate about who goes in that group.</p>
+
+<h2>Step 5: Run hello-world</h2>
+<pre><code>docker run hello-world</code></pre>
+<p>This pulls a tiny test image from Docker Hub and runs it. If everything is wired up, it prints a message beginning "Hello from Docker!" along with a short explanation of what just happened: the client talked to the engine, the engine pulled the image, created a container from it, and ran it. If you get a permission error instead, your group change has not taken effect yet, so log out and back in.</p>
+
+<h2>Step 6: Run a real service</h2>
+<p>hello-world proves the install, but it exits immediately. Real containers stay running and serve things. Start an nginx web server:</p>
+<pre><code>docker run -d --name web -p 8080:80 nginx</code></pre>
+<p>Reading the flags: <code>-d</code> runs it in the background, <code>--name web</code> gives it a name you can refer to, and <code>-p 8080:80</code> is the important one. Containers have their own isolated network, and nginx inside is listening on port 80 in there. The <code>-p</code> flag maps port 8080 on your actual machine to port 80 inside the container. The pattern is always host port first, container port second.</p>
+<p>Check that it is running:</p>
+<pre><code>docker ps</code></pre>
+<p>You should see the web container with a status of "Up" and the port mapping listed. Now hit it:</p>
+<pre><code>curl http://localhost:8080</code></pre>
+<p>That returns the "Welcome to nginx!" page. If the machine has a desktop, a browser pointed at the same address shows it too. If it is a cloud server, you would also open port 8080 in its firewall or security group to reach it from outside, but localhost proves the container works.</p>
+<p>Look at its logs, then clean it up:</p>
+<pre><code>docker logs web
+docker stop web
+docker rm web</code></pre>
+<p>The logs show each request nginx served, including your curl. Stop halts the container; rm deletes it. The nginx image stays cached on disk, so next time it starts instantly.</p>
+
+<h2>Wrap-up</h2>
+<p>You now have Docker installed the supported way, running without sudo, and you have run both a test container and a real service with a port mapping. That covers most of what day-to-day Docker use looks like. The natural next step is Docker Compose, already installed as part of this setup, which lets you describe an app, a database, and a proxy together in one file and start them with one command. If you want a server built out this way, containers, backups, updates, and all, that is exactly the kind of work we do.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cloud%20Setup%20%26%20Migration" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/azure-vs-aws-vs-google-cloud" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Azure, AWS, or Google Cloud: an honest comparison</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/what-cloudflare-does" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">What Cloudflare actually does for your website</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/terraform-first-project" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Your first Terraform project: one server on AWS</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

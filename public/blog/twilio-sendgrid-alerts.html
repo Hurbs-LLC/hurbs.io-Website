@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Send SMS and email alerts from your app | Hurbs LLC</title>
+  <meta name="description" content="Twilio for texts, SendGrid for email. API keys, first sends, and the delivery pitfalls to avoid.">
+  <link rel="canonical" href="https://hurbs.io/blog/twilio-sendgrid-alerts">
+  <meta property="og:title" content="Send SMS and email alerts from your app | Hurbs LLC">
+  <meta property="og:description" content="Twilio for texts, SendGrid for email. API keys, first sends, and the delivery pitfalls to avoid.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/twilio-sendgrid-alerts">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-blue"></div>
+      <a href="/services/software" class="post-lane-link">CUSTOM SOFTWARE</a>
+      <span class="post-type">STEP-BY-STEP GUIDE</span>
+    </div>
+    <h1>Send SMS and email alerts from your app</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Your app knows things worth telling people about. An order shipped. A server went down. A job got assigned. The two workhorse channels for getting that news out are SMS and email, and the two workhorse services are Twilio and SendGrid. In this guide you'll set up both in a Node app: buy a Twilio number and send a text, then send email through SendGrid, with API keys handled properly. By the end you'll have working alert functions you can call from anywhere in your code.</p>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>Node.js 18 or newer.</li>
+<li>A Twilio account (free trial works for testing, with limitations noted below).</li>
+<li>A SendGrid account (the free tier is enough to start).</li>
+<li>A domain you control, if you want email that actually lands in inboxes.</li>
+</ul>
+
+<h2>Step 1: Buy a Twilio phone number</h2>
+
+<p>In the Twilio Console, go to Phone Numbers, then Buy a Number. Filter for SMS capability, pick a local number, and buy it. A standard US local number costs a dollar or so per month, and outbound texts cost a fraction of a cent each.</p>
+
+<p>While you're in the Console, grab your Account SID and Auth Token from the account dashboard. Those two values plus the phone number are everything the code needs.</p>
+
+<p>One trial-account gotcha: until you upgrade to a paid account, Twilio only lets you text phone numbers you have verified, and it prepends a trial notice to every message. Fine for testing, useless for production.</p>
+
+<h2>Step 2: Put credentials in environment variables</h2>
+
+<p>Never hardcode API credentials, and never commit them. Locally, use a <code>.env</code> file (and add it to <code>.gitignore</code>):</p>
+
+<pre><code>TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxx
+TWILIO_AUTH_TOKEN=your_auth_token
+TWILIO_FROM_NUMBER=+15551234567
+SENDGRID_API_KEY=SG.xxxxxxxxxxxx
+ALERT_FROM_EMAIL=alerts@yourdomain.com</code></pre>
+
+<p>In production, set the same variables through your host's config (every platform has a place for this). Same code, different values, no secrets in the repo.</p>
+
+<h2>Step 3: Send an SMS with the Twilio SDK</h2>
+
+<p>Install the SDK:</p>
+
+<pre><code>npm install twilio</code></pre>
+
+<p>Then a minimal send function:</p>
+
+<pre><code>const twilio = require('twilio');
+
+const client = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
+
+async function sendSms(to, body) {
+  const message = await client.messages.create({
+    from: process.env.TWILIO_FROM_NUMBER,
+    to,
+    body,
+  });
+  console.log('SMS queued, SID:', message.sid);
+  return message.sid;
+}
+
+// Example:
+// sendSms('+15559876543', 'Server db-01 is not responding.');</code></pre>
+
+<p>Phone numbers go in E.164 format: plus sign, country code, number, no dashes or spaces. The returned SID is your receipt; you can look it up in the Console's message logs if a text goes missing.</p>
+
+<h2>Step 4: A2P registration for US texting</h2>
+
+<p>This is the part nobody tells you until your messages stop delivering. US carriers require businesses sending application-to-person (A2P) SMS to register their brand and messaging use case through Twilio's A2P 10DLC process. Unregistered traffic gets filtered or blocked, and it has gotten stricter every year.</p>
+
+<p>The registration happens in the Twilio Console: you submit your business information and describe what you'll be sending, and approval takes anywhere from days to a few weeks. There are small registration and monthly fees. If you are only sending alerts to yourself or your own staff, you still need it for reliable delivery to US numbers. Budget the time before launch, not after your alerts silently stop arriving.</p>
+
+<h2>Step 5: Get a SendGrid API key and verify a sender</h2>
+
+<p>In the SendGrid dashboard, go to Settings, then API Keys, and create a key with Mail Send permission. Copy it immediately; SendGrid shows it once.</p>
+
+<p>Before SendGrid will send anything, you have to prove you own the from address. Two options under Settings, then Sender Authentication:</p>
+
+<ul>
+<li><strong>Single Sender Verification:</strong> verify one email address by clicking a confirmation link. Fast, fine for testing.</li>
+<li><strong>Domain Authentication:</strong> add a few DNS records (CNAMEs) to your domain so SendGrid can sign your mail with SPF and DKIM. This is what you want for production. Mail from an authenticated domain lands in inboxes; mail without it increasingly lands in spam or gets rejected outright, especially by Gmail and Yahoo, which now require proper authentication for senders of any real volume.</li>
+</ul>
+
+<h2>Step 6: Send email with the SendGrid SDK</h2>
+
+<pre><code>npm install @sendgrid/mail</code></pre>
+
+<pre><code>const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+async function sendEmail(to, subject, text) {
+  const [response] = await sgMail.send({
+    to,
+    from: process.env.ALERT_FROM_EMAIL,
+    subject,
+    text,
+  });
+  console.log('Email accepted, status:', response.statusCode);
+}
+
+// Example:
+// sendEmail('mason@example.com', 'Backup failed',
+//   'Nightly backup on db-01 exited with an error at 2:14 AM.');</code></pre>
+
+<p>A 202 status means SendGrid accepted the message, not that it reached the inbox. For alerts you actually depend on, check the Activity feed in the SendGrid dashboard while testing, and consider enabling event webhooks later so bounces get logged somewhere you'll see.</p>
+
+<h2>Step 7: Verify it</h2>
+
+<p>Wire both functions into a quick test script and run it:</p>
+
+<pre><code>require('dotenv').config();
+
+(async () =&gt; {
+  await sendSms('+1555YOURCELL', 'Test alert from the app.');
+  await sendEmail('you@yourdomain.com', 'Test alert', 'If you can read this, email works.');
+})();</code></pre>
+
+<p>Check that the text arrives, the email arrives in the inbox (not spam), and both dashboards show the messages as delivered. If the email hit spam, finish domain authentication before going further.</p>
+
+<h2>Wrap-up and a few deliverability habits</h2>
+
+<p>You now have <code>sendSms</code> and <code>sendEmail</code> functions you can call from webhooks, cron jobs, or error handlers. A few habits that keep alerts trustworthy: send from a consistent authenticated domain, keep SMS messages short and identify who they're from, don't blast the same alert every minute (batch or throttle repeats), and log every send with its SID or status code so "did the alert go out" is a lookup, not a mystery.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Custom%20Software" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/why-typescript" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Why we build in TypeScript</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/python-business-automation" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Python: the duct tape of business automation</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/when-react-makes-sense" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">When React makes sense (and when plain HTML wins)</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

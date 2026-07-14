@@ -1,0 +1,57 @@
+<p>Testing advice on the internet is written for teams of fifty engineers. Aim for high coverage, automate everything, test every function in isolation. That advice is fine at Google scale and useless for a small business app with one developer and a real budget. Follow it and you'll spend more on tests than on features. Skip testing entirely and you'll find out about bugs from customers. There's a sane middle, and it's smaller than you think.</p>
+
+<h2>Forget the coverage number</h2>
+
+<p>Code coverage measures what percentage of your code the tests touch. It's easy to measure, which is why people fixate on it, and it's a poor target. Chasing 100% means writing tests for trivial code that never breaks, and a test suite that costs hours per feature to maintain. Worse, coverage measures whether code ran during tests, not whether anything meaningful got checked.</p>
+
+<p>The right question for a small app is not "what percent is covered" but "if the most important thing broke, would a test catch it before a customer does?" Budget your testing like you budget anything else: spend where the risk is.</p>
+
+<h2>Rank what actually matters</h2>
+
+<p>Every app has a handful of paths where failure costs real money or trust. For a typical small business app the list looks like:</p>
+
+<ul>
+<li>Customers can log in.</li>
+<li>Orders or bookings go through, and payment gets charged correctly.</li>
+<li>The data people entered yesterday is still there today.</li>
+<li>The invoice, quote, or report comes out with the right numbers.</li>
+<li>The notification emails actually send.</li>
+</ul>
+
+<p>That's usually five to ten things. A bug in the settings page font is an annoyance; a bug in checkout is an emergency. Your testing effort should be as lopsided as those stakes.</p>
+
+<h2>Layer one: smoke tests on the critical paths</h2>
+
+<p>A smoke test answers one question: does the important stuff basically work? It's a small set of automated tests that walk the critical paths end to end. Log in as a test user. Create an order with a test payment. Pull up yesterday's record and check it's intact. Generate an invoice and check the total.</p>
+
+<p>Ten to twenty of these tests cover most of the risk in a small app, and they're cheap to keep because they test behavior ("an order can be placed") rather than implementation details that change every refactor. Wire them into CI so they run on every push, and a deploy that breaks checkout gets stopped by a robot instead of reported by a customer.</p>
+
+<h2>Layer two: a few integration tests where the money is</h2>
+
+<p>Integration tests check that pieces work together: your code plus the database, your code plus Stripe, your code plus the email service. This is where small-app bugs actually live. Not in some function's logic, but in the seams: the webhook that doesn't fire, the date that changes format crossing an API, the record that saves without its line items.</p>
+
+<p>You don't need many. Put them where a silent failure costs money: payment confirmation, anything that syncs to accounting, anything that calculates a price or a tax. Use each vendor's test mode (Stripe's test cards, a sandbox email address) so the tests exercise the real seam without spending real money.</p>
+
+<p>Unit tests, the classic test-one-function-in-isolation kind, earn their keep in one place on a small app: genuinely tricky logic. Pricing rules, date math, commission calculations. If a function has enough branches that you'd have to think hard to check it by hand, write unit tests for it. For straightforward glue code, skip them.</p>
+
+<h2>Layer three: a manual release checklist</h2>
+
+<p>Some things aren't worth automating at small scale: does the site look right on a phone, does the PDF print cleanly, does the whole flow feel right to a human. For those, keep a written release checklist, ten to fifteen lines, and walk it before every meaningful release:</p>
+
+<ul>
+<li>Log in on desktop and phone.</li>
+<li>Place a test order with a test card, confirm the confirmation email arrives.</li>
+<li>Open the newest records and one old one.</li>
+<li>Generate this month's main report, eyeball the totals.</li>
+<li>Check the error log for anything new.</li>
+</ul>
+
+<p>The checklist has to be written down. The one in the developer's head gets skipped exactly once, on the release before a long weekend, and that's the release that breaks. Fifteen minutes with a checklist beats a Saturday of firefighting every time. And when a real bug does slip through to production, add the check that would have caught it. That's how the checklist and the smoke tests earn their shape: from your app's actual failures, not from a best-practices article.</p>
+
+<h2>What this costs</h2>
+
+<p>Roughly 10 to 15 percent of the build effort, as a rule of thumb. On a project of any size that buys the smoke suite, a handful of integration tests, and the checklist. It's the difference between "we think it works" and "we checked," and it's dramatically cheaper than the alternative, which is your customers doing QA for you and telling you about it in reviews.</p>
+
+<h2>How to know it's done right</h2>
+
+<p>Deploys stop being scary. A broken critical path gets caught by CI or the checklist, not by a phone call. When a bug does reach a customer, it's in something cosmetic, not in checkout. And the test suite is small enough that it actually gets maintained instead of ignored. A modest set of tests that runs every day beats a comprehensive one that everyone stopped trusting.</p>

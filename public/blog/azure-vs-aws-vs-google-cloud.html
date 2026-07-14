@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Azure, AWS, or Google Cloud: an honest comparison | Hurbs LLC</title>
+  <meta name="description" content="Where each cloud wins for small and mid-size businesses, and why the answer is usually the one your stack already leans toward.">
+  <link rel="canonical" href="https://hurbs.io/blog/azure-vs-aws-vs-google-cloud">
+  <meta property="og:title" content="Azure, AWS, or Google Cloud: an honest comparison | Hurbs LLC">
+  <meta property="og:description" content="Where each cloud wins for small and mid-size businesses, and why the answer is usually the one your stack already leans toward.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/azure-vs-aws-vs-google-cloud">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-yellow"></div>
+      <a href="/services/cloud" class="post-lane-link">CLOUD SETUP &amp; MIGRATION</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Azure, AWS, or Google Cloud: an honest comparison</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>You have decided to move something to the cloud. A server, a database, maybe your whole rack. Now three names show up in every search result: AWS, Azure, and Google Cloud. Everyone online argues about which one is best, and most of that arguing is written by people who sell one of the three. Here is the honest version, from a shop that has set up businesses on all of them.</p>
+
+<h2>The short answer</h2>
+<p>For most small and mid-size businesses, the right cloud is the one your existing stack already leans toward. The three big providers all rent you the same basic things: virtual machines, storage, databases, and networking. The prices land in the same ballpark. The reliability is comparable. What actually differs is how well each one fits what you already run and who you already pay.</p>
+<p>If your company runs on Microsoft 365, Active Directory, and Windows Server, Azure will feel like an extension of what you have. If your product is custom software built by developers, AWS is the default they probably already know. If your team lives in Google Workspace and your workloads are data-heavy, Google Cloud deserves a look. Picking against your stack means paying an integration tax every month, forever.</p>
+
+<h2>Where Azure wins</h2>
+<p>Azure is the obvious pick for Microsoft shops, which is a huge share of the small businesses we work with. Your Microsoft 365 users already exist in Entra ID (the thing formerly called Azure AD), so identity and single sign-on come almost for free. Windows Server licensing has real discounts when you bring existing licenses through Azure Hybrid Benefit. If you run SQL Server, Remote Desktop setups, or line-of-business apps that assume a Windows domain, Azure is where those move with the least friction.</p>
+<p>The trade-off: the Azure portal is sprawling, names change often, and some services feel bolted on. It rewards having someone who knows their way around it.</p>
+
+<h2>Where AWS wins</h2>
+<p>AWS is the biggest of the three and has the deepest catalog. If a cloud service exists anywhere, AWS probably has a version of it, and it has usually been in production the longest. Developer hiring is easier too: more engineers know AWS than any other cloud, and almost every third-party tool integrates with it first.</p>
+<p>AWS is our default when the workload is Linux servers, custom web applications, or anything a development team built. It is also the safest pick when you genuinely have no lean either way, simply because the ecosystem around it is the largest.</p>
+<p>The trade-off: AWS assumes you know what you are doing. The billing model is famously confusing, and it is easy to leave something running that quietly costs money. Budgets and billing alerts are not optional.</p>
+
+<h2>Where Google Cloud wins</h2>
+<p>Google Cloud is the smallest of the three but strong in specific areas. BigQuery is a genuinely excellent data warehouse, and if your business runs on analytics, that alone can decide it. Kubernetes came out of Google, and GKE remains the most polished managed version. Pricing is often simpler, with automatic sustained-use discounts instead of upfront commitments. And if your company already lives in Google Workspace, identity ties in cleanly.</p>
+<p>The trade-off: the catalog is thinner, fewer local consultants and IT shops know it well, and Google has a reputation for retiring products. That reputation is mostly about consumer products, not core cloud services, but it comes up in every planning meeting for a reason.</p>
+
+<h2>What matters less than you think</h2>
+<p>Raw price comparisons matter less than the marketing suggests. A virtual machine with 4 CPUs and 16 GB of RAM costs roughly the same on all three, and by the time you add storage, backups, and bandwidth, the differences usually wash out. What actually moves your bill is right-sizing: turning off what you do not use, reserving what you do, and catching waste early. We have cut cloud bills by a third without changing providers, just by cleaning up.</p>
+<p>Uptime marketing also matters less than it sounds. All three have outages. All three publish similar service commitments. Your real availability depends far more on how your setup is built, meaning backups, redundancy, and recovery plans, than on whose logo is on the data center.</p>
+
+<h2>How to actually decide</h2>
+<p>Make a list of what you run today: operating systems, databases, business apps, and identity. Then ask which cloud each item maps to with the least rework. Ask who will maintain this in two years, and which platform that person or vendor knows. If you have an existing Microsoft agreement, ask your reseller what Azure credits or discounts come with it, because those are real money.</p>
+<p>And do not split a small environment across two clouds to hedge. Multi-cloud sounds prudent and doubles your complexity for almost no benefit at this size. Pick one, learn it, and keep good backups that live outside it.</p>
+
+<h2>How to know you picked right</h2>
+<p>Six months in, a good cloud choice is boring. Your users sign in with the accounts they already had. The monthly bill is predictable and someone reviews it. Nobody is maintaining a fragile bridge between your identity system and your cloud. If you are fighting the platform to make your existing tools work, that is the sign you picked against your stack, and it is usually fixable. We help businesses make this call, set up the environment properly, and move the workloads over without drama.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cloud%20Setup%20%26%20Migration" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/what-cloudflare-does" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">What Cloudflare actually does for your website</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/terraform-first-project" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Your first Terraform project: one server on AWS</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/do-you-need-kubernetes" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">You probably don’t need Kubernetes</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

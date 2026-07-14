@@ -1,0 +1,57 @@
+<p>Somewhere in your company there's a spreadsheet that runs a process. Requests come in by email, someone copies them into the sheet, someone else updates a status column, and twice a week somebody asks "where are we on the Hendricks thing?" and a person goes digging through their inbox to find out. It works, sort of. It also quietly eats hours every week, and it's exactly the kind of thing a small custom tool erases.</p>
+
+<h2>The spreadsheet-email loop, and what it costs</h2>
+
+<p>The pattern is always the same shape. A process starts small, someone smart builds a spreadsheet to track it, and email carries the updates. Then the business grows and the loop starts leaking:</p>
+
+<ul>
+<li>Data gets re-typed at every step, and re-typing means typos in quantities, dates, and customer names.</li>
+<li>Nobody knows the current status without asking, so people spend time asking, and other people spend time answering.</li>
+<li>Two people edit the sheet at once, or someone works from last week's emailed copy, and now there are two versions of the truth.</li>
+<li>When someone's out sick, their inbox is a black hole and the process stalls.</li>
+</ul>
+
+<p>Run the arithmetic on one of these loops and it stops looking small. Say the copying, chasing, and status-answering costs three people 30 minutes a day each. That's about 7 hours a week, 350 hours a year. At a loaded cost of even $35 an hour, the loop costs over $12,000 a year. And that's before counting the expensive misses: the order that shipped wrong because of a typo, the request that died in an inbox.</p>
+
+<h2>What the replacement actually looks like</h2>
+
+<p>The fix is usually boring, and that's a compliment. A small web tool with three parts:</p>
+
+<ul>
+<li><strong>A form</strong> where requests come in, with required fields, so the data arrives complete and correctly typed the first time.</li>
+<li><strong>A list</strong> everyone can see: every request, its status, who owns it, sorted and filterable. The "where are we on this?" question answers itself.</li>
+<li><strong>Automatic notifications</strong> when something changes: the requester gets an email when their item moves, the owner gets pinged when something new lands. Nobody has to remember to tell anybody anything.</li>
+</ul>
+
+<p>That's it. One screen for submitting, one for tracking, a login, and a database behind it. A tool like this is typically a few weeks of work, not months. It's not impressive to look at, and it will pay for itself inside the first year, then keep paying every year after. We've watched this exact shape replace purchase-order tracking, maintenance requests, client onboarding checklists, and job-site change orders. Different labels, same tool.</p>
+
+<h2>How we scope small tools so they stay small</h2>
+
+<p>The danger with internal tools isn't building the wrong thing. It's building too much of the right thing. Here's the discipline we apply:</p>
+
+<p><strong>Start from the hours, not the features.</strong> Before anything is designed, we count the current cost: who touches this process, how often, for how long, and what mistakes cost. That number sets the ceiling for what the tool should cost. If the loop wastes $12,000 a year, a $60,000 tool is a bad deal no matter how nice it is.</p>
+
+<p><strong>Version one does one loop.</strong> Not "manage our operations." One process, form to done. Every "while we're at it, could it also..." goes on a list for version two. Half of those wishes evaporate once people use version one, because it turns out they were workarounds for the old mess.</p>
+
+<p><strong>Check for off-the-shelf first.</strong> Sometimes the honest answer is Airtable, a shared ticketing tool, or a feature that already exists in software you're paying for. We'd rather point you at a $20-a-month tool than build one, and being willing to say that is how you keep the client. Custom wins when your process has rules an off-the-shelf tool fights you on, or when it needs to talk to your other systems.</p>
+
+<p><strong>Ship in weeks, then watch.</strong> A tool used daily for a month teaches you more about what version two needs than any planning meeting. Real usage is the requirements document.</p>
+
+<h2>Signs you've got a candidate</h2>
+
+<p>Look around your operation for these:</p>
+
+<ul>
+<li>A spreadsheet more than one person edits, tracking things that change status.</li>
+<li>Any process where the phrase "just email it to me and I'll add it" is load-bearing.</li>
+<li>A question people ask out loud that a screen should answer ("did that go out?", "who has this?").</li>
+<li>Data typed into one place that someone later re-types into another.</li>
+</ul>
+
+<p>One strong candidate beats five weak ones. Pick the loop with the most hours in it.</p>
+
+<h2>How to know it's done right</h2>
+
+<p>A good internal tool disappears into the routine. Within a month, people stop cc'ing each other about statuses because the list is where truth lives. The measure of success is blunt: the hours you counted at the start should actually come back, and you should be able to see it in how the week runs. If a tool launches and the old spreadsheet is still alive three months later, the tool missed, and it's worth asking why rather than forcing it.</p>
+
+<p>Also insist on the boring guarantees: the data gets backed up, logins are per-person (so departures don't mean shared-password scrambles), and you own the code and the data outright. Small tools deserve the same hygiene as big ones. They're carrying your operations, after all. That's the whole reason they pay.</p>

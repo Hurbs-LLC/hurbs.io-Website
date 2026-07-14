@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Approval workflows: kill the email chain | Hurbs LLC</title>
+  <meta name="description" content="Requests, approvers, and audit trails in one place. Nobody hunts through inboxes for the yes.">
+  <link rel="canonical" href="https://hurbs.io/blog/approval-workflows">
+  <meta property="og:title" content="Approval workflows: kill the email chain | Hurbs LLC">
+  <meta property="og:description" content="Requests, approvers, and audit trails in one place. Nobody hunts through inboxes for the yes.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/approval-workflows">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-green"></div>
+      <a href="/services/digital" class="post-lane-link">DIGITAL TRANSFORMATION</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>Approval workflows: kill the email chain</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Somebody on your team needs a new laptop. They email their manager. The manager forgets, gets a follow-up, replies "sure, ask Dave about budget." Dave is on vacation. Two weeks later the request is buried under forty other threads and the employee is still working on a machine that takes ten minutes to boot. Nothing about this is unusual. Most small businesses run every approval this way: purchases, time off, discounts, contracts, new hires. Email is where those requests go to stall.</p>
+
+<p>An approval workflow fixes this by making the request a thing that exists in one place, with a status, an owner, and a clock. Instead of a message in someone's inbox, it's an item in a system: submitted on this date, waiting on this person, approved or rejected with a reason attached. Nobody has to search their email for "the yes." The yes is right there.</p>
+
+<h2>What an approval workflow actually is</h2>
+
+<p>Strip away the vendor language and it's four parts:</p>
+
+<ul>
+<li><strong>A form.</strong> The requester fills in what they need, how much it costs, and why. Structured fields, not a free-form email, so the approver has everything up front instead of asking three clarifying questions.</li>
+<li><strong>A routing rule.</strong> Purchases under $500 go to the direct manager. Over $500, they also go to the owner. Time off goes to whoever runs the schedule. The system decides who sees it, not the requester.</li>
+<li><strong>A decision with a record.</strong> Approve or reject, with a comment. Timestamped. Attached to the request forever.</li>
+<li><strong>Notifications.</strong> The approver gets pinged when something needs them. The requester gets pinged when it's decided. Nobody follows up manually.</li>
+</ul>
+
+<p>That last part is where the real time savings live. In an email chain, the requester does the chasing. In a workflow, the system does.</p>
+
+<h2>Escalation and delegation</h2>
+
+<p>Two features separate a workflow that works from one that just moves the bottleneck.</p>
+
+<p><strong>Escalation</strong> means a request that sits untouched for a set time, say three business days, automatically bumps to the next person up or fires a reminder. Approvers are busy people. Without escalation, your fancy new system stalls exactly like email did, just in a different inbox.</p>
+
+<p><strong>Delegation</strong> means an approver going on vacation can hand their queue to someone else for a week. Requests keep moving. When Dave is out, Dave's approvals don't wait for Dave. We see companies skip this setting and then wonder why everything freezes every time a manager takes a Friday off.</p>
+
+<h2>The audit trail is not optional</h2>
+
+<p>Six months from now, someone will ask "who approved this?" Maybe it's a $4,000 charge nobody remembers. Maybe it's your accountant at tax time. Maybe it's a dispute about whether a discount was authorized. With email, you're hoping the thread still exists and that you can find it. With a workflow, you pull up the request and the answer is on the screen: who asked, who approved, when, and what they said. If you're in an industry with any compliance requirements, this stops being nice-to-have and becomes the whole point.</p>
+
+<h2>What tools to use</h2>
+
+<p>You almost certainly don't need to buy anything new. Approval workflows come bundled with software you probably already pay for:</p>
+
+<ul>
+<li><strong>Microsoft 365:</strong> the Approvals app in Teams handles basic request-and-approve out of the box. Power Automate handles routing rules, multi-step approvals, and escalation when you outgrow the basic app.</li>
+<li><strong>Google Workspace:</strong> Google Forms feeding a Sheet gets you surprisingly far, and AppSheet can add real routing on top if you need it.</li>
+<li><strong>Purpose-built tools:</strong> if approvals are core to your business, tools like Jotform, Kissflow, or the approval features inside your accounting or HR software may fit better than a general platform.</li>
+</ul>
+
+<p>Start with what's in your existing subscription. The tool matters far less than the discipline of using one path for requests instead of five.</p>
+
+<h2>How to roll it out without a revolt</h2>
+
+<p>Pick one approval type, not all of them. Purchase requests are usually the best first candidate: high pain, clear rules, easy to define. Build the form, set the routing, set an escalation timer, and test it with two or three real requests before announcing anything. Then tell the team the email path is closed as of a specific date. If people can still email their manager for approval, they will, and the system dies quietly. One path, enforced.</p>
+
+<p>After the first type runs smoothly for a month, add the next one. Time off, then expense reimbursement, then whatever else generates chase-me email threads.</p>
+
+<h2>How you know it's done right</h2>
+
+<p>Three signs. First, when someone asks "did that get approved?" the answer takes ten seconds to find, not a search through email. Second, requests don't stall silently: anything sitting too long pings someone automatically. Third, and this is the real test, people stop routing around the system. If employees are still texting the owner for a quick yes, the workflow is too slow or too complicated, and that's a fixable problem, not a reason to go back to email.</p>
+
+<p>We set these up regularly, usually inside Microsoft 365 or Google Workspace a client already pays for. Most take an afternoon to build and a couple weeks of tuning. Cheap fix for a problem that wastes hours every single week.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Digital%20Transformation" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/sharepoint-without-sprawl" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">SharePoint without the sprawl</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/slack-or-teams" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Slack or Teams: pick one, set it up right</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/first-power-automate-flow" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Your first Power Automate flow: an approval that emails itself</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

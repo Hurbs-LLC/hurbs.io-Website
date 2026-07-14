@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Set up SPF, DKIM, and DMARC records that actually pass | Hurbs LLC</title>
+  <meta name="description" content="Step-by-step DNS records that stop spoofing and keep your mail out of spam folders.">
+  <link rel="canonical" href="https://hurbs.io/blog/spf-dkim-dmarc-setup">
+  <meta property="og:title" content="Set up SPF, DKIM, and DMARC records that actually pass | Hurbs LLC">
+  <meta property="og:description" content="Step-by-step DNS records that stop spoofing and keep your mail out of spam folders.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/spf-dkim-dmarc-setup">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-red"></div>
+      <a href="/services/it-support" class="post-lane-link">IT SUPPORT &amp; MANAGED SERVICES</a>
+      <span class="post-type">STEP-BY-STEP GUIDE</span>
+    </div>
+    <h1>Set up SPF, DKIM, and DMARC records that actually pass</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>If your invoices land in spam, or someone spoofed your domain to phish a customer, this is the fix. SPF, DKIM, and DMARC are three DNS records that prove your email is really from you. Mail providers check them on every message, and domains without them get treated as suspects.</p>
+
+<p>Plain-English versions of the three:</p>
+
+<ul>
+<li><strong>SPF</strong> lists which servers are allowed to send mail for your domain.</li>
+<li><strong>DKIM</strong> puts a cryptographic signature on each message so receivers can verify it wasn't altered.</li>
+<li><strong>DMARC</strong> tells receivers what to do when a message fails those checks: nothing, quarantine it, or reject it. It also sends you reports.</li>
+</ul>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>Access to your domain's DNS (wherever your domain is hosted: Cloudflare, GoDaddy, Namecheap, etc.)</li>
+<li>Knowing who sends mail as your domain: your mail provider (Microsoft 365 or Google Workspace), plus anything else like a newsletter tool, CRM, or invoicing app</li>
+</ul>
+
+<p>That second list matters. Every legitimate sender you forget will start failing checks once DMARC tightens up.</p>
+
+<h2>Step 1: Publish your SPF record</h2>
+
+<p>SPF is a single TXT record on your bare domain. For Microsoft 365:</p>
+
+<pre><code>Type: TXT
+Host: @
+Value: v=spf1 include:spf.protection.outlook.com -all</code></pre>
+
+<p>For Google Workspace:</p>
+
+<pre><code>Type: TXT
+Host: @
+Value: v=spf1 include:_spf.google.com ~all</code></pre>
+
+<p>Extra senders get added as more <code>include:</code> entries before the <code>all</code>. Two rules: you get exactly one SPF record per domain (multiple records break validation), and you're limited to 10 DNS lookups total, so don't stack includes you don't need.</p>
+
+<h2>Step 2: Turn on DKIM signing</h2>
+
+<p>DKIM keys live with your mail provider, and you enable signing there:</p>
+
+<ol>
+<li><strong>Microsoft 365</strong>: in the Defender portal, go to Email authentication settings, select your domain, and enable DKIM. It gives you two CNAME records (<code>selector1._domainkey</code> and <code>selector2._domainkey</code>) to add in DNS first.</li>
+<li><strong>Google Workspace</strong>: in the Admin console under Apps → Google Workspace → Gmail → Authenticate email, generate the key, add the TXT record it gives you at <code>google._domainkey</code>, then click Start authentication.</li>
+</ol>
+
+<p>Each third-party sender (Mailchimp, HubSpot, QuickBooks, and the like) has its own DKIM setup page with its own records. Do those too.</p>
+
+<h2>Step 3: Start DMARC in monitor mode</h2>
+
+<p>Don't jump straight to blocking. Publish DMARC in monitor-only mode first:</p>
+
+<pre><code>Type: TXT
+Host: _dmarc
+Value: v=DMARC1; p=none; rua=mailto:dmarc@yourdomain.com</code></pre>
+
+<p><code>p=none</code> means "check everything, block nothing, send me reports." The reports land at the <code>rua</code> address as XML summaries showing every server sending mail as your domain, and whether it passes.</p>
+
+<h2>Step 4: Read the reports for two weeks</h2>
+
+<p>Raw DMARC reports are unreadable XML; run them through a free parser (Postmark's DMARC digest or dmarcian's free tier both work). You're looking for one thing: legitimate senders that are failing. Usually it's a forgotten tool someone in the office signed up for. Add its SPF include or DKIM record and watch it flip to passing.</p>
+
+<h2>Step 5: Tighten the policy</h2>
+
+<p>Once two weeks of reports show only your real senders passing, turn the lock:</p>
+
+<pre><code>v=DMARC1; p=quarantine; rua=mailto:dmarc@yourdomain.com; pct=100</code></pre>
+
+<p>Run <code>p=quarantine</code> (failures go to spam) for a few more weeks, then finish at <code>p=reject</code>, where spoofed mail is refused outright. That's the end state: nobody can send as your domain except you.</p>
+
+<h2>Verify it</h2>
+
+<p>Send a message to a Gmail address, open it, and choose Show original. You want three lines: <code>SPF: PASS</code>, <code>DKIM: PASS</code>, <code>DMARC: PASS</code>. Free checkers like MXToolbox will also read your records and flag mistakes.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20IT%20Support%20%26%20Managed%20Services" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/microsoft-365-small-business" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Microsoft 365 for small business: what you actually need</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/google-workspace-vs-microsoft-365" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Google Workspace or Microsoft 365? How to pick</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/windows-and-mac-one-office" class="other-row">
+      <div class="ledger-sq sq-red"></div>
+      <span class="other-title">Running Windows and Mac in one office</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

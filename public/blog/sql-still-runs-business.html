@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SQL: the 40-year-old skill that still runs your business | Hurbs LLC</title>
+  <meta name="description" content="Every system you own speaks SQL underneath. Why a few queries beat hours of spreadsheet exports.">
+  <link rel="canonical" href="https://hurbs.io/blog/sql-still-runs-business">
+  <meta property="og:title" content="SQL: the 40-year-old skill that still runs your business | Hurbs LLC">
+  <meta property="og:description" content="Every system you own speaks SQL underneath. Why a few queries beat hours of spreadsheet exports.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/sql-still-runs-business">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-yellow"></div>
+      <a href="/services/data-ai" class="post-lane-link">DATA &amp; AI ANALYTICS</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>SQL: the 40-year-old skill that still runs your business</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Somewhere in your business there's a question that takes two days to answer. Maybe it's "which customers haven't ordered in six months" or "what did we actually sell by location last quarter." Answering it means someone exports a report from one system, exports another from a second system, and spends an afternoon in Excel gluing them together with VLOOKUPs. There's a 40-year-old skill that answers that question in about thirty seconds, and it's already sitting under every system you own.</p>
+
+<h2>Every system speaks SQL underneath</h2>
+<p>SQL (structured query language) is the language for asking questions of a database. It was standardized in the 1980s and it has outlived every technology trend since, because it does one job extremely well: pull exactly the rows and columns you want out of a pile of data, filtered, summed, and sorted, in one statement.</p>
+<p>Here's the part most business owners don't realize: nearly everything you run is a database with a coat of paint on it. Your accounting software, your point of sale, your CRM, your job management system, your e-commerce platform. Under each one is a set of tables that look a lot like tidy spreadsheets: a customers table, an orders table, an invoices table. The vendor's app is just a friendly screen for putting data in and a limited set of canned reports for getting data out.</p>
+<p>The canned reports are the bottleneck. The vendor guessed at the twenty questions you might ask and built a report for each. Your actual question is always number twenty-one. So you export to CSV and rebuild the answer by hand, every single time you need it.</p>
+
+<h2>A few SELECTs beat hours of exports</h2>
+<p>SQL skips the export entirely. You ask the database your question directly. Here's what one looks like:</p>
+<pre><code>SELECT customer_name,
+       SUM(total) AS total_spent,
+       MAX(order_date) AS last_order
+FROM orders
+WHERE order_date &gt;= '2025-01-01'
+GROUP BY customer_name
+ORDER BY total_spent DESC;</code></pre>
+<p>Read it out loud and it's nearly English: from the orders table, for orders since January 2025, give me each customer's total spend and most recent order date, biggest spenders first. That's a customer ranking that would take a pivot table, a lookup, and twenty minutes of formatting in Excel. In SQL it's five lines, it runs in a second or two, and here's the important part: it runs the same way next month. You saved the query, so the two-day question became a thirty-second question forever.</p>
+<p>Change one line and it becomes a different report. Swap the ORDER BY to sort by last_order and you have a "who's gone quiet" list. Add a HAVING clause and it's "customers who spent over ten grand." One skill, unlimited reports, no waiting on anyone.</p>
+
+<h2>Why this matters even if you never write a query</h2>
+<p>We're not telling every business owner to learn SQL, though honestly, the basics take a weekend and there are worse weekends. The point is knowing it exists changes what you accept from your systems and your vendors.</p>
+<ul>
+<li><strong>Stop accepting "the report doesn't show that."</strong> If the data went into the system, it can come out. The question is only whether anyone on your side can reach the database, directly or through an export the vendor provides.</li>
+<li><strong>Ask vendors about data access before you buy.</strong> Direct database access, a reporting connector, or at minimum a full scheduled export. Software that holds your own data hostage behind six canned reports is a bad deal at any price.</li>
+<li><strong>Dashboards run on it anyway.</strong> When we build a Power BI or Looker Studio dashboard, SQL is usually doing the work behind the visuals. Clean queries in the back are why the numbers on the front are trustworthy.</li>
+<li><strong>It's the cheapest analytics investment there is.</strong> No new software, no subscription. The database is already there. The only cost is someone who knows how to talk to it.</li>
+</ul>
+
+<h2>What this looks like done right</h2>
+<p>Done right, the recurring questions in your business each have a saved query with a name, not a person who "knows how to pull that." The queries live somewhere shared, not on one employee's desktop. Anything you look at weekly is wired into a dashboard so nobody runs it by hand at all. And when a brand-new question comes up, the answer takes minutes, because asking is cheap now.</p>
+<p>One safety note: queries that read data (SELECT) are harmless, but write access to a production database is not, so reporting should happen against a read-only connection or a copy. That's standard setup, not an obstacle.</p>
+<p>If your team is still answering questions by exporting CSVs and stitching them together, you're paying skilled people to do by hand what a five-line query does for free. We can find out what your systems will let us connect to, write the queries for the questions you actually ask, and leave you with reports that run themselves.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Data%20%26%20AI%20Analytics" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/first-power-bi-dashboard" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Build your first Power BI dashboard from a spreadsheet</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/looker-studio-dashboards" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">Free dashboards with Looker Studio</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/excel-becomes-database" class="other-row">
+      <div class="ledger-sq sq-yellow"></div>
+      <span class="other-title">When your Excel file becomes a database problem</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

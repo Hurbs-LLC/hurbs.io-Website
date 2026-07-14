@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>When your only IT person quits: backfill fast | Hurbs LLC</title>
+  <meta name="description" content="Lock down access, capture knowledge, bridge the gap. The two-week plan that keeps the lights on.">
+  <link rel="canonical" href="https://hurbs.io/blog/when-your-it-person-quits">
+  <meta property="og:title" content="When your only IT person quits: backfill fast | Hurbs LLC">
+  <meta property="og:description" content="Lock down access, capture knowledge, bridge the gap. The two-week plan that keeps the lights on.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/when-your-it-person-quits">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-blue"></div>
+      <a href="/services/staffing" class="post-lane-link">STAFFING &amp; RECRUITING</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>When your only IT person quits: backfill fast</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>Your IT person just gave notice. Maybe two weeks, maybe none. They're the only one who knows the passwords, the vendor contacts, why the server closet is wired the way it is, and what that one scheduled task does at 2 a.m. Every small company with a single IT person is one resignation away from this moment, and most discover their exposure the day it happens. Here's the plan we run when clients call us mid-panic, in order, because the order matters.</p>
+
+<h2>Day one: lock down access</h2>
+
+<p>Do this before anything else, even if the departure is friendly. Especially if it isn't. This is not an accusation, it's hygiene, and a professional IT person will expect it.</p>
+
+<ul>
+<li><strong>Change every shared and administrative password.</strong> Domain admin, Microsoft 365 or Google Workspace admin, firewall, backup console, website registrar and DNS, banking and payment platforms, remote access tools.</li>
+<li><strong>Disable their accounts</strong> on their last day, not the Friday after. Kill VPN access, revoke MFA tokens, deactivate any remote monitoring agent tied to their account, collect laptops and keys.</li>
+<li><strong>Check for the quiet doors.</strong> Personal email set up as a recovery address on admin accounts. Remote access software (TeamViewer, AnyDesk, Chrome Remote Desktop) installed on servers. API keys and service accounts they created. Auto-forwarding rules on mailboxes.</li>
+<li><strong>Find out what's registered where.</strong> The nightmare scenario is your domain name, SSL certificates, or Microsoft tenant registered under their personal email. It happens constantly with long-tenured solo IT people, not out of malice, just convenience years ago. Get those transferred to a company-owned account now, while they're still reachable and cooperative.</li>
+</ul>
+
+<p>If you don't have the admin passwords at all, that's the day-one project. Recovering control of your own systems is doable but much easier with the departing person's help than without it.</p>
+
+<h2>Week one: capture knowledge while you can</h2>
+
+<p>If you have notice time, their remaining days are worth more as documentation than as ticket work. Let small problems wait. Sit them down, record the sessions if they're comfortable with it, and extract:</p>
+
+<ul>
+<li><strong>An asset list.</strong> Every server, what runs on it, and what breaks if it goes down. Every network device and where it lives. Every software subscription, what it costs, and when it renews.</li>
+<li><strong>The credential map.</strong> Not just passwords, but which account is the admin for which system. Put it all in a proper password manager owned by the company, today.</li>
+<li><strong>Vendor and support contacts.</strong> The ISP account number, the phone system vendor, whoever supports the line-of-business app, and whether support contracts are active.</li>
+<li><strong>Backups.</strong> What's backed up, where it goes, how to restore, and when a restore was last actually tested. Ask them to demonstrate one restore. This is the single most valuable hour of the whole handoff.</li>
+<li><strong>The weird stuff.</strong> Every environment has three or four things only the resident knows: the scheduled job that must not be disabled, the printer that needs a static IP, the reason the guest Wi-Fi is on that VLAN. Ask directly: "what will bite the next person?"</li>
+</ul>
+
+<p>If they left with no notice, run the same list as an audit instead of an interview. It takes longer and you'll find surprises, which is exactly why it can't wait.</p>
+
+<h2>Weeks one and two: bridge with contract coverage</h2>
+
+<p>Don't try to sprint a permanent hire. A rushed search for "someone, anyone, who knows computers" is how the last emergency hire happened, and a good permanent search for a sysadmin realistically takes weeks to a few months. Meanwhile the tickets don't stop.</p>
+
+<p>Contract coverage bridges the gap. An experienced contract sysadmin can start within days, keep the lights on, and, just as valuable, audit the environment with fresh eyes while your search runs at a sane pace. Expect the first week to be discovery: they'll work through the same asset-and-access list above and tell you what shape you're actually in. Often they find that the panic was overblown and the environment mostly runs itself for a few weeks. Sometimes they find the backups haven't succeeded since spring. Either way, you'd rather know.</p>
+
+<p>The bridge also buys you a better decision. With a contractor holding things steady, you can ask the question the resignation raised: does this business actually need one full-time IT employee, or would ongoing managed support cover it for less? Plenty of companies rebuild after a departure with a part-time or fully outsourced model and never replace the role at all. Others confirm they need the hire and now have time to screen properly. Both are fine outcomes. Deciding under a two-week deadline produces neither.</p>
+
+<h2>How to know you've landed it</h2>
+
+<p>A month out, the test is simple. Every system has a company-owned admin credential in a company-owned password manager. Nothing critical is registered to a personal email. There's a document a competent stranger could use to run your environment, because a competent stranger just proved it. And whoever comes next, employee or contractor, inherits a documented environment instead of a mystery. That last part is the real fix, because the actual lesson of this whole episode isn't about the person who quit. It's that the company's IT knowledge lived in one head. Whatever you rebuild, don't rebuild that.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Staffing%20%26%20Recruiting" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/w2-vs-1099-techs" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">W-2 or 1099: hiring techs without the compliance headache</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/contract-vs-direct-hire" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">Contract, contract-to-hire, or direct: which fits</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/hiring-help-desk-techs" class="other-row">
+      <div class="ledger-sq sq-blue"></div>
+      <span class="other-title">What to look for when hiring help desk techs</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>

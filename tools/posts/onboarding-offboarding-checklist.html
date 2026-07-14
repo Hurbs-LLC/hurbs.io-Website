@@ -1,0 +1,63 @@
+<p>New hires judge a company fast, and nothing says "we weren't ready for you" like spending your first morning watching someone hunt for a laptop charger and guess at passwords. Offboarding is worse: a departed employee whose accounts stay live for weeks is one of the most common and most preventable security holes in small business. Both problems have the same fix, which is a checklist run the same way every time.</p>
+
+<p>This is the checklist we run for clients. Copy it, adapt the specifics to your stack, and put someone's name on the responsibility. By the end you'll have a repeatable process where day one takes an hour of IT time instead of a scrambled afternoon, and a departure locks down in minutes.</p>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>Admin access to your identity platform (Microsoft 365 or Google Workspace).</li>
+<li>A device management system (Intune or similar) that new machines enroll into, or at minimum a written build sheet for setting up a laptop by hand.</li>
+<li>A password manager with company vaults, so shared credentials aren't in a spreadsheet.</li>
+<li>A standing agreement with HR or the hiring manager: IT gets notified of hires at least three business days out, and of departures before the employee is told, when possible.</li>
+<li>One document listing every system a person might need access to: email, file storage, line-of-business apps, phone system, building access, and who approves each.</li>
+</ul>
+
+<p>That last item is the whole game. Most onboarding chaos and offboarding gaps come from systems nobody wrote down.</p>
+
+<h2>Onboarding: day minus one (or earlier)</h2>
+
+<p>Everything that can happen before the start date should. In order:</p>
+
+<ol>
+<li><strong>Create the account.</strong> Set up the user in Microsoft 365 or Google Workspace with the naming convention you already use (pick one and never deviate; searching for people gets harder every time you improvise). Assign the mailbox and set a strong temporary password that expires on first login.</li>
+<li><strong>Assign the license.</strong> Match the license to the role, not to whatever's left over. If you follow a tiering rule (say, Business Premium for anyone with a company laptop), apply it now. Order a new license if none are free; don't recycle a departed employee's account by renaming it. Renamed accounts inherit old email, old permissions, and old problems.</li>
+<li><strong>Add to groups.</strong> Put the account in the security and distribution groups for their team. If your file permissions are group-based (they should be), this one step grants the right folders, the right shared mailboxes, and the right Teams or Drive access. If you find yourself granting folder access person by person, note it as technical debt.</li>
+<li><strong>Create app accounts.</strong> Work down your systems list: line-of-business software, accounting or CRM seats, the phone system, timekeeping. Some of these have per-seat costs, so this is also the moment the license spend gets real and visible.</li>
+<li><strong>Prepare the device.</strong> Enroll the laptop in device management so it pulls your standard profile: encryption on, screen lock, standard apps, Wi-Fi and email preconfigured. Physically check the kit: charger, dock, monitor, headset. Label the asset and record the serial number against the employee's name.</li>
+<li><strong>Stage the credentials.</strong> Put the temporary password and MFA enrollment instructions somewhere the manager can hand over securely on day one. Not in an email to the personal address of someone who doesn't work for you yet.</li>
+</ol>
+
+<h2>Onboarding: day one</h2>
+
+<ol>
+<li><strong>First login and MFA.</strong> Sit with the new hire (or schedule fifteen remote minutes) for the first sign-in: change the temporary password, enroll multi-factor authentication on their phone, and sign into email. Do not let MFA enrollment slide to "later this week." An account without MFA is the softest target in your company, and later this week has a way of becoming never.</li>
+<li><strong>Password manager.</strong> Create their password manager account and share the vaults their role needs. This is also when you say, out loud, that credentials live here and nowhere else.</li>
+<li><strong>Verify access.</strong> Have them actually open everything: email, the shared files, the line-of-business app, the printer. Five minutes of clicking now beats a week of one-off tickets.</li>
+<li><strong>Cover the ground rules.</strong> Ten minutes on how to reach IT support, what a phishing attempt looks like, and the policy on personal accounts on company machines. New employees are the most phished people in any company, because attackers know they're eager and don't yet know what normal looks like.</li>
+<li><strong>Close the loop.</strong> Mark the checklist complete, with a date, in a place you'll find during offboarding. Today's onboarding record is the map for their eventual departure.</li>
+</ol>
+
+<h2>Offboarding: the same hour</h2>
+
+<p>When someone leaves, the first few steps happen within the hour the departure takes effect. For a planned, friendly exit that might be 5 p.m. on their last day. For a termination, it happens during the conversation, not after. In order:</p>
+
+<ol>
+<li><strong>Block sign-in.</strong> Disable the account in Microsoft 365 or Google Workspace. Don't delete it yet; deleting destroys mail and files you probably need. Disabling stops access while preserving everything.</li>
+<li><strong>Revoke active sessions.</strong> Disabling stops new logins, but phones and browsers hold session tokens that can stay valid for a while. Use the admin action that signs the user out everywhere and resets the password so cached credentials die too.</li>
+<li><strong>Kill remote access.</strong> VPN accounts, remote desktop access, and any per-person entries on the firewall.</li>
+<li><strong>Rotate shared credentials they knew.</strong> The Wi-Fi password if you're still on a shared one, any shared logins in vaults they could see, alarm codes, and anything taped to a monitor near their desk. This step is why shared accounts are a liability: every departure means a rotation.</li>
+</ol>
+
+<h2>Offboarding: the same day</h2>
+
+<ol>
+<li><strong>Collect the hardware.</strong> Laptop, phone, badge, keys, chargers, the monitor they took home in 2024. Check the collected serials against the asset record you made at onboarding. If a device isn't coming back, remotely lock or wipe it through device management.</li>
+<li><strong>Route the email and files.</strong> Convert the mailbox to a shared mailbox (in Microsoft 365 this frees the license while keeping the mail) or delegate it, set an auto-reply pointing to a live human, and transfer ownership of their OneDrive or Drive files to the manager before any retention clock starts.</li>
+<li><strong>Work the systems list in reverse.</strong> Every app account you created at onboarding gets disabled or reassigned: CRM, accounting, phone system, timekeeping, and the ones that aren't behind your main login. Anything with its own separate password is the one everyone forgets.</li>
+<li><strong>Reclaim the licenses.</strong> Unassign the Microsoft 365 or Workspace license and every per-seat app license, and reduce your subscription count if you won't rehire soon. Companies bleed real money on license seats assigned to people who left last year.</li>
+<li><strong>Record it.</strong> Date, who ran the checklist, where the hardware went, where the mailbox lives now. Set a reminder for 30 to 90 days out to delete the disabled account once you're sure nothing else needs it.</li>
+</ol>
+
+<h2>Verify it</h2>
+
+<p>A checklist you never test is a wish. Twice a year, pick the most recent departure and audit it: try to log in as them (it should fail), search your app admin panels for their name (nothing active should appear), and confirm their license was actually unassigned. Then pick your newest hire and ask them what day one was like. If the account worked, MFA was on before lunch, and nobody had to hunt for a charger, the process is doing its job. If either audit turns up surprises, the checklist is missing a line, so add it. That's the whole maintenance plan: run it every time, audit it twice a year, add the line.</p>

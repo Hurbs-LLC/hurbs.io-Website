@@ -1,0 +1,48 @@
+<p>Most small businesses do not have a server room. They have a closet that servers ended up in. It also holds the holiday decorations, a mop, and a box of old monitors, and the door does not lock. That arrangement works right up until the day it does not, and the failure modes are predictable: heat, power, water, and people. Here is the checklist we run when we walk into a client's server space, and what each item should look like when it is right.</p>
+
+<h2>Cooling: heat kills gear slowly, then suddenly</h2>
+
+<p>Electronics in a confined space heat that space fast. A closet with a firewall, a switch, a server, and a UPS can climb past 90&deg;F with the door closed, and equipment running hot fails years early. Drives are especially sensitive; so are UPS batteries, which lose lifespan quickly above room temperature.</p>
+
+<p>Targets: aim to keep the room in the mid-60s to about 80&deg;F. The often-cited comfortable band for IT equipment intake air runs roughly 64 to 80&deg;F, and the low 70s is a sane setpoint for a small room. Humidity matters too: too dry invites static, too damp invites condensation. Somewhere around 40 to 60 percent relative humidity keeps you out of trouble.</p>
+
+<p>What that means practically for a small space: do not rely on the building's HVAC alone, because it usually shuts down nights and weekends while your equipment does not. A dedicated mini-split is the clean fix. A louvered door or a properly ducted exhaust fan is the budget fix for a lightly loaded closet. And put a temperature sensor in the room that alerts someone's phone. Many UPS units offer this as an add-on, and standalone Wi-Fi sensors cost little. The alert on Saturday afternoon is what saves you from the dead server on Monday morning.</p>
+
+<h2>Power: do the UPS runtime math</h2>
+
+<p>Every piece of network and server equipment belongs on a UPS, but "we have a UPS" is not the checklist item. The item is: do you know how long it runs, and what happens when it runs out?</p>
+
+<p>The math is simple. Add up the actual wattage your equipment draws (the UPS display or its management page usually shows the load directly). Compare that against the runtime chart for your UPS model at that load. A UPS that runs a full rack for 8 minutes is a very different tool from one that runs it for 45.</p>
+
+<p>Then decide what those minutes are for. Two legitimate answers:</p>
+
+<ul>
+<li><strong>Ride-through:</strong> enough runtime to cover blips and short outages, plus a network-connected UPS card or USB link that tells servers to shut down cleanly when the battery gets low. This is the right answer for most small offices, and the graceful-shutdown part is the piece most setups are missing. A UPS that dies with the server still writing to disk protected nothing.</li>
+<li><strong>Keep-running:</strong> if the business genuinely cannot tolerate downtime, that is a generator conversation, not a bigger-battery conversation. Batteries buy minutes, not afternoons.</li>
+</ul>
+
+<p>Two more power items: UPS batteries are consumables that want replacement every three to five years (put it on the calendar, and run the UPS self-test periodically), and nothing in the room should be plugged into a daisy chain of power strips. We still find those weekly.</p>
+
+<h2>Physical access: the lock is a security control</h2>
+
+<p>Whoever can touch your server owns your server. Console access, a pulled drive, or a plugged-in USB stick bypasses a lot of expensive software security. So the room needs a real lock, and a short list of people with the key or code. If the space doubles as storage that everyone visits, the servers should at minimum live in a locking rack cabinet inside it.</p>
+
+<p>Keep an eye on who else needs to be in there. Cleaning crews, landlords, and other tenants in shared buildings are the classic surprise. A cheap door sensor or a camera covering the rack answers the "who was in here" question that otherwise has no answer. And keep a sign-in habit for vendors: not bureaucracy, just a record.</p>
+
+<h2>No cardboard, no clutter</h2>
+
+<p>This one sounds petty and is not. Cardboard in a server room is a fire load, a dust source, and a moisture sponge, and dust is a slow killer of fans and power supplies. The room also tends to become the office junk drawer, which means people who have no business near the rack are in and out constantly, and someday a stack of boxes leans into a power cable.</p>
+
+<p>The rule: the room holds IT equipment, spare parts in sealed bins, and nothing else. No paper archives, no cleaning chemicals, no seasonal inventory. If the business is short on storage, that is a real problem worth solving somewhere that does not share air and floor space with the equipment everything runs on.</p>
+
+<h2>Water and fire</h2>
+
+<p>Look up. If there is plumbing, a restroom, a kitchen, or an HVAC drain pan above or beside the room, you have a water risk, and water finds electronics with unerring aim. Do not rack equipment directly under known plumbing if any alternative exists, keep gear off the floor (the bottom of the rack should not be the literal floor if the space could ever flood), and put a ten-dollar water leak sensor on the floor and, if warranted, in the ceiling space. It is some of the cheapest insurance in IT.</p>
+
+<p>For fire: know what suppression covers the room. In most small offices that is the building's sprinklers, which will destroy the equipment they douse; that is what backups are for, and it beats the building burning. Keep a fire extinguisher rated for electrical fires (Class C in the US) mounted near, not inside, the room, and do not block sprinkler heads with the rack or shelving.</p>
+
+<h2>How to know the room passes</h2>
+
+<p>Run the checklist cold: the room holds temperature through a summer weekend and someone gets an alert if it does not. You can state your UPS runtime at current load, and servers shut down cleanly on their own when an outage outlasts it. The battery replacement date is on a calendar. The door locks and you can name everyone with access. There is no cardboard, no mop, and nothing stored on top of the rack. You know what is above the ceiling tiles, and a leak sensor is watching the floor.</p>
+
+<p>None of this is expensive relative to what the room protects. Most of it is a weekend of cleanup, a few sensors, and a little math. The businesses that skip it are betting the company's uptime on the closet behaving, and the closet always collects on that bet eventually.</p>

@@ -1,0 +1,48 @@
+<p>Somewhere in your business, there's a task someone does every week that a computer should be doing. Downloading a report, reformatting it in Excel, emailing it to three people. Copying orders from one system into another. Renaming and filing a batch of PDFs. It takes twenty minutes, it's mind-numbing, and it's been "on the list to automate" for two years. This is exactly what Python is for.</p>
+
+<h2>Why Python, specifically</h2>
+
+<p>Python is a programming language, but for this kind of work it's better to think of it as duct tape. It sticks systems together. It's free, it runs on Windows, Mac, and Linux, and there's a ready-made library for almost anything a business touches: Excel files, CSVs, PDFs, email, FTP servers, QuickBooks, Google Sheets, Shopify, you name it. If a system has an API, Python can talk to it. If it doesn't, Python can usually still read whatever files it spits out.</p>
+
+<p>The other thing that makes Python the right tool: it's fast to write. A task that would be a two-week project in a "real" enterprise platform is often a one-day Python script. For internal automation, that speed is the whole game. The fastest path from annoyance to automation wins, because the alternative isn't a fancier tool. The alternative is someone keeps doing it by hand.</p>
+
+<h2>The three jobs Python does constantly</h2>
+
+<p><strong>Reports.</strong> Pull data from a database, an API, or a pile of spreadsheets. Crunch it. Produce a clean Excel file or PDF and email it out on a schedule. The pandas library reads and writes Excel natively, so a script can do in seconds what takes a person an hour of copy-paste. We see "someone builds this report manually every Monday" in almost every business we walk into.</p>
+
+<p><strong>File moves.</strong> Watch a folder, and when files show up, rename them by a rule, sort them into the right directories, upload them somewhere, or archive the old ones. Scanned invoices, vendor exports, backup files. Twenty lines of Python replaces a recurring chore forever.</p>
+
+<p><strong>API glue.</strong> This is the big one. Your point-of-sale doesn't talk to your accounting software. Your CRM doesn't talk to your email list. So a human re-types data between them, slowly and with typos. A Python script calls system A's API, reshapes the data, and pushes it into system B's API. Runs every hour, never gets bored, never fat-fingers a customer's address.</p>
+
+<h2>What automation like this actually costs</h2>
+
+<p>Most scripts in this category are small. A day or two of work for a straightforward one, maybe a week if the systems involved are cranky or the logic has a lot of edge cases. Compare that to the labor it replaces: a 30-minute daily task is roughly 120 hours a year. Do that math on the loaded cost of the person doing it and the script usually pays for itself in the first couple of months, then keeps paying every year after.</p>
+
+<p>Tools like Zapier and Make cover some of this ground too, and for simple "when X happens, do Y" hookups between popular apps, they're fine and we'll recommend them. They fall down when the logic gets real: parsing a messy spreadsheet, handling exceptions, talking to a system without a prebuilt connector, or doing anything in bulk. That's where a script wins, and there's no monthly subscription attached to it.</p>
+
+<h2>How to spot your candidates</h2>
+
+<p>Walk through your week and look for tasks with these traits:</p>
+
+<ul>
+<li>Someone does it on a schedule: daily, weekly, monthly.</li>
+<li>The steps are the same every time. If you could write instructions for a new hire, a script can follow them.</li>
+<li>It involves moving data between two systems, or reshaping data from one format to another.</li>
+<li>Mistakes in it are costly or embarrassing: wrong numbers to a client, a missed order, a misfiled document.</li>
+</ul>
+
+<p>Rank them by hours saved times how much you hate them. Automate the top one first. Small wins build trust in the whole approach.</p>
+
+<h2>How to know it's done right</h2>
+
+<p>A quick script is easy. A script your business can rely on for years takes a little more care. When someone builds automation for you, here's what "done right" looks like:</p>
+
+<ul>
+<li><strong>It fails loudly.</strong> When something breaks (a login expires, a file format changes), the script should email or message someone instead of silently doing nothing. Silent failures are how automated reports go stale for three months before anyone notices.</li>
+<li><strong>It logs what it did.</strong> There should be a record: what ran, when, what it processed. When you ask "did the invoices go out?", the answer should take ten seconds to find.</li>
+<li><strong>It doesn't live on one person's laptop.</strong> Scheduled scripts belong on a server or a small cloud machine, not on Dave's desktop that gets shut off when Dave goes on vacation.</li>
+<li><strong>The credentials are handled properly.</strong> Passwords and API keys go in a config file or a secrets manager, not pasted into the code.</li>
+<li><strong>You get the source code.</strong> It's yours. Any competent developer should be able to pick it up later.</li>
+</ul>
+
+<p>Python won't run your business. But it will quietly delete a dozen small chores from it, and those chores were costing you more than you think.</p>

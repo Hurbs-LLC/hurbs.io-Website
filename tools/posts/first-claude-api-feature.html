@@ -1,0 +1,128 @@
+<p>You've used Claude or ChatGPT in the browser and thought "I could use this inside my own tools." This guide gets you there. By the end you'll have a working Python script that takes any text document and returns a clean summary using the Claude API. It's about 30 lines of code, and it's the same pattern behind most LLM features you'd actually ship: send text in, get useful text back.</p>
+
+<p>We'll build a document summarizer because it's genuinely useful (meeting notes, long emails, contracts, reports) and because once you've got it working, swapping the prompt turns it into a classifier, a drafter, or an extractor with no new plumbing.</p>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>Python 3.8 or newer installed (check with <code>python3 --version</code>)</li>
+<li>Basic comfort with a terminal and a text editor</li>
+<li>An Anthropic account with a payment method. New accounts get you started with the Console at <a href="https://console.anthropic.com">console.anthropic.com</a></li>
+<li>About 20 minutes</li>
+</ul>
+
+<h2>Step 1: Get an API key</h2>
+
+<p>Sign in to the Anthropic Console at console.anthropic.com. In the left navigation, find <strong>API Keys</strong> and create a new key. Give it a name that tells you where it's used, something like <code>summarizer-dev</code>, so you can revoke it later without guessing.</p>
+
+<p>The key is shown once. Copy it somewhere safe. Treat it like a password: anyone who has it can run up charges on your account.</p>
+
+<p>Set it as an environment variable so it never ends up in your code:</p>
+
+<pre><code>export ANTHROPIC_API_KEY="sk-ant-your-key-here"</code></pre>
+
+<p>To make that stick between terminal sessions, add the line to your <code>~/.zshrc</code> or <code>~/.bashrc</code>. Never paste the key directly into a script, and never commit it to git. This is the single most common mistake we see, and keys scraped from public repos get abused within hours.</p>
+
+<h2>Step 2: Install the SDK</h2>
+
+<p>Anthropic publishes an official Python package. Install it with pip:</p>
+
+<pre><code>pip install anthropic</code></pre>
+
+<p>If you keep projects tidy with virtual environments (good habit), do that first:</p>
+
+<pre><code>python3 -m venv venv
+source venv/bin/activate
+pip install anthropic</code></pre>
+
+<h2>Step 3: Make your first API call</h2>
+
+<p>Create a file called <code>hello_claude.py</code>:</p>
+
+<pre><code>import anthropic
+
+client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from the environment
+
+message = client.messages.create(
+    model="claude-sonnet-5",
+    max_tokens=1024,
+    messages=[
+        {"role": "user", "content": "Say hello in one sentence."}
+    ],
+)
+
+print(message.content[0].text)</code></pre>
+
+<p>Run it:</p>
+
+<pre><code>python3 hello_claude.py</code></pre>
+
+<p>If you see a greeting printed, your key works and you've made your first API call. Three things worth knowing about what just happened:</p>
+
+<ul>
+<li><code>model="claude-sonnet-5"</code> picks which Claude model answers. Sonnet is the mid-tier model: strong quality, moderate cost, a good default for features like this.</li>
+<li><code>max_tokens</code> caps how long the response can be. Tokens are chunks of text, roughly three-quarters of a word each on average.</li>
+<li><code>messages</code> is a list because conversations can have history. For a one-shot task like summarizing, one user message is all you need.</li>
+</ul>
+
+<h2>Step 4: Build the summarizer</h2>
+
+<p>Now the real thing. Create <code>summarize.py</code>:</p>
+
+<pre><code>import sys
+import anthropic
+
+client = anthropic.Anthropic()
+
+def summarize(text: str) -&gt; str:
+    message = client.messages.create(
+        model="claude-sonnet-5",
+        max_tokens=1024,
+        system=(
+            "You summarize business documents. Return: a one-sentence "
+            "overview, then 3-5 bullet points covering key facts, "
+            "decisions, and action items. Be specific. No preamble."
+        ),
+        messages=[
+            {"role": "user", "content": text}
+        ],
+    )
+    return message.content[0].text
+
+if __name__ == "__main__":
+    if len(sys.argv) &lt; 2:
+        print("Usage: python3 summarize.py &lt;file.txt&gt;")
+        sys.exit(1)
+
+    with open(sys.argv[1], "r") as f:
+        document = f.read()
+
+    print(summarize(document))</code></pre>
+
+<p>The new piece here is the <code>system</code> parameter. It's standing instructions that shape every response: what role to play, what format to return. Putting the instructions in <code>system</code> and the document in <code>messages</code> keeps the two cleanly separated, which matters more as prompts grow.</p>
+
+<h2>Step 5: Run it on a real document</h2>
+
+<p>Grab any text file: exported meeting notes, a long email saved as <code>.txt</code>, a project brief. Then:</p>
+
+<pre><code>python3 summarize.py meeting_notes.txt</code></pre>
+
+<p>You should get back a tight overview and a handful of bullets. Try it on a few different documents. If the output format drifts from what you want, edit the system prompt to be more specific. "3-5 bullet points" beats "a few points." Prompts are instructions to a very literal reader; precision pays.</p>
+
+<h2>Verify it and understand the cost</h2>
+
+<p>Two checks before you trust this with real work.</p>
+
+<p><strong>Accuracy check:</strong> summarize a document you know well and read the output critically. Did it capture the decisions? Did it invent anything? Summarization is one of the safer LLM tasks because the source text is right there, but you should still spot-check any output before it goes to a client.</p>
+
+<p><strong>Cost check:</strong> API pricing is per token, in and out. The response object tells you exactly what you used. Add this to see it:</p>
+
+<pre><code>print(message.usage.input_tokens, message.usage.output_tokens)</code></pre>
+
+<p>For scale: a five-page document plus its summary is a few thousand tokens total, which works out to a fraction of a cent per summary at Sonnet's rates. You could summarize every document your business produces in a month and the bill would likely be under a few dollars. Cost becomes a real design concern at high volume or with very large documents, but for a feature like this, it's negligible. You can set monthly spend limits in the Console if you want a hard ceiling.</p>
+
+<h2>Where to go from here</h2>
+
+<p>You now have the core loop: text in, instructions in the system prompt, text out. Everything else is variations. Change the system prompt and this same script classifies support emails by urgency, extracts names and dollar amounts into structured fields, or drafts replies. Wire it to a folder watcher and it processes documents as they arrive. The plumbing you built today doesn't change.</p>
+
+<p>If you've got a workflow in mind and want help getting it from script to something your team actually uses day to day, that's the kind of build we do.</p>

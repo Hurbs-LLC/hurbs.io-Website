@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SOC 2 prep without the panic | Hurbs LLC</title>
+  <meta name="description" content="Trust criteria, evidence collection, and the 6-month runway. What Type I and Type II actually require.">
+  <link rel="canonical" href="https://hurbs.io/blog/soc2-prep">
+  <meta property="og:title" content="SOC 2 prep without the panic | Hurbs LLC">
+  <meta property="og:description" content="Trust criteria, evidence collection, and the 6-month runway. What Type I and Type II actually require.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hurbs.io/blog/soc2-prep">
+  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="nav-logo"><img src="/img/hurbs.svg" alt="Hurbs LLC"></a>
+    <div class="nav-links">
+      <a href="/#services">Services</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="mailto:mason@hurbs.io" class="nav-email">mason@hurbs.io</a>
+    </div>
+  </nav>
+
+  <header class="post-hero">
+    <a href="/blog/" class="svc-breadcrumb">← ALL POSTS</a>
+    <div class="post-lane">
+      <div class="svc-sq sq-green"></div>
+      <a href="/services/cybersecurity" class="post-lane-link">CYBERSECURITY</a>
+      <span class="post-type">EXPLAINER</span>
+    </div>
+    <h1>SOC 2 prep without the panic</h1>
+    <div class="post-meta">July 2026 · by the Hurbs crew</div>
+  </header>
+
+  <article class="post">
+<p>SOC 2 usually arrives as an ultimatum. A big prospect's procurement team asks for your SOC 2 report, you don't have one, and the deal stalls. Then you google it, find quotes ranging from twenty to eighty thousand dollars and timelines measured in a year, and the panic sets in. Take a breath. SOC 2 is a real project, but for a small company with reasonably sane IT, it's a manageable one, and most of the panic comes from not understanding the shape of it.</p>
+
+<h2>What SOC 2 actually is</h2>
+
+<p>SOC 2 is not a certification you pass. It's an audit report: a licensed CPA firm examines your security controls and writes an opinion on them. Customers ask for it because it saves them from auditing you themselves. The report is built around the Trust Services Criteria, five categories: Security, Availability, Processing Integrity, Confidentiality, and Privacy. Here's the first scope decision, and the first place to save money: only Security is mandatory. Most first-time reports cover Security alone, or Security plus Availability if customers care about uptime. Adding categories adds controls, evidence, and cost. Start narrow. You can expand later.</p>
+
+<p>What's actually in the Security criteria is unsurprising if you've done any of this before: access control and MFA, offboarding, change management, vendor review, risk assessment, monitoring and logging, incident response, backups. SOC 2 doesn't prescribe specific tools. It asks whether you've defined controls that address the criteria and whether you follow them.</p>
+
+<h2>Type I vs Type II, in one paragraph</h2>
+
+<p>A <strong>Type I</strong> report says "on this date, the controls were designed properly and in place." A snapshot. A <strong>Type II</strong> report says "over this period, usually three to twelve months, the controls actually operated," and the auditor tests evidence across that whole window. Type II is what mature procurement teams want, and some will reject a Type I outright. The common path for a first-timer: get audit-ready, optionally do a quick Type I to have paper in hand for the stalled deal, then let the Type II observation window run and deliver the Type II. Ask your actual prospect which they'll accept before deciding. Sometimes a Type I plus a signed security questionnaire unblocks the deal today.</p>
+
+<h2>Evidence is the real work</h2>
+
+<p>Here's the thing nobody tells you up front: the hard part of SOC 2 isn't having good security. It's proving it, continuously, with artifacts. The auditor doesn't take your word that offboarding happens; they pick three departed employees and ask for the tickets showing access was removed, with dates. Every control needs evidence that it ran: access review spreadsheets with sign-offs, change approvals in pull requests, screenshots of MFA enforcement settings, incident response test records, signed policy acknowledgments from every employee.</p>
+
+<p>This is why compliance automation platforms (Vanta, Drata, Secureframe, and similar) have taken over the small-company SOC 2 market. They connect to your systems (Microsoft 365 or Google Workspace, AWS, GitHub, your device management) and collect much of the evidence automatically, plus give you policy templates and a checklist of gaps. They cost real money, typically five figures a year at small-company scale, but for a team without a compliance person they usually pay for themselves in not-hiring-a-compliance-person. They are not magic: someone still has to own the program, close the gaps, and do the reviews the platform nags about.</p>
+
+<h2>A realistic six-month runway</h2>
+
+<p>For a small company starting from decent-but-undocumented IT, here's a schedule that actually works:</p>
+
+<ol>
+<li><strong>Month 1: scope and gap assessment.</strong> Pick criteria (Security, maybe Availability). Stand up the automation platform or a manual tracker. Run the readiness assessment and get your gap list. Pick your audit firm now too, because good ones book out.</li>
+<li><strong>Months 2-3: close the gaps.</strong> This is IT work: enforce MFA everywhere, get every laptop into device management with encryption verified, formalize offboarding into a checklist that leaves a record, turn on centralized logging, write and adopt the core policies, set up background checks and security training. Most small companies have 60-70% of this half-done; the project is finishing and documenting it.</li>
+<li><strong>Month 3: start the Type II observation window.</strong> The clock can't start until controls are actually operating. A three-month window is the common minimum for a first report.</li>
+<li><strong>Months 3-6: operate and collect.</strong> Do the quarterly access review. Run a tabletop incident response exercise. Approve changes properly. Let the evidence pile up. This stretch is boring on purpose; boring means the controls are running.</li>
+<li><strong>Month 6: audit fieldwork.</strong> The auditor samples evidence from the window and asks questions. The report follows a few weeks later.</li>
+</ol>
+
+<p>Budget-wise, plan for the audit itself (commonly in the range of ten to twenty thousand for a small-scope Type II from a reputable firm), the platform subscription, and the internal or outsourced hours to close gaps. Cheaper audit quotes exist; procurement teams sometimes recognize the rubber-stamp firms, which defeats the purpose.</p>
+
+<h2>How to know you're doing it right</h2>
+
+<p>One named person owns the program. Your gap list is shrinking on a schedule, not being rediscovered monthly. Evidence collects itself as work happens instead of being reconstructed the week before fieldwork. And the controls you adopted are ones you'd keep with no auditor watching, because they're just good IT hygiene with receipts. That last part is the honest test. If SOC 2 prep feels like theater, the controls were designed for the auditor instead of the business, and those programs fall apart in year two. Build the boring, real version once and the annual renewal becomes routine.</p>
+    <div class="post-cta">
+      <p>Stuck on this, or want it done for you? That's the job.</p>
+      <a href="mailto:mason@hurbs.io?subject=Question%20about%20Cybersecurity" class="btn btn--sm">Email us →</a>
+    </div>
+  </article>
+
+  <section class="others">
+    <div class="others-head"><span>RELATED READING</span></div>
+    <a href="/blog/what-is-edr" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">EDR, XDR, antivirus: what actually protects endpoints now</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/who-watches-at-3am" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Who’s watching your network at 3 a.m.?</span>
+      <span class="other-arrow">→</span>
+    </a>
+    <a href="/blog/ransomware-defense-layers" class="other-row">
+      <div class="ledger-sq sq-green"></div>
+      <span class="other-title">Ransomware defense: the five layers that matter</span>
+      <span class="other-arrow">→</span>
+    </a>
+  </section>
+  <section class="cta cta--inner">
+    <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
+    <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
+    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Hurbs LLC</span>
+    <span>Part of the Lepida family</span>
+  </footer>
+</div>
+<script src="/js/main.js"></script>
+</body>
+</html>
