@@ -87,13 +87,13 @@ def cta_band(inner=True):
     return f'''  <section class="cta{mod}">
     <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
     <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
-    <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
+    <div class="cta-sub">or <a href="tel:+18324574317">(832) 457-4317</a>, Houston, TX</div>
   </section>'''
 
 
 FOOTER = '''  <footer class="footer">
     <span>© 2026 Hurbs LLC</span>
-    <span>Part of the Lepida family</span>
+    <span>Part of the <a href="https://lepida.io">Lepida</a> family</span>
   </footer>
 </div>
 ''' + JS + '''
