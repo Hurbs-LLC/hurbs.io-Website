@@ -604,6 +604,8 @@ body {
 a { color: var(--denim); }
 a:hover { color: var(--brick); }
 
+[hidden] { display: none !important; }
+
 .page {
   background: var(--cream);
   color: var(--ink);
@@ -1168,6 +1170,75 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
   color: var(--brick);
 }
 
+/* Blog filter bar */
+
+.filter-bar {
+  padding: 32px var(--gutter);
+  border-bottom: 2px solid var(--ink);
+}
+
+.filter-search {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: var(--card);
+  color: var(--ink);
+  padding: 16px 18px;
+  font: 600 19px 'Bricolage Grotesque', sans-serif;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.filter-search:focus {
+  outline: none;
+  background: var(--row-hover);
+}
+.filter-search::placeholder { color: var(--faint); }
+
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 14px Archivo, sans-serif;
+  border: 2px solid var(--ink);
+  background: var(--card);
+  color: var(--ink);
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  min-height: 36px;
+}
+.filter-pill:hover { background: var(--row-hover); }
+.filter-pill.active { background: var(--ink); color: var(--cream); }
+.filter-pill .ledger-sq { width: 10px; height: 10px; display: inline-block; }
+
+#no-matches {
+  font: 600 17px Archivo, sans-serif;
+  color: var(--muted);
+  margin: 20px 0 0;
+}
+
+/* Tag pills on posts */
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.chip--tag {
+  font-size: 13px;
+  padding: 6px 12px;
+}
+
 .blog-lane { padding: 0 var(--gutter) 56px; }
 .blog-lane .section-head { padding-top: 8px; }
 
@@ -1398,6 +1469,10 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
     </div>
     <h1>When your Excel file becomes a database problem</h1>
     <div class="post-meta">July 2026 · by the Hurbs crew</div>
+    <div class="post-tags">
+      <a class="chip chip--tag" href="/blog/?q=excel%20%28no%20shame%29">Excel (no shame)</a>
+      <a class="chip chip--tag" href="/blog/?q=spreadsheet%20rescues">Spreadsheet rescues</a>
+    </div>
   </header>
 
   <article class="post">

@@ -93,6 +93,9 @@ def post_page(p, live_slugs):
     </div>
     <h1>{e(p['title'])}</h1>
     <div class="post-meta">{DATE} · by the Hurbs crew</div>
+    <div class="post-tags">
+{chr(10).join(f'      <a class="chip chip--tag" href="/blog/?q={quote(c.lower())}">{e(c)}</a>' for c in p['chips'])}
+    </div>
   </header>
 
   <article class="post">
@@ -109,6 +112,85 @@ def post_page(p, live_slugs):
 '''
 
 
+FILTER_JS = '''<script>
+(function () {
+  var rows = [].slice.call(document.querySelectorAll('.ledger-row--blog'));
+  var lanes = [].slice.call(document.querySelectorAll('.blog-lane'));
+  var search = document.getElementById('blog-search');
+  var pills = [].slice.call(document.querySelectorAll('.filter-pill'));
+  var noMatches = document.getElementById('no-matches');
+  var state = { q: '', type: '', lane: '' };
+
+  function apply() {
+    var q = state.q.trim().toLowerCase();
+    var shown = 0;
+    rows.forEach(function (r) {
+      var ok = (!state.type || r.dataset.type === state.type) &&
+               (!state.lane || r.dataset.lane === state.lane) &&
+               (!q || (r.dataset.title + ' ' + r.dataset.tags).indexOf(q) !== -1);
+      r.hidden = !ok;
+      if (ok) shown++;
+    });
+    lanes.forEach(function (s) {
+      s.hidden = !s.querySelector('.ledger-row--blog:not([hidden])');
+    });
+    noMatches.hidden = shown > 0;
+    pills.forEach(function (p) {
+      p.classList.toggle('active', p.dataset[p.dataset.dim] === state[p.dataset.dim] && state[p.dataset.dim] !== '');
+    });
+    var params = new URLSearchParams();
+    if (q) params.set('q', state.q.trim());
+    if (state.type) params.set('type', state.type);
+    if (state.lane) params.set('lane', state.lane);
+    var qs = params.toString();
+    history.replaceState(null, '', qs ? '?' + qs : location.pathname);
+  }
+
+  pills.forEach(function (p) {
+    p.addEventListener('click', function () {
+      var dim = p.dataset.dim;
+      state[dim] = (state[dim] === p.dataset[dim]) ? '' : p.dataset[dim];
+      apply();
+    });
+  });
+  search.addEventListener('input', function () { state.q = search.value; apply(); });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === '/' && document.activeElement !== search) { ev.preventDefault(); search.focus(); }
+  });
+  document.getElementById('clear-filters').addEventListener('click', function (ev) {
+    ev.preventDefault();
+    state = { q: '', type: '', lane: '' };
+    search.value = '';
+    apply();
+  });
+
+  var init = new URLSearchParams(location.search);
+  state.q = init.get('q') || '';
+  state.type = init.get('type') || '';
+  state.lane = init.get('lane') || '';
+  search.value = state.q;
+  if (state.q || state.type || state.lane) apply();
+})();
+</script>'''
+
+
+def filter_bar():
+    lane_pills = '\n'.join(
+        f'''      <button class="filter-pill" data-dim="lane" data-lane="{lane}">
+        <span class="ledger-sq sq-{color}"></span>{e(lane_title)}</button>'''
+        for lane, (num, color, lane_title) in LANES.items())
+    return f'''  <section class="filter-bar">
+    <input id="blog-search" class="filter-search" type="search" placeholder="Search the posts... (press /)"
+           aria-label="Search the posts">
+    <div class="filter-pills">
+      <button class="filter-pill" data-dim="type" data-type="concept">Explainers</button>
+      <button class="filter-pill" data-dim="type" data-type="guide">Guides</button>
+{lane_pills}
+    </div>
+    <p id="no-matches" hidden>Nothing matches. <a href="/blog/" id="clear-filters">Clear filters</a></p>
+  </section>'''
+
+
 def index_page(live_slugs):
     sections = []
     for lane, (num, color, lane_title) in LANES.items():
@@ -116,7 +198,8 @@ def index_page(live_slugs):
         if not posts:
             continue
         rows = '\n'.join(
-            f'''    <a href="/blog/{p['slug']}" class="ledger-row ledger-row--blog">
+            f'''    <a href="/blog/{p['slug']}" class="ledger-row ledger-row--blog" data-type="{p['type']}" data-lane="{lane}"
+       data-title="{e(p['title'].lower())}" data-tags="{e(' '.join([p['description'].lower()] + [c.lower() for c in p['chips']]))}">
       <div class="ledger-sq sq-{color}"></div>
       <span class="ledger-title ledger-title--blog">{e(p['title'])}</span>
       <span class="ledger-hint">{TYPE_LABEL[p['type']].title()}</span>
@@ -143,10 +226,13 @@ def index_page(live_slugs):
     <p class="about-intro">Plain-English explainers for owners, step-by-step guides for doers. No fluff, no gate, no popup asking for your email.</p>
   </header>
 
+{filter_bar()}
+
 {sections_html}
 
 {cta_band()}
 
+{FILTER_JS}
 {FOOTER}
 '''
 

@@ -603,6 +603,8 @@ body {
 a { color: var(--denim); }
 a:hover { color: var(--brick); }
 
+[hidden] { display: none !important; }
+
 .page {
   background: var(--cream);
   color: var(--ink);
@@ -1167,6 +1169,75 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
   color: var(--brick);
 }
 
+/* Blog filter bar */
+
+.filter-bar {
+  padding: 32px var(--gutter);
+  border-bottom: 2px solid var(--ink);
+}
+
+.filter-search {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: var(--card);
+  color: var(--ink);
+  padding: 16px 18px;
+  font: 600 19px 'Bricolage Grotesque', sans-serif;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.filter-search:focus {
+  outline: none;
+  background: var(--row-hover);
+}
+.filter-search::placeholder { color: var(--faint); }
+
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 14px Archivo, sans-serif;
+  border: 2px solid var(--ink);
+  background: var(--card);
+  color: var(--ink);
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  min-height: 36px;
+}
+.filter-pill:hover { background: var(--row-hover); }
+.filter-pill.active { background: var(--ink); color: var(--cream); }
+.filter-pill .ledger-sq { width: 10px; height: 10px; display: inline-block; }
+
+#no-matches {
+  font: 600 17px Archivo, sans-serif;
+  color: var(--muted);
+  margin: 20px 0 0;
+}
+
+/* Tag pills on posts */
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.chip--tag {
+  font-size: 13px;
+  padding: 6px 12px;
+}
+
 .blog-lane { padding: 0 var(--gutter) 56px; }
 .blog-lane .section-head { padding-top: 8px; }
 
@@ -1394,102 +1465,144 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
     <p class="about-intro">Plain-English explainers for owners, step-by-step guides for doers. No fluff, no gate, no popup asking for your email.</p>
   </header>
 
+  <section class="filter-bar">
+    <input id="blog-search" class="filter-search" type="search" placeholder="Search the posts... (press /)"
+           aria-label="Search the posts">
+    <div class="filter-pills">
+      <button class="filter-pill" data-dim="type" data-type="concept">Explainers</button>
+      <button class="filter-pill" data-dim="type" data-type="guide">Guides</button>
+      <button class="filter-pill" data-dim="lane" data-lane="it-support">
+        <span class="ledger-sq sq-red"></span>IT Support &amp; Managed Services</button>
+      <button class="filter-pill" data-dim="lane" data-lane="cloud">
+        <span class="ledger-sq sq-yellow"></span>Cloud Setup &amp; Migration</button>
+      <button class="filter-pill" data-dim="lane" data-lane="cybersecurity">
+        <span class="ledger-sq sq-green"></span>Cybersecurity</button>
+      <button class="filter-pill" data-dim="lane" data-lane="software">
+        <span class="ledger-sq sq-blue"></span>Custom Software</button>
+      <button class="filter-pill" data-dim="lane" data-lane="networks">
+        <span class="ledger-sq sq-red"></span>Networks &amp; Infrastructure</button>
+      <button class="filter-pill" data-dim="lane" data-lane="data-ai">
+        <span class="ledger-sq sq-yellow"></span>Data &amp; AI Analytics</button>
+      <button class="filter-pill" data-dim="lane" data-lane="digital">
+        <span class="ledger-sq sq-green"></span>Digital Transformation</button>
+      <button class="filter-pill" data-dim="lane" data-lane="staffing">
+        <span class="ledger-sq sq-blue"></span>Staffing &amp; Recruiting</button>
+    </div>
+    <p id="no-matches" hidden>Nothing matches. <a href="/blog/" id="clear-filters">Clear filters</a></p>
+  </section>
+
   <section class="blog-lane">
     <div class="section-head">
       <h2>IT Support &amp; Managed Services</h2>
       <a href="/services/it-support" class="section-head-hint" style="text-decoration:none">THE SERVICE →</a>
     </div>
-    <a href="/blog/microsoft-365-small-business" class="ledger-row ledger-row--blog">
+    <a href="/blog/microsoft-365-small-business" class="ledger-row ledger-row--blog" data-type="concept" data-lane="it-support"
+       data-title="microsoft 365 for small business: what you actually need" data-tags="business basic, standard, or premium? what each microsoft 365 plan includes and which one most small businesses should buy. microsoft 365">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Microsoft 365 for small business: what you actually need</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/google-workspace-vs-microsoft-365" class="ledger-row ledger-row--blog">
+    <a href="/blog/google-workspace-vs-microsoft-365" class="ledger-row ledger-row--blog" data-type="concept" data-lane="it-support"
+       data-title="google workspace or microsoft 365? how to pick" data-tags="an honest comparison for small teams: mail, files, meetings, price, and the switching cost nobody mentions. google workspace">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Google Workspace or Microsoft 365? How to pick</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/windows-and-mac-one-office" class="ledger-row ledger-row--blog">
+    <a href="/blog/windows-and-mac-one-office" class="ledger-row ledger-row--blog" data-type="concept" data-lane="it-support"
+       data-title="running windows and mac in one office" data-tags="mixed fleets are normal now. how we manage both without doubling the work. windows &amp; mac">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Running Windows and Mac in one office</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/what-is-remote-monitoring" class="ledger-row ledger-row--blog">
+    <a href="/blog/what-is-remote-monitoring" class="ledger-row ledger-row--blog" data-type="concept" data-lane="it-support"
+       data-title="remote monitoring, explained: how we see problems before you do" data-tags="what rmm software watches, what alerts mean, and why the quiet fixes are the ones you pay for. remote monitoring">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Remote monitoring, explained: how we see problems before you do</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/automated-patching" class="ledger-row ledger-row--blog">
+    <a href="/blog/automated-patching" class="ledger-row ledger-row--blog" data-type="concept" data-lane="it-support"
+       data-title="automated patching: the boring habit that prevents ugly weeks" data-tags="most breaches exploit patches released months earlier. how automated patching works and what we patch first. automated patching">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Automated patching: the boring habit that prevents ugly weeks</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/what-good-help-desk-looks-like" class="ledger-row ledger-row--blog">
+    <a href="/blog/what-good-help-desk-looks-like" class="ledger-row ledger-row--blog" data-type="concept" data-lane="it-support"
+       data-title="what good help desk looks like (a person answers)" data-tags="ticket queues, slas, and why the metric that matters is time-to-human. help desk tooling">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">What good help desk looks like (a person answers)</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/device-management-basics" class="ledger-row ledger-row--blog">
+    <a href="/blog/device-management-basics" class="ledger-row ledger-row--blog" data-type="concept" data-lane="it-support"
+       data-title="device management basics: mdm without the acronym soup" data-tags="intune, profiles, and remote wipe: what managing company devices actually means. device management">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Device management basics: MDM without the acronym soup</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/onboarding-offboarding-checklist" class="ledger-row ledger-row--blog">
+    <a href="/blog/onboarding-offboarding-checklist" class="ledger-row ledger-row--blog" data-type="guide" data-lane="it-support"
+       data-title="the employee it onboarding and offboarding checklist we use" data-tags="accounts, devices, licenses, and access, in order. copy this checklist before your next hire or exit. onboarding &amp; offboarding">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">The employee IT onboarding and offboarding checklist we use</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/spf-dkim-dmarc-setup" class="ledger-row ledger-row--blog">
+    <a href="/blog/spf-dkim-dmarc-setup" class="ledger-row ledger-row--blog" data-type="guide" data-lane="it-support"
+       data-title="set up spf, dkim, and dmarc records that actually pass" data-tags="step-by-step dns records that stop spoofing and keep your mail out of spam folders. email security spam filtering">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Set up SPF, DKIM, and DMARC records that actually pass</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/321-backup-rule" class="ledger-row ledger-row--blog">
+    <a href="/blog/321-backup-rule" class="ledger-row ledger-row--blog" data-type="concept" data-lane="it-support"
+       data-title="the 3-2-1 backup rule, and why restore is the part that matters" data-tags="three copies, two media, one offsite. and the restore drill most businesses skip. backup &amp; restore">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">The 3-2-1 backup rule, and why restore is the part that matters</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/software-license-management" class="ledger-row ledger-row--blog">
+    <a href="/blog/software-license-management" class="ledger-row ledger-row--blog" data-type="concept" data-lane="it-support"
+       data-title="license management: stop paying for seats nobody uses" data-tags="the audit that usually finds 20% waste in software spend, and how to keep it from creeping back. license management">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">License management: stop paying for seats nobody uses</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/it-vendor-management" class="ledger-row ledger-row--blog">
+    <a href="/blog/it-vendor-management" class="ledger-row ledger-row--blog" data-type="concept" data-lane="it-support"
+       data-title="vendor wrangling: one throat to choke for isp calls" data-tags="isps, printer leases, software renewals. why one owner for vendor calls saves hours and money. vendor wrangling warranty &amp; procurement">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Vendor wrangling: one throat to choke for ISP calls</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/it-asset-tracking" class="ledger-row ledger-row--blog">
+    <a href="/blog/it-asset-tracking" class="ledger-row ledger-row--blog" data-type="concept" data-lane="it-support"
+       data-title="asset tracking: know what you own and where it is" data-tags="serial numbers, warranties, and assignment records. the boring list that saves you at tax time and exit time. asset tracking">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Asset tracking: know what you own and where it is</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/troubleshoot-network-printer" class="ledger-row ledger-row--blog">
+    <a href="/blog/troubleshoot-network-printer" class="ledger-row ledger-row--blog" data-type="guide" data-lane="it-support"
+       data-title="troubleshoot a network printer like a tech" data-tags="the diagnostic order we use: driver, queue, ip, vlan, firmware. fix it in minutes instead of rebooting everything twice. printer &amp; peripheral duty">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Troubleshoot a network printer like a tech</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/it-documentation" class="ledger-row ledger-row--blog">
+    <a href="/blog/it-documentation" class="ledger-row ledger-row--blog" data-type="concept" data-lane="it-support"
+       data-title="it documentation: the cheapest insurance you can buy" data-tags="network maps, passwords, and runbooks. what to document, where to keep it, and who gets access. documentation labeling &amp; documentation">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">IT documentation: the cheapest insurance you can buy</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/server-care-basics" class="ledger-row ledger-row--blog">
+    <a href="/blog/server-care-basics" class="ledger-row ledger-row--blog" data-type="concept" data-lane="it-support"
+       data-title="server care: what maintaining a server actually involves" data-tags="updates, disk health, backup checks, and logs. the monthly routine that keeps servers boring. server care">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Server care: what maintaining a server actually involves</span>
       <span class="ledger-hint">Explainer</span>
@@ -1502,103 +1615,120 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
       <h2>Cloud Setup &amp; Migration</h2>
       <a href="/services/cloud" class="section-head-hint" style="text-decoration:none">THE SERVICE →</a>
     </div>
-    <a href="/blog/azure-vs-aws-vs-google-cloud" class="ledger-row ledger-row--blog">
+    <a href="/blog/azure-vs-aws-vs-google-cloud" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cloud"
+       data-title="azure, aws, or google cloud: an honest comparison" data-tags="where each cloud wins for small and mid-size businesses, and why the answer is usually the one your stack already leans toward. azure aws google cloud">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Azure, AWS, or Google Cloud: an honest comparison</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/what-cloudflare-does" class="ledger-row ledger-row--blog">
+    <a href="/blog/what-cloudflare-does" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cloud"
+       data-title="what cloudflare actually does for your website" data-tags="dns, cdn, ddos protection, and workers, in plain english. cloudflare">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">What Cloudflare actually does for your website</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/terraform-first-project" class="ledger-row ledger-row--blog">
+    <a href="/blog/terraform-first-project" class="ledger-row ledger-row--blog" data-type="guide" data-lane="cloud"
+       data-title="your first terraform project: one server on aws" data-tags="install terraform, write your first config, plan, apply, destroy. infrastructure as code from zero. terraform">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Your first Terraform project: one server on AWS</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/do-you-need-kubernetes" class="ledger-row ledger-row--blog">
+    <a href="/blog/do-you-need-kubernetes" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cloud"
+       data-title="you probably don’t need kubernetes" data-tags="what kubernetes solves, what it costs in complexity, and the simpler options that fit most businesses. kubernetes">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">You probably don’t need Kubernetes</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/install-docker-ubuntu" class="ledger-row ledger-row--blog">
+    <a href="/blog/install-docker-ubuntu" class="ledger-row ledger-row--blog" data-type="guide" data-lane="cloud"
+       data-title="install docker on ubuntu and run your first container" data-tags="repository setup, install, permissions, hello-world, and a real service in a container. docker">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Install Docker on Ubuntu and run your first container</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/lift-and-shift-explained" class="ledger-row ledger-row--blog">
+    <a href="/blog/lift-and-shift-explained" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cloud"
+       data-title="lift-and-shift, explained: move servers to the cloud without rewriting" data-tags="when rehosting beats rebuilding, what changes after the move, and the gotchas we plan around. lift-and-shift migrations">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Lift-and-shift, explained: move servers to the cloud without rewriting</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/zero-downtime-cutovers" class="ledger-row ledger-row--blog">
+    <a href="/blog/zero-downtime-cutovers" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cloud"
+       data-title="how we cut over systems without downtime" data-tags="parallel runs, dns ttls, rollback plans. the playbook for switching systems while the business keeps running. zero-downtime cutovers">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">How we cut over systems without downtime</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/hybrid-cloud-small-business" class="ledger-row ledger-row--blog">
+    <a href="/blog/hybrid-cloud-small-business" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cloud"
+       data-title="hybrid cloud for small business: keep the server, add the cloud" data-tags="some things belong in the closet, some in the cloud. how to split them sensibly. hybrid cloud">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Hybrid cloud for small business: keep the server, add the cloud</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/cloud-cost-optimization" class="ledger-row ledger-row--blog">
+    <a href="/blog/cloud-cost-optimization" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cloud"
+       data-title="why your cloud bill is high, and how we shrink it" data-tags="right-sizing, reserved pricing, orphaned resources, and egress. where the waste hides and how to cut it. cost optimization right-sizing reserved pricing">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Why your cloud bill is high, and how we shrink it</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/cloud-backup-disaster-recovery" class="ledger-row ledger-row--blog">
+    <a href="/blog/cloud-backup-disaster-recovery" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cloud"
+       data-title="cloud backups and disaster recovery: the plan you hope you never use" data-tags="rpo, rto, and what a realistic dr plan costs at small-business scale. cloud backups disaster recovery">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Cloud backups and disaster recovery: the plan you hope you never use</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/what-is-serverless" class="ledger-row ledger-row--blog">
+    <a href="/blog/what-is-serverless" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cloud"
+       data-title="serverless, explained: paying for work instead of waiting" data-tags="functions, cold starts, and when serverless is cheaper than a server that idles all night. serverless">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Serverless, explained: paying for work instead of waiting</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/host-static-site-cloudflare-workers" class="ledger-row ledger-row--blog">
+    <a href="/blog/host-static-site-cloudflare-workers" class="ledger-row ledger-row--blog" data-type="guide" data-lane="cloud"
+       data-title="host a static site on cloudflare workers" data-tags="wrangler setup, assets config, custom domain, and deploy. a fast site with no server to babysit. storage &amp; cdn">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Host a static site on Cloudflare Workers</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/wireguard-site-to-site-vpn" class="ledger-row ledger-row--blog">
+    <a href="/blog/wireguard-site-to-site-vpn" class="ledger-row ledger-row--blog" data-type="guide" data-lane="cloud"
+       data-title="set up a wireguard vpn between two offices" data-tags="keys, configs, routing, and firewall rules for a fast site-to-site tunnel. vpns &amp; private networking">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Set up a WireGuard VPN between two offices</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/identity-access-basics" class="ledger-row ledger-row--blog">
+    <a href="/blog/identity-access-basics" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cloud"
+       data-title="identity and access: one login, fewer passwords, less risk" data-tags="sso, roles, and least privilege, explained for people who just want fewer password resets. identity &amp; access">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Identity and access: one login, fewer passwords, less risk</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/uptime-monitoring-alerts" class="ledger-row ledger-row--blog">
+    <a href="/blog/uptime-monitoring-alerts" class="ledger-row ledger-row--blog" data-type="guide" data-lane="cloud"
+       data-title="set up uptime monitoring and alerts that wake the right person" data-tags="health checks, status pages, and escalation. know your site is down before your customers tell you. monitoring &amp; alerts">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Set up uptime monitoring and alerts that wake the right person</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/new-ubuntu-server-checklist" class="ledger-row ledger-row--blog">
+    <a href="/blog/new-ubuntu-server-checklist" class="ledger-row ledger-row--blog" data-type="guide" data-lane="cloud"
+       data-title="first 30 minutes on a new ubuntu server" data-tags="users, ssh keys, firewall, fail2ban, and updates. the hardening checklist we run on every fresh box. linux &amp; windows servers">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">First 30 minutes on a new Ubuntu server</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/email-migration-guide" class="ledger-row ledger-row--blog">
+    <a href="/blog/email-migration-guide" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cloud"
+       data-title="email migration without losing a single message" data-tags="cutover vs staged migration, mx timing, and the archive question. how mailbox moves go smoothly. email migration">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Email migration without losing a single message</span>
       <span class="ledger-hint">Explainer</span>
@@ -1611,109 +1741,127 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
       <h2>Cybersecurity</h2>
       <a href="/services/cybersecurity" class="section-head-hint" style="text-decoration:none">THE SERVICE →</a>
     </div>
-    <a href="/blog/what-is-edr" class="ledger-row ledger-row--blog">
+    <a href="/blog/what-is-edr" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cybersecurity"
+       data-title="edr, xdr, antivirus: what actually protects endpoints now" data-tags="signatures are dead. what modern endpoint protection watches for and why detection beats prevention alone. edr/xdr endpoint protection microsoft defender">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">EDR, XDR, antivirus: what actually protects endpoints now</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/who-watches-at-3am" class="ledger-row ledger-row--blog">
+    <a href="/blog/who-watches-at-3am" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cybersecurity"
+       data-title="who’s watching your network at 3 a.m.?" data-tags="what 24/7 monitoring and threat hunting actually involve, and what size business needs them. 24/7 monitoring threat hunting">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Who’s watching your network at 3 a.m.?</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/ransomware-defense-layers" class="ledger-row ledger-row--blog">
+    <a href="/blog/ransomware-defense-layers" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cybersecurity"
+       data-title="ransomware defense: the five layers that matter" data-tags="email filtering, patching, edr, backups, and training. why no single product saves you. ransomware defense">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Ransomware defense: the five layers that matter</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/test-your-backups" class="ledger-row ledger-row--blog">
+    <a href="/blog/test-your-backups" class="ledger-row ledger-row--blog" data-type="guide" data-lane="cybersecurity"
+       data-title="how to actually test your backups: a restore drill" data-tags="pick a file, a folder, and a full system. restore all three, time it, and write down what broke. tested backups">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">How to actually test your backups: a restore drill</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/first-24-hours-after-breach" class="ledger-row ledger-row--blog">
+    <a href="/blog/first-24-hours-after-breach" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cybersecurity"
+       data-title="the first 24 hours after a breach: what to do, in order" data-tags="isolate, preserve, notify, recover. the incident response sequence, before you need it. incident response">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">The first 24 hours after a breach: what to do, in order</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/phishing-training-that-works" class="ledger-row ledger-row--blog">
+    <a href="/blog/phishing-training-that-works" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cybersecurity"
+       data-title="phishing training that people don’t hate" data-tags="simulations, not shame. how to build click-awareness without turning it into the villain. phishing simulations security training">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Phishing training that people don’t hate</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/mfa-rollout-guide" class="ledger-row ledger-row--blog">
+    <a href="/blog/mfa-rollout-guide" class="ledger-row ledger-row--blog" data-type="guide" data-lane="cybersecurity"
+       data-title="roll out mfa to a small business without a mutiny" data-tags="app-based codes, hardware keys, and the rollout order that gets adoption instead of eye-rolls. mfa everywhere">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Roll out MFA to a small business without a mutiny</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/password-manager-rollout" class="ledger-row ledger-row--blog">
+    <a href="/blog/password-manager-rollout" class="ledger-row ledger-row--blog" data-type="guide" data-lane="cybersecurity"
+       data-title="set up a company password manager the right way" data-tags="vault structure, sharing, emergency access, and the migration from the spreadsheet nobody admits exists. password managers">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Set up a company password manager the right way</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/what-is-zero-trust" class="ledger-row ledger-row--blog">
+    <a href="/blog/what-is-zero-trust" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cybersecurity"
+       data-title="zero trust, minus the buzzwords" data-tags="verify every request, trust no network. what zero trust means in practice for a 20-person company. zero trust">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Zero trust, minus the buzzwords</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/what-firewalls-do" class="ledger-row ledger-row--blog">
+    <a href="/blog/what-firewalls-do" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cybersecurity"
+       data-title="what your firewall actually does (and what it can’t)" data-tags="ports, rules, and inspection. why a firewall is necessary but nowhere near sufficient. firewalls">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">What your firewall actually does (and what it can’t)</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/do-you-need-a-vpn" class="ledger-row ledger-row--blog">
+    <a href="/blog/do-you-need-a-vpn" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cybersecurity"
+       data-title="do you still need a vpn?" data-tags="remote access vpns vs zero-trust access, and what we set up for small teams today. vpns">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Do you still need a VPN?</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/vuln-scan-vs-pentest" class="ledger-row ledger-row--blog">
+    <a href="/blog/vuln-scan-vs-pentest" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cybersecurity"
+       data-title="vulnerability scans vs penetration tests: which first" data-tags="one is a smoke detector, one is a break-in drill. costs, cadence, and which your insurer actually wants. vulnerability scanning penetration testing">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Vulnerability scans vs penetration tests: which first</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/dark-web-monitoring" class="ledger-row ledger-row--blog">
+    <a href="/blog/dark-web-monitoring" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cybersecurity"
+       data-title="dark web monitoring: useful signal or scare tactic?" data-tags="what credential monitoring actually finds and what to do when your domain shows up. dark web monitoring">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Dark web monitoring: useful signal or scare tactic?</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/hipaa-it-checklist" class="ledger-row ledger-row--blog">
+    <a href="/blog/hipaa-it-checklist" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cybersecurity"
+       data-title="hipaa it compliance: the checklist without the lawyer bill" data-tags="access controls, encryption, audit logs, and baas. the technical safeguards, in plain english. hipaa">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">HIPAA IT compliance: the checklist without the lawyer bill</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/pci-dss-small-business" class="ledger-row ledger-row--blog">
+    <a href="/blog/pci-dss-small-business" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cybersecurity"
+       data-title="pci dss for small business: what taking cards commits you to" data-tags="saq types, network segmentation, and the shortcuts that make compliance manageable. pci dss">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">PCI DSS for small business: what taking cards commits you to</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/soc2-prep" class="ledger-row ledger-row--blog">
+    <a href="/blog/soc2-prep" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cybersecurity"
+       data-title="soc 2 prep without the panic" data-tags="trust criteria, evidence collection, and the 6-month runway. what type i and type ii actually require. soc 2 prep">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">SOC 2 prep without the panic</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/nist-csf-small-business" class="ledger-row ledger-row--blog">
+    <a href="/blog/nist-csf-small-business" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cybersecurity"
+       data-title="nist csf: a map, not a mandate" data-tags="identify, protect, detect, respond, recover. using the framework to find your gaps without drowning in it. nist csf">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">NIST CSF: a map, not a mandate</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/okta-vs-entra" class="ledger-row ledger-row--blog">
+    <a href="/blog/okta-vs-entra" class="ledger-row ledger-row--blog" data-type="concept" data-lane="cybersecurity"
+       data-title="okta vs microsoft entra: picking an identity provider" data-tags="if you live in microsoft 365 the answer is usually entra. when okta earns its price. okta">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Okta vs Microsoft Entra: picking an identity provider</span>
       <span class="ledger-hint">Explainer</span>
@@ -1726,121 +1874,141 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
       <h2>Custom Software</h2>
       <a href="/services/software" class="section-head-hint" style="text-decoration:none">THE SERVICE →</a>
     </div>
-    <a href="/blog/why-typescript" class="ledger-row ledger-row--blog">
+    <a href="/blog/why-typescript" class="ledger-row ledger-row--blog" data-type="concept" data-lane="software"
+       data-title="why we build in typescript" data-tags="types catch the bugs your tests miss. why typescript is our default for anything past a script. javascript/typescript">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Why we build in TypeScript</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/python-business-automation" class="ledger-row ledger-row--blog">
+    <a href="/blog/python-business-automation" class="ledger-row ledger-row--blog" data-type="concept" data-lane="software"
+       data-title="python: the duct tape of business automation" data-tags="reports, file moves, api glue. why python is usually the fastest path from annoyance to automation. python">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Python: the duct tape of business automation</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/when-react-makes-sense" class="ledger-row ledger-row--blog">
+    <a href="/blog/when-react-makes-sense" class="ledger-row ledger-row--blog" data-type="concept" data-lane="software"
+       data-title="when react makes sense (and when plain html wins)" data-tags="interactive app? react. marketing site? static html. how we decide, and what it means for your budget. react">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">When React makes sense (and when plain HTML wins)</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/build-rest-api-node" class="ledger-row ledger-row--blog">
+    <a href="/blog/build-rest-api-node" class="ledger-row ledger-row--blog" data-type="guide" data-lane="software"
+       data-title="build a rest api with node.js and express" data-tags="project setup, routes, middleware, error handling, and deployment. a working api from an empty folder. node.js rest apis">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Build a REST API with Node.js and Express</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/postgres-backup-pgdump" class="ledger-row ledger-row--blog">
+    <a href="/blog/postgres-backup-pgdump" class="ledger-row ledger-row--blog" data-type="guide" data-lane="software"
+       data-title="back up and restore postgresql with pg_dump" data-tags="logical dumps, compressed formats, scheduled backups with cron, and the restore you should rehearse. postgresql">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Back up and restore PostgreSQL with pg_dump</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/rest-vs-graphql" class="ledger-row ledger-row--blog">
+    <a href="/blog/rest-vs-graphql" class="ledger-row ledger-row--blog" data-type="concept" data-lane="software"
+       data-title="rest or graphql: how we choose" data-tags="most business apps want rest. where graphql earns its complexity. graphql">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">REST or GraphQL: how we choose</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/web-app-vs-website" class="ledger-row ledger-row--blog">
+    <a href="/blog/web-app-vs-website" class="ledger-row ledger-row--blog" data-type="concept" data-lane="software"
+       data-title="web app or website: which are you actually asking for?" data-tags="one shows information, one does work. why the distinction changes the price by 10x. web apps">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Web app or website: which are you actually asking for?</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/mobile-app-options" class="ledger-row ledger-row--blog">
+    <a href="/blog/mobile-app-options" class="ledger-row ledger-row--blog" data-type="concept" data-lane="software"
+       data-title="native, react native, or just a good website?" data-tags="most businesses asking for an app need a responsive site. when a real app is worth the store hassle. mobile apps">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Native, React Native, or just a good website?</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/internal-tools-that-pay" class="ledger-row ledger-row--blog">
+    <a href="/blog/internal-tools-that-pay" class="ledger-row ledger-row--blog" data-type="concept" data-lane="software"
+       data-title="the internal tool that pays for itself" data-tags="a form that replaces a spreadsheet-and-email loop can save hours a week. how we scope small tools with real roi. internal tools custom tooling">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">The internal tool that pays for itself</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/customer-portal-basics" class="ledger-row ledger-row--blog">
+    <a href="/blog/customer-portal-basics" class="ledger-row ledger-row--blog" data-type="concept" data-lane="software"
+       data-title="customer portals: let clients help themselves" data-tags="status, invoices, documents, requests. what a portal should do first and what to leave for phase two. customer portals">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Customer portals: let clients help themselves</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/system-integrations" class="ledger-row ledger-row--blog">
+    <a href="/blog/system-integrations" class="ledger-row ledger-row--blog" data-type="concept" data-lane="software"
+       data-title="system integrations: make your apps talk to each other" data-tags="apis, webhooks, and middle layers. how we stop the re-typing between systems. integrations">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">System integrations: make your apps talk to each other</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/workflow-automation-examples" class="ledger-row ledger-row--blog">
+    <a href="/blog/workflow-automation-examples" class="ledger-row ledger-row--blog" data-type="concept" data-lane="software"
+       data-title="workflow automation: five real examples from real businesses" data-tags="invoice routing, lead intake, report generation, inventory alerts, onboarding packets. what automation looks like in practice. workflow automation process automation">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Workflow automation: five real examples from real businesses</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/ai-features-without-hype" class="ledger-row ledger-row--blog">
+    <a href="/blog/ai-features-without-hype" class="ledger-row ledger-row--blog" data-type="concept" data-lane="software"
+       data-title="adding ai to your app without the hype" data-tags="summarize, extract, draft, classify. the four ai features that reliably work and how to ship one safely. ai features">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Adding AI to your app without the hype</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/stripe-checkout-guide" class="ledger-row ledger-row--blog">
+    <a href="/blog/stripe-checkout-guide" class="ledger-row ledger-row--blog" data-type="guide" data-lane="software"
+       data-title="take payments with stripe checkout" data-tags="products, checkout sessions, webhooks, and test mode. payments in an afternoon, done correctly. payments">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Take payments with Stripe Checkout</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/twilio-sendgrid-alerts" class="ledger-row ledger-row--blog">
+    <a href="/blog/twilio-sendgrid-alerts" class="ledger-row ledger-row--blog" data-type="guide" data-lane="software"
+       data-title="send sms and email alerts from your app" data-tags="twilio for texts, sendgrid for email. api keys, first sends, and the delivery pitfalls to avoid. text &amp; email alerts">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Send SMS and email alerts from your app</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/github-actions-cicd" class="ledger-row ledger-row--blog">
+    <a href="/blog/github-actions-cicd" class="ledger-row ledger-row--blog" data-type="guide" data-lane="software"
+       data-title="set up ci/cd with github actions" data-tags="a workflow file that tests every push and deploys on merge. automation your future self will thank you for. ci/cd">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Set up CI/CD with GitHub Actions</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/where-to-host-your-app" class="ledger-row ledger-row--blog">
+    <a href="/blog/where-to-host-your-app" class="ledger-row ledger-row--blog" data-type="concept" data-lane="software"
+       data-title="where to host your app: vps, paas, or serverless" data-tags="a $6 vps, a platform that deploys from git, or functions that scale to zero. honest tradeoffs. cloud hosting">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Where to host your app: VPS, PaaS, or serverless</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/legacy-software-rescue" class="ledger-row ledger-row--blog">
+    <a href="/blog/legacy-software-rescue" class="ledger-row ledger-row--blog" data-type="concept" data-lane="software"
+       data-title="rescuing legacy software: modernize without the rewrite" data-tags="the full rewrite usually fails. strangler patterns, api wrappers, and incremental rescue that ships. legacy rescues legacy app rescues">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Rescuing legacy software: modernize without the rewrite</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/data-migration-planning" class="ledger-row ledger-row--blog">
+    <a href="/blog/data-migration-planning" class="ledger-row ledger-row--blog" data-type="concept" data-lane="software"
+       data-title="data migrations: the plan that prevents the horror story" data-tags="mapping, cleaning, dry runs, and cutover. how data moves between systems without losing rows. data migrations">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Data migrations: the plan that prevents the horror story</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/testing-qa-small-apps" class="ledger-row ledger-row--blog">
+    <a href="/blog/testing-qa-small-apps" class="ledger-row ledger-row--blog" data-type="concept" data-lane="software"
+       data-title="testing that fits a small app budget" data-tags="you don’t need 100% coverage. the tests that catch real regressions and the ones that waste money. testing &amp; qa">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Testing that fits a small app budget</span>
       <span class="ledger-hint">Explainer</span>
@@ -1853,97 +2021,113 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
       <h2>Networks &amp; Infrastructure</h2>
       <a href="/services/networks" class="section-head-hint" style="text-decoration:none">THE SERVICE →</a>
     </div>
-    <a href="/blog/why-ubiquiti" class="ledger-row ledger-row--blog">
+    <a href="/blog/why-ubiquiti" class="ledger-row ledger-row--blog" data-type="concept" data-lane="networks"
+       data-title="why we reach for ubiquiti in small offices" data-tags="enterprise features at small-business prices, one controller, no license fees. and its honest limits. ubiquiti">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Why we reach for Ubiquiti in small offices</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/cisco-meraki-ubiquiti" class="ledger-row ledger-row--blog">
+    <a href="/blog/cisco-meraki-ubiquiti" class="ledger-row ledger-row--blog" data-type="concept" data-lane="networks"
+       data-title="cisco, meraki, or ubiquiti: matching gear to the job" data-tags="license costs, cloud management, and support. which gear tier your office actually needs. cisco meraki">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Cisco, Meraki, or Ubiquiti: matching gear to the job</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/pfsense-firewall-setup" class="ledger-row ledger-row--blog">
+    <a href="/blog/pfsense-firewall-setup" class="ledger-row ledger-row--blog" data-type="guide" data-lane="networks"
+       data-title="set up a pfsense firewall for a small office" data-tags="installation, wan/lan setup, firewall rules, and the first five things to configure after install. pfsense">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Set up a pfSense firewall for a small office</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/vlans-explained" class="ledger-row ledger-row--blog">
+    <a href="/blog/vlans-explained" class="ledger-row ledger-row--blog" data-type="concept" data-lane="networks"
+       data-title="vlans, explained like a floor plan" data-tags="one switch, separate networks. why guest wi-fi, cameras, and payments should never share a room. vlans">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">VLANs, explained like a floor plan</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/business-wifi-design" class="ledger-row ledger-row--blog">
+    <a href="/blog/business-wifi-design" class="ledger-row ledger-row--blog" data-type="concept" data-lane="networks"
+       data-title="business wi-fi that reaches the back office" data-tags="ap placement, channels, and coverage mapping. why more access points on lower power beats one loud one. business wi-fi wi-fi coverage mapping">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Business Wi-Fi that reaches the back office</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/cabling-done-right" class="ledger-row ledger-row--blog">
+    <a href="/blog/cabling-done-right" class="ledger-row ledger-row--blog" data-type="concept" data-lane="networks"
+       data-title="cat6, fiber, and doing cable runs right the first time" data-tags="when copper is fine, when fiber is worth it, and why cheap cabling is the most expensive option. fiber &amp; cat6 structured cabling">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Cat6, fiber, and doing cable runs right the first time</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/clean-network-rack" class="ledger-row ledger-row--blog">
+    <a href="/blog/clean-network-rack" class="ledger-row ledger-row--blog" data-type="guide" data-lane="networks"
+       data-title="build a clean network rack: layout, labeling, patch panels" data-tags="rack order, cable management, labeling scheme, and photos. the closet the next tech thanks you for. rack builds patch panels">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Build a clean network rack: layout, labeling, patch panels</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/server-room-checklist" class="ledger-row ledger-row--blog">
+    <a href="/blog/server-room-checklist" class="ledger-row ledger-row--blog" data-type="concept" data-lane="networks"
+       data-title="the server room checklist: cooling, power, access" data-tags="temperature, ups runtime, physical access, and fire suppression. what a proper closet needs. server rooms">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">The server room checklist: cooling, power, access</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/cameras-access-control" class="ledger-row ledger-row--blog">
+    <a href="/blog/cameras-access-control" class="ledger-row ledger-row--blog" data-type="concept" data-lane="networks"
+       data-title="cameras and access control on your own network" data-tags="poe cameras, nvrs, badge systems, and why surveillance gear belongs on its own vlan. cameras &amp; access control">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Cameras and access control on your own network</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/voip-for-business" class="ledger-row ledger-row--blog">
+    <a href="/blog/voip-for-business" class="ledger-row ledger-row--blog" data-type="concept" data-lane="networks"
+       data-title="voip for small business: what changes, what it costs" data-tags="desk phones, softphones, and call flows. moving off the phone company without dropping calls. voip phones">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">VoIP for small business: what changes, what it costs</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/failover-internet" class="ledger-row ledger-row--blog">
+    <a href="/blog/failover-internet" class="ledger-row ledger-row--blog" data-type="concept" data-lane="networks"
+       data-title="failover internet: stay online when your isp isn’t" data-tags="dual-wan routers, lte backup, and automatic failover. business continuity for a few dollars a day. failover internet">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Failover internet: stay online when your ISP isn’t</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/switches-and-routers" class="ledger-row ledger-row--blog">
+    <a href="/blog/switches-and-routers" class="ledger-row ledger-row--blog" data-type="concept" data-lane="networks"
+       data-title="switches and routers: what each box actually does" data-tags="routing, switching, and where the firewall fits. the 10-minute mental model of your network. switching &amp; routing">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Switches and routers: what each box actually does</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/do-you-need-active-directory" class="ledger-row ledger-row--blog">
+    <a href="/blog/do-you-need-active-directory" class="ledger-row ledger-row--blog" data-type="concept" data-lane="networks"
+       data-title="do you still need active directory?" data-tags="on-prem ad, entra id, or nothing at all. how identity management looks for small offices now. windows server active directory">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Do you still need Active Directory?</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/virtualization-2026" class="ledger-row ledger-row--blog">
+    <a href="/blog/virtualization-2026" class="ledger-row ledger-row--blog" data-type="concept" data-lane="networks"
+       data-title="virtualization in 2026: proxmox, vmware, and bare metal" data-tags="vmware’s pricing pushed small business to proxmox. what virtualizing your servers buys you. virtualization">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">Virtualization in 2026: Proxmox, VMware, and bare metal</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/nas-private-cloud" class="ledger-row ledger-row--blog">
+    <a href="/blog/nas-private-cloud" class="ledger-row ledger-row--blog" data-type="concept" data-lane="networks"
+       data-title="nas for small business: your own private cloud" data-tags="shared drives, snapshots, and offsite sync. when a nas beats cloud storage bills. nas &amp; storage">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">NAS for small business: your own private cloud</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/ups-power-protection" class="ledger-row ledger-row--blog">
+    <a href="/blog/ups-power-protection" class="ledger-row ledger-row--blog" data-type="concept" data-lane="networks"
+       data-title="ups and power: the $200 box that saves the $20,000 server" data-tags="runtime math, clean shutdowns, and surge protection. power is the outage cause everyone forgets. ups &amp; power">
       <div class="ledger-sq sq-red"></div>
       <span class="ledger-title ledger-title--blog">UPS and power: the $200 box that saves the $20,000 server</span>
       <span class="ledger-hint">Explainer</span>
@@ -1956,79 +2140,92 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
       <h2>Data &amp; AI Analytics</h2>
       <a href="/services/data-ai" class="section-head-hint" style="text-decoration:none">THE SERVICE →</a>
     </div>
-    <a href="/blog/first-power-bi-dashboard" class="ledger-row ledger-row--blog">
+    <a href="/blog/first-power-bi-dashboard" class="ledger-row ledger-row--blog" data-type="guide" data-lane="data-ai"
+       data-title="build your first power bi dashboard from a spreadsheet" data-tags="import, model, chart, publish. a working dashboard from the excel file you already have. power bi">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Build your first Power BI dashboard from a spreadsheet</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/looker-studio-dashboards" class="ledger-row ledger-row--blog">
+    <a href="/blog/looker-studio-dashboards" class="ledger-row ledger-row--blog" data-type="guide" data-lane="data-ai"
+       data-title="free dashboards with looker studio" data-tags="connect google sheets or analytics, build charts, share with the team. zero-dollar reporting, step by step. looker studio">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Free dashboards with Looker Studio</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/sql-still-runs-business" class="ledger-row ledger-row--blog">
+    <a href="/blog/sql-still-runs-business" class="ledger-row ledger-row--blog" data-type="concept" data-lane="data-ai"
+       data-title="sql: the 40-year-old skill that still runs your business" data-tags="every system you own speaks sql underneath. why a few queries beat hours of spreadsheet exports. sql">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">SQL: the 40-year-old skill that still runs your business</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/excel-becomes-database" class="ledger-row ledger-row--blog">
+    <a href="/blog/excel-becomes-database" class="ledger-row ledger-row--blog" data-type="concept" data-lane="data-ai"
+       data-title="when your excel file becomes a database problem" data-tags="the 40-tab workbook everyone fears. signs the spreadsheet outgrew itself and what graduation looks like. excel (no shame) spreadsheet rescues">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">When your Excel file becomes a database problem</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/dashboards-people-open" class="ledger-row ledger-row--blog">
+    <a href="/blog/dashboards-people-open" class="ledger-row ledger-row--blog" data-type="concept" data-lane="data-ai"
+       data-title="dashboards people actually open" data-tags="one page, five numbers, updated live. why most dashboards die and how we build ones that stick. live dashboards kpi reporting dashboards">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Dashboards people actually open</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/forecasting-from-your-data" class="ledger-row ledger-row--blog">
+    <a href="/blog/forecasting-from-your-data" class="ledger-row ledger-row--blog" data-type="concept" data-lane="data-ai"
+       data-title="forecasting from your own data: simpler than you think" data-tags="seasonality, trends, and honest error bars. useful forecasts without a data science team. forecasting">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Forecasting from your own data: simpler than you think</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/data-cleanup-first" class="ledger-row ledger-row--blog">
+    <a href="/blog/data-cleanup-first" class="ledger-row ledger-row--blog" data-type="concept" data-lane="data-ai"
+       data-title="data cleanup: why every analytics project starts here" data-tags="duplicate customers, three date formats, mystery columns. cleaning is 80% of the work and worth every hour. data cleanup">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Data cleanup: why every analytics project starts here</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/do-you-need-data-warehouse" class="ledger-row ledger-row--blog">
+    <a href="/blog/do-you-need-data-warehouse" class="ledger-row ledger-row--blog" data-type="concept" data-lane="data-ai"
+       data-title="do you need a data warehouse yet?" data-tags="when reports across systems get painful, a warehouse helps. what it is and the size where it makes sense. data warehouses">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Do you need a data warehouse yet?</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/etl-pipelines-explained" class="ledger-row ledger-row--blog">
+    <a href="/blog/etl-pipelines-explained" class="ledger-row ledger-row--blog" data-type="concept" data-lane="data-ai"
+       data-title="etl pipelines, explained with a coffee run" data-tags="extract, transform, load. how data moves from your systems into reports without hand-copying. etl pipelines">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">ETL pipelines, explained with a coffee run</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/first-claude-api-feature" class="ledger-row ledger-row--blog">
+    <a href="/blog/first-claude-api-feature" class="ledger-row ledger-row--blog" data-type="guide" data-lane="data-ai"
+       data-title="build your first llm feature with the claude api" data-tags="api key, first call, prompt structure, and a working document summarizer in under an hour. claude &amp; llm apis">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Build your first LLM feature with the Claude API</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/ai-assistants-that-help" class="ledger-row ledger-row--blog">
+    <a href="/blog/ai-assistants-that-help" class="ledger-row ledger-row--blog" data-type="concept" data-lane="data-ai"
+       data-title="ai assistants that actually help (and the ones that don’t)" data-tags="where assistants save real hours: drafts, lookups, triage. and where they quietly make work. ai assistants">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">AI assistants that actually help (and the ones that don’t)</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/pdfs-into-data" class="ledger-row ledger-row--blog">
+    <a href="/blog/pdfs-into-data" class="ledger-row ledger-row--blog" data-type="concept" data-lane="data-ai"
+       data-title="turn pdfs into data: document processing with ai" data-tags="invoices, forms, and contracts into spreadsheet rows. what document ai gets right and where humans stay in the loop. document processing">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">Turn PDFs into data: document processing with AI</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/five-numbers-to-watch" class="ledger-row ledger-row--blog">
+    <a href="/blog/five-numbers-to-watch" class="ledger-row ledger-row--blog" data-type="concept" data-lane="data-ai"
+       data-title="the five numbers every small business should watch" data-tags="cash position, pipeline, utilization, churn, and margin by job. simple analytics that change decisions. customer analytics sales &amp; inventory data plain-english reports">
       <div class="ledger-sq sq-yellow"></div>
       <span class="ledger-title ledger-title--blog">The five numbers every small business should watch</span>
       <span class="ledger-hint">Explainer</span>
@@ -2041,67 +2238,78 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
       <h2>Digital Transformation</h2>
       <a href="/services/digital" class="section-head-hint" style="text-decoration:none">THE SERVICE →</a>
     </div>
-    <a href="/blog/sharepoint-without-sprawl" class="ledger-row ledger-row--blog">
+    <a href="/blog/sharepoint-without-sprawl" class="ledger-row ledger-row--blog" data-type="concept" data-lane="digital"
+       data-title="sharepoint without the sprawl" data-tags="site structure, permissions, and naming that hold up past year one. fixing the folder chaos for good. sharepoint document management">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">SharePoint without the sprawl</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/slack-or-teams" class="ledger-row ledger-row--blog">
+    <a href="/blog/slack-or-teams" class="ledger-row ledger-row--blog" data-type="concept" data-lane="digital"
+       data-title="slack or teams: pick one, set it up right" data-tags="channel structure, notification hygiene, and why running both is the worst answer. teams slack slack &amp; teams">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Slack or Teams: pick one, set it up right</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/first-power-automate-flow" class="ledger-row ledger-row--blog">
+    <a href="/blog/first-power-automate-flow" class="ledger-row ledger-row--blog" data-type="guide" data-lane="digital"
+       data-title="your first power automate flow: an approval that emails itself" data-tags="trigger, condition, approval, notification. kill one email chain today, step by step. power automate">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Your first Power Automate flow: an approval that emails itself</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/zapier-make-automation" class="ledger-row ledger-row--blog">
+    <a href="/blog/zapier-make-automation" class="ledger-row ledger-row--blog" data-type="guide" data-lane="digital"
+       data-title="automate the boring stuff with zapier or make" data-tags="connect the form to the sheet to the email. your first three zaps and when make’s pricing wins. zapier/make">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Automate the boring stuff with Zapier or Make</span>
       <span class="ledger-hint">Step-By-Step Guide</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/airtable-grown-up-spreadsheet" class="ledger-row ledger-row--blog">
+    <a href="/blog/airtable-grown-up-spreadsheet" class="ledger-row ledger-row--blog" data-type="concept" data-lane="digital"
+       data-title="airtable: when a spreadsheet needs to grow up" data-tags="linked records, views, and forms. the middle ground between excel and custom software. airtable">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Airtable: when a spreadsheet needs to grow up</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/getting-off-paper" class="ledger-row ledger-row--blog">
+    <a href="/blog/getting-off-paper" class="ledger-row ledger-row--blog" data-type="concept" data-lane="digital"
+       data-title="getting off paper: forms, signatures, and workflows" data-tags="digital forms, e-signatures, and routing. where the paper habit costs you and the painless way out. paper-to-digital e-signatures">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Getting off paper: forms, signatures, and workflows</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/approval-workflows" class="ledger-row ledger-row--blog">
+    <a href="/blog/approval-workflows" class="ledger-row ledger-row--blog" data-type="concept" data-lane="digital"
+       data-title="approval workflows: kill the email chain" data-tags="requests, approvers, and audit trails in one place. nobody hunts through inboxes for the yes. approvals &amp; workflows">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Approval workflows: kill the email chain</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/intranet-small-business" class="ledger-row ledger-row--blog">
+    <a href="/blog/intranet-small-business" class="ledger-row ledger-row--blog" data-type="concept" data-lane="digital"
+       data-title="a small-business intranet that people actually use" data-tags="one home page for the team: links, announcements, documents. simple beats fancy here. intranets">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">A small-business intranet that people actually use</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/scheduling-booking-tools" class="ledger-row ledger-row--blog">
+    <a href="/blog/scheduling-booking-tools" class="ledger-row ledger-row--blog" data-type="concept" data-lane="digital"
+       data-title="scheduling tools: stop playing calendar tennis" data-tags="booking pages, round-robins, and reminders. the 30-minute setup that ends the back-and-forth. scheduling &amp; booking">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Scheduling tools: stop playing calendar tennis</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/quickbooks-integrations" class="ledger-row ledger-row--blog">
+    <a href="/blog/quickbooks-integrations" class="ledger-row ledger-row--blog" data-type="concept" data-lane="digital"
+       data-title="connect quickbooks to everything else" data-tags="invoices from your crm, hours from your pm tool, receipts from your bank. bookkeeping without re-typing. quickbooks integrations">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">Connect QuickBooks to everything else</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/new-tools-that-stick" class="ledger-row ledger-row--blog">
+    <a href="/blog/new-tools-that-stick" class="ledger-row ledger-row--blog" data-type="concept" data-lane="digital"
+       data-title="new tools stick when people like them" data-tags="training, champions, and killing the old way. change management for teams of ten, not ten thousand. change management training &amp; rollout training &amp; handoff">
       <div class="ledger-sq sq-green"></div>
       <span class="ledger-title ledger-title--blog">New tools stick when people like them</span>
       <span class="ledger-hint">Explainer</span>
@@ -2114,55 +2322,64 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
       <h2>Staffing &amp; Recruiting</h2>
       <a href="/services/staffing" class="section-head-hint" style="text-decoration:none">THE SERVICE →</a>
     </div>
-    <a href="/blog/w2-vs-1099-techs" class="ledger-row ledger-row--blog">
+    <a href="/blog/w2-vs-1099-techs" class="ledger-row ledger-row--blog" data-type="concept" data-lane="staffing"
+       data-title="w-2 or 1099: hiring techs without the compliance headache" data-tags="control, tools, and schedule decide the classification, not preference. what misclassification costs. w-2 or 1099 payroll handled">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">W-2 or 1099: hiring techs without the compliance headache</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/contract-vs-direct-hire" class="ledger-row ledger-row--blog">
+    <a href="/blog/contract-vs-direct-hire" class="ledger-row ledger-row--blog" data-type="concept" data-lane="staffing"
+       data-title="contract, contract-to-hire, or direct: which fits" data-tags="project work wants contracts. core roles want direct hires. the decision tree we walk clients through. direct hire contract crews contract-to-hire temp-to-perm">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Contract, contract-to-hire, or direct: which fits</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/hiring-help-desk-techs" class="ledger-row ledger-row--blog">
+    <a href="/blog/hiring-help-desk-techs" class="ledger-row ledger-row--blog" data-type="concept" data-lane="staffing"
+       data-title="what to look for when hiring help desk techs" data-tags="patience beats certifications. the screening questions that predict who your users will love. help desk techs">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">What to look for when hiring help desk techs</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/hiring-sysadmins-network-engineers" class="ledger-row ledger-row--blog">
+    <a href="/blog/hiring-sysadmins-network-engineers" class="ledger-row ledger-row--blog" data-type="concept" data-lane="staffing"
+       data-title="hiring sysadmins and network engineers: questions that matter" data-tags="scenario questions beat trivia. how we vet infrastructure people before they touch yours. sysadmins network engineers">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Hiring sysadmins and network engineers: questions that matter</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/hiring-developers-not-technical" class="ledger-row ledger-row--blog">
+    <a href="/blog/hiring-developers-not-technical" class="ledger-row ledger-row--blog" data-type="concept" data-lane="staffing"
+       data-title="hiring developers when you’re not technical" data-tags="portfolio walkthroughs, paid trials, and red flags. how to hire a dev you can’t personally evaluate. developers">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Hiring developers when you’re not technical</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/multi-site-rollouts" class="ledger-row ledger-row--blog">
+    <a href="/blog/multi-site-rollouts" class="ledger-row ledger-row--blog" data-type="concept" data-lane="staffing"
+       data-title="staffing multi-site rollouts: field techs in 50 states" data-tags="one crew or fifty locals? how national rollouts get staffed, scheduled, and quality-checked. field techs cabling crews project rollouts nationwide coverage managed teams">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Staffing multi-site rollouts: field techs in 50 states</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/techs-screen-techs" class="ledger-row ledger-row--blog">
+    <a href="/blog/techs-screen-techs" class="ledger-row ledger-row--blog" data-type="concept" data-lane="staffing"
+       data-title="why techs should screen techs" data-tags="keyword-matching recruiters pass people who can’t subnet. what technical screening by practitioners catches. tech-led screening skills testing">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Why techs should screen techs</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/background-checks-it-hires" class="ledger-row ledger-row--blog">
+    <a href="/blog/background-checks-it-hires" class="ledger-row ledger-row--blog" data-type="concept" data-lane="staffing"
+       data-title="background checks for it hires: what to run and why" data-tags="these people hold your passwords. the checks that matter for privileged access, and the ones that are theater. background checks">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">Background checks for IT hires: what to run and why</span>
       <span class="ledger-hint">Explainer</span>
       <span class="ledger-arrow">→</span>
     </a>
-    <a href="/blog/when-your-it-person-quits" class="ledger-row ledger-row--blog">
+    <a href="/blog/when-your-it-person-quits" class="ledger-row ledger-row--blog" data-type="concept" data-lane="staffing"
+       data-title="when your only it person quits: backfill fast" data-tags="lock down access, capture knowledge, bridge the gap. the two-week plan that keeps the lights on. backfill coverage same-week placements">
       <div class="ledger-sq sq-blue"></div>
       <span class="ledger-title ledger-title--blog">When your only IT person quits: backfill fast</span>
       <span class="ledger-hint">Explainer</span>
@@ -2176,6 +2393,66 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
     <div class="cta-sub">or (832) 457-4317, Houston, TX</div>
   </section>
 
+<script>
+(function () {
+  var rows = [].slice.call(document.querySelectorAll('.ledger-row--blog'));
+  var lanes = [].slice.call(document.querySelectorAll('.blog-lane'));
+  var search = document.getElementById('blog-search');
+  var pills = [].slice.call(document.querySelectorAll('.filter-pill'));
+  var noMatches = document.getElementById('no-matches');
+  var state = { q: '', type: '', lane: '' };
+
+  function apply() {
+    var q = state.q.trim().toLowerCase();
+    var shown = 0;
+    rows.forEach(function (r) {
+      var ok = (!state.type || r.dataset.type === state.type) &&
+               (!state.lane || r.dataset.lane === state.lane) &&
+               (!q || (r.dataset.title + ' ' + r.dataset.tags).indexOf(q) !== -1);
+      r.hidden = !ok;
+      if (ok) shown++;
+    });
+    lanes.forEach(function (s) {
+      s.hidden = !s.querySelector('.ledger-row--blog:not([hidden])');
+    });
+    noMatches.hidden = shown > 0;
+    pills.forEach(function (p) {
+      p.classList.toggle('active', p.dataset[p.dataset.dim] === state[p.dataset.dim] && state[p.dataset.dim] !== '');
+    });
+    var params = new URLSearchParams();
+    if (q) params.set('q', state.q.trim());
+    if (state.type) params.set('type', state.type);
+    if (state.lane) params.set('lane', state.lane);
+    var qs = params.toString();
+    history.replaceState(null, '', qs ? '?' + qs : location.pathname);
+  }
+
+  pills.forEach(function (p) {
+    p.addEventListener('click', function () {
+      var dim = p.dataset.dim;
+      state[dim] = (state[dim] === p.dataset[dim]) ? '' : p.dataset[dim];
+      apply();
+    });
+  });
+  search.addEventListener('input', function () { state.q = search.value; apply(); });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === '/' && document.activeElement !== search) { ev.preventDefault(); search.focus(); }
+  });
+  document.getElementById('clear-filters').addEventListener('click', function (ev) {
+    ev.preventDefault();
+    state = { q: '', type: '', lane: '' };
+    search.value = '';
+    apply();
+  });
+
+  var init = new URLSearchParams(location.search);
+  state.q = init.get('q') || '';
+  state.type = init.get('type') || '';
+  state.lane = init.get('lane') || '';
+  search.value = state.q;
+  if (state.q || state.type || state.lane) apply();
+})();
+</script>
   <footer class="footer">
     <span>© 2026 Hurbs LLC</span>
     <span>Part of the Lepida family</span>
