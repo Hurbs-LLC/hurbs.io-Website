@@ -2,6 +2,9 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+> Operational state, deploy gotchas, pending work, and decision history live
+> in `NOTES.md`. Read it before making changes. Open items are in `TODO.md`.
+
 ## Overview
 
 Static multi-page website for Hurbs LLC (hurbs.io) — Mason Herbel's IT shop, part of the Lepida family. Plain HTML/CSS/vanilla JS served as Cloudflare Workers static assets — no build step, no framework. Keep it that way.
