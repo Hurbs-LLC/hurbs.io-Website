@@ -1172,9 +1172,33 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
 /* Blog filter bar */
 
 .filter-bar {
-  padding: 32px var(--gutter);
+  padding: 24px var(--gutter);
   border-bottom: 2px solid var(--ink);
+  position: sticky;
+  top: 0;
+  background: var(--cream);
+  z-index: 10;
 }
+
+/* Lanes collapse to the first rows until expanded or filtered */
+.blog-lane.collapsed .ledger-row--blog:nth-of-type(n+7) { display: none; }
+.blog-lane.collapsed.filtering .ledger-row--blog:nth-of-type(n+7) { display: flex; }
+.blog-lane.filtering .show-all { display: none; }
+
+.show-all {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: 700 15px 'Bricolage Grotesque', sans-serif;
+  color: var(--brick);
+  background: none;
+  border: none;
+  border-bottom: 2px solid var(--ink);
+  padding: 14px 6px;
+  cursor: pointer;
+  min-height: 44px;
+}
+.show-all:hover { background: var(--row-hover); }
 
 .filter-search {
   width: 100%;
@@ -1462,7 +1486,7 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
   <main class="contact">
     <div class="kicker">NO FORMS. NO PHONE TREES.</div>
     <h1>Tell us what's broken.</h1>
-    <p class="contact-body">Or what you want to build. Either way it lands in Mason's inbox, and we usually reply the same day. Worst case, you get free advice.</p>
+    <p class="contact-body">Or what you want to build. Either way it lands in Mason's inbox, and we usually reply the same day. Worst case, you get free&nbsp;advice.</p>
     <div><a href="mailto:mason@hurbs.io" class="contact-email">mason@hurbs.io</a></div>
     <div class="contact-meta">
       <span>☎ (832) 457-4317</span>

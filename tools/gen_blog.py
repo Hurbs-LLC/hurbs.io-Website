@@ -112,6 +112,8 @@ def post_page(p, live_slugs):
 '''
 
 
+COLLAPSE_AT = 6
+
 FILTER_JS = '''<script>
 (function () {
   var rows = [].slice.call(document.querySelectorAll('.ledger-row--blog'));
@@ -120,19 +122,49 @@ FILTER_JS = '''<script>
   var pills = [].slice.call(document.querySelectorAll('.filter-pill'));
   var noMatches = document.getElementById('no-matches');
   var state = { q: '', type: '', lane: '' };
+  var bodyIndex = null, bodyMatches = null, indexLoading = false;
+  var COLLAPSE_AT = %d;
+
+  // Collapse long lanes by default (JS-applied, so no-JS shows everything)
+  lanes.forEach(function (s) {
+    var laneRows = [].slice.call(s.querySelectorAll('.ledger-row--blog'));
+    if (laneRows.length <= COLLAPSE_AT + 1) return;
+    var btn = document.createElement('button');
+    btn.className = 'show-all';
+    btn.textContent = 'Show all ' + laneRows.length + ' \\u2192';
+    btn.addEventListener('click', function () {
+      s.classList.remove('collapsed');
+      btn.remove();
+    });
+    s.classList.add('collapsed');
+    s.appendChild(btn);
+  });
+
+  function ensureIndex(cb) {
+    if (bodyIndex) return cb();
+    if (indexLoading) return;
+    indexLoading = true;
+    fetch('/blog/search-index.json').then(function (r) { return r.json(); })
+      .then(function (data) { bodyIndex = data; cb(); })
+      .catch(function () { bodyIndex = {}; });
+  }
 
   function apply() {
     var q = state.q.trim().toLowerCase();
+    var filtering = !!(q || state.type || state.lane);
     var shown = 0;
     rows.forEach(function (r) {
+      var metaHit = !q || (r.dataset.title + ' ' + r.dataset.tags).indexOf(q) !== -1;
+      var bodyHit = q && bodyMatches && bodyMatches[r.dataset.slug];
       var ok = (!state.type || r.dataset.type === state.type) &&
                (!state.lane || r.dataset.lane === state.lane) &&
-               (!q || (r.dataset.title + ' ' + r.dataset.tags).indexOf(q) !== -1);
+               (metaHit || bodyHit);
       r.hidden = !ok;
       if (ok) shown++;
     });
     lanes.forEach(function (s) {
       s.hidden = !s.querySelector('.ledger-row--blog:not([hidden])');
+      s.classList.toggle('filtering', filtering);
     });
     noMatches.hidden = shown > 0;
     pills.forEach(function (p) {
@@ -146,6 +178,23 @@ FILTER_JS = '''<script>
     history.replaceState(null, '', qs ? '?' + qs : location.pathname);
   }
 
+  function searchChanged() {
+    state.q = search.value;
+    var q = state.q.trim().toLowerCase();
+    bodyMatches = null;
+    if (q.length >= 2) {
+      ensureIndex(function () {
+        var m = {};
+        for (var slug in bodyIndex) {
+          if (bodyIndex[slug].indexOf(q) !== -1) m[slug] = true;
+        }
+        bodyMatches = m;
+        apply();
+      });
+    }
+    apply();
+  }
+
   pills.forEach(function (p) {
     p.addEventListener('click', function () {
       var dim = p.dataset.dim;
@@ -153,7 +202,7 @@ FILTER_JS = '''<script>
       apply();
     });
   });
-  search.addEventListener('input', function () { state.q = search.value; apply(); });
+  search.addEventListener('input', searchChanged);
   document.addEventListener('keydown', function (ev) {
     if (ev.key === '/' && document.activeElement !== search) { ev.preventDefault(); search.focus(); }
   });
@@ -161,17 +210,18 @@ FILTER_JS = '''<script>
     ev.preventDefault();
     state = { q: '', type: '', lane: '' };
     search.value = '';
+    bodyMatches = null;
     apply();
   });
 
   var init = new URLSearchParams(location.search);
-  state.q = init.get('q') || '';
   state.type = init.get('type') || '';
   state.lane = init.get('lane') || '';
-  search.value = state.q;
-  if (state.q || state.type || state.lane) apply();
+  search.value = init.get('q') || '';
+  if (search.value) { searchChanged(); }
+  else if (state.type || state.lane) { apply(); }
 })();
-</script>'''
+</script>''' % COLLAPSE_AT
 
 
 def filter_bar():
@@ -198,7 +248,7 @@ def index_page(live_slugs):
         if not posts:
             continue
         rows = '\n'.join(
-            f'''    <a href="/blog/{p['slug']}" class="ledger-row ledger-row--blog" data-type="{p['type']}" data-lane="{lane}"
+            f'''    <a href="/blog/{p['slug']}" class="ledger-row ledger-row--blog" data-type="{p['type']}" data-lane="{lane}" data-slug="{p['slug']}"
        data-title="{e(p['title'].lower())}" data-tags="{e(' '.join([p['description'].lower()] + [c.lower() for c in p['chips']]))}">
       <div class="ledger-sq sq-{color}"></div>
       <span class="ledger-title ledger-title--blog">{e(p['title'])}</span>
@@ -325,6 +375,15 @@ def main():
                 'Sitemap: https://hurbs.io/sitemap.xml\n\n'
                 '# Machine-readable site guide for LLMs and AI crawlers\n'
                 '# https://hurbs.io/llms.txt\n')
+    import json
+    index = {}
+    for p in POSTS:
+        if p['slug'] in live_slugs:
+            text = strip_html(open(fragment_path(p['slug']), encoding='utf-8').read())
+            index[p['slug']] = ' '.join(text.lower().split())
+    with open(os.path.join(OUT, 'search-index.json'), 'w', encoding='utf-8') as f:
+        json.dump(index, f, separators=(',', ':'))
+
     with open(os.path.join(REPO, 'public', 'llms.txt'), 'w', encoding='utf-8') as f:
         f.write(llms_txt(live_slugs))
     with open(os.path.join(REPO, 'public', 'llms-full.txt'), 'w', encoding='utf-8') as f:

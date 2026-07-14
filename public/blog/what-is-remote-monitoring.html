@@ -1173,9 +1173,33 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
 /* Blog filter bar */
 
 .filter-bar {
-  padding: 32px var(--gutter);
+  padding: 24px var(--gutter);
   border-bottom: 2px solid var(--ink);
+  position: sticky;
+  top: 0;
+  background: var(--cream);
+  z-index: 10;
 }
+
+/* Lanes collapse to the first rows until expanded or filtered */
+.blog-lane.collapsed .ledger-row--blog:nth-of-type(n+7) { display: none; }
+.blog-lane.collapsed.filtering .ledger-row--blog:nth-of-type(n+7) { display: flex; }
+.blog-lane.filtering .show-all { display: none; }
+
+.show-all {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: 700 15px 'Bricolage Grotesque', sans-serif;
+  color: var(--brick);
+  background: none;
+  border: none;
+  border-bottom: 2px solid var(--ink);
+  padding: 14px 6px;
+  cursor: pointer;
+  min-height: 44px;
+}
+.show-all:hover { background: var(--row-hover); }
 
 .filter-search {
   width: 100%;
