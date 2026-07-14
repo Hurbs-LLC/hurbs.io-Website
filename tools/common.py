@@ -87,7 +87,7 @@ def cta_band(inner=True):
     return f'''  <section class="cta{mod}">
     <div class="cta-kicker">NO FORMS. JUST EMAIL.</div>
     <a href="mailto:mason@hurbs.io" class="cta-email">mason@hurbs.io</a>
-    <div class="cta-sub">or <a href="tel:+18324574317">(832) 457-4317</a>, Houston, TX</div>
+    <div class="cta-sub">or <a href="tel:+18324574317">(832) 457-4317</a>, LA and Houston</div>
   </section>'''
 
 

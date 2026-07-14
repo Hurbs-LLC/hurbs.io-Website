@@ -310,7 +310,7 @@ def strip_html(fragment):
     return re.sub(r'\n{3,}', '\n\n', text).strip()
 
 
-SITE_BLURB = ('Hurbs LLC (hurbs.io) is Mason Herbel\'s hands-on IT shop in Houston, TX, '
+SITE_BLURB = ('Hurbs LLC (hurbs.io) is Mason Herbel\'s hands-on IT shop, based in Los Angeles with headquarters in Houston, TX, '
               'serving businesses nationwide (on-site anywhere in the US). Services: IT support '
               '& managed services, cloud setup & migration, cybersecurity, custom software, '
               'networks & infrastructure, data & AI analytics, digital transformation, and IT '
