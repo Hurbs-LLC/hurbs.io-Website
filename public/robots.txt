@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
+# Content Signals (contentsignals.org): welcome AI search, answers, and training
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 
 Sitemap: https://hurbs.io/sitemap.xml
 

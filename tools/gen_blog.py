@@ -232,7 +232,11 @@ def main():
     with open(os.path.join(REPO, 'public', 'sitemap.xml'), 'w', encoding='utf-8') as f:
         f.write(sitemap(live_slugs))
     with open(os.path.join(REPO, 'public', 'robots.txt'), 'w', encoding='utf-8') as f:
-        f.write('User-agent: *\nAllow: /\n\nSitemap: https://hurbs.io/sitemap.xml\n\n'
+        f.write('User-agent: *\n'
+                'Allow: /\n'
+                '# Content Signals (contentsignals.org): welcome AI search, answers, and training\n'
+                'Content-Signal: search=yes, ai-input=yes, ai-train=yes\n\n'
+                'Sitemap: https://hurbs.io/sitemap.xml\n\n'
                 '# Machine-readable site guide for LLMs and AI crawlers\n'
                 '# https://hurbs.io/llms.txt\n')
     with open(os.path.join(REPO, 'public', 'llms.txt'), 'w', encoding='utf-8') as f:

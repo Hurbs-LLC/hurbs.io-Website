@@ -1,0 +1,6 @@
+# Link headers for agent discovery (RFC 8288). llms.txt is the machine guide.
+/*
+  Link: </llms.txt>; rel="alternate"; type="text/markdown"; title="LLM site guide", </sitemap.xml>; rel="sitemap"; type="application/xml"
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
