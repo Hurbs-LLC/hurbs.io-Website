@@ -4,6 +4,7 @@ type: 'concept' (plain-English explainer) or 'guide' (step-by-step tutorial).
 """
 
 DATE = 'July 2026'
+DATE_ISO = '2026-07-01'  # machine-readable form of DATE for JSON-LD / sitemap lastmod
 
 POSTS = [
     # ---------------- it-support (red) ----------------

@@ -104,8 +104,27 @@ def page(svc):
 
     cards = blog_cards(FEATURED[svc['slug']], POSTS_BY_SLUG, LANES)
 
+    jsonld = [{
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        'name': svc['title'],
+        'description': svc['blurb'],
+        'url': f"https://hurbs.io/services/{svc['slug']}",
+        'serviceType': svc['title'],
+        'areaServed': {'@type': 'Country', 'name': 'US'},
+        'provider': {'@type': 'Organization', 'name': 'Hurbs LLC', 'url': 'https://hurbs.io',
+                     'logo': {'@type': 'ImageObject', 'url': 'https://hurbs.io/img/hurbs.svg'}},
+    }, {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+            {'@type': 'ListItem', 'position': 1, 'name': 'Services', 'item': 'https://hurbs.io/#services'},
+            {'@type': 'ListItem', 'position': 2, 'name': svc['title'], 'item': f"https://hurbs.io/services/{svc['slug']}"},
+        ],
+    }]
+
     return head(f"{svc['title']} | Hurbs LLC", svc['blurb'],
-                canonical=f"/services/{svc['slug']}") + f'''
+                canonical=f"/services/{svc['slug']}", jsonld=jsonld) + f'''
 <div class="page">
 {nav('services')}
 

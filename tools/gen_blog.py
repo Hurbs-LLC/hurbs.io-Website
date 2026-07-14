@@ -6,7 +6,7 @@ import sys
 from urllib.parse import quote
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from blog_data import POSTS, LANES, DATE
+from blog_data import POSTS, LANES, DATE, DATE_ISO
 from common import head, nav, cta_band, FOOTER, e
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -66,19 +66,30 @@ def post_page(p, live_slugs):
   </section>
 ''' if related else ''
 
-    jsonld = {
+    jsonld = [{
         '@context': 'https://schema.org',
         '@type': 'BlogPosting',
         'headline': p['title'],
         'description': p['description'],
-        'datePublished': '2026-07',
+        'datePublished': DATE_ISO,
+        'dateModified': DATE_ISO,
         'url': f"https://hurbs.io/blog/{p['slug']}",
+        'mainEntityOfPage': f"https://hurbs.io/blog/{p['slug']}",
         'image': 'https://hurbs.io/img/og.png',
         'articleSection': lane_title,
+        'keywords': ', '.join(p['chips']),
         'author': {'@type': 'Organization', 'name': 'Hurbs LLC', 'url': 'https://hurbs.io'},
         'publisher': {'@type': 'Organization', 'name': 'Hurbs LLC', 'url': 'https://hurbs.io',
                       'logo': {'@type': 'ImageObject', 'url': 'https://hurbs.io/img/hurbs.svg'}},
-    }
+    }, {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+            {'@type': 'ListItem', 'position': 1, 'name': 'Blog', 'item': 'https://hurbs.io/blog/'},
+            {'@type': 'ListItem', 'position': 2, 'name': lane_title, 'item': f"https://hurbs.io/services/{p['lane']}"},
+            {'@type': 'ListItem', 'position': 3, 'name': p['title'], 'item': f"https://hurbs.io/blog/{p['slug']}"},
+        ],
+    }]
     return head(f"{p['title']} | Hurbs LLC", p['description'],
                 canonical=f"/blog/{p['slug']}", og_type='article', jsonld=jsonld) + f'''
 <div class="page">
@@ -264,9 +275,26 @@ def index_page(live_slugs):
   </section>''')
     sections_html = '\n\n'.join(sections)
 
+    live_posts = [p for p in POSTS if p['slug'] in live_slugs]
+    jsonld = {
+        '@context': 'https://schema.org',
+        '@type': 'Blog',
+        'name': 'Hurbs LLC Blog',
+        'description': 'Plain-English explainers and step-by-step guides on IT, cloud, security, software, networks, and data.',
+        'url': 'https://hurbs.io/blog/',
+        'publisher': {'@type': 'Organization', 'name': 'Hurbs LLC', 'url': 'https://hurbs.io',
+                      'logo': {'@type': 'ImageObject', 'url': 'https://hurbs.io/img/hurbs.svg'}},
+        'blogPost': [
+            {'@type': 'BlogPosting', 'headline': p['title'], 'description': p['description'],
+             'url': f"https://hurbs.io/blog/{p['slug']}", 'datePublished': DATE_ISO,
+             'articleSection': LANES[p['lane']][2]}
+            for p in live_posts
+        ],
+    }
+
     return head('Blog | Hurbs LLC',
                 'Plain-English explainers and step-by-step guides on IT, cloud, security, software, networks, and data. Written by the people who do the work.',
-                canonical='/blog/') + f'''
+                canonical='/blog/', jsonld=jsonld) + f'''
 <div class="page">
 {nav('blog')}
 
@@ -291,7 +319,8 @@ def sitemap(live_slugs):
     urls = ['/', '/about', '/contact', '/blog/']
     urls += [f'/services/{lane}' for lane in LANES]
     urls += [f'/blog/{s}' for s in sorted(live_slugs)]
-    entries = '\n'.join(f'  <url><loc>https://hurbs.io{u}</loc></url>' for u in urls)
+    entries = '\n'.join(
+        f'  <url><loc>https://hurbs.io{u}</loc><lastmod>{DATE_ISO}</lastmod></url>' for u in urls)
     return f'''<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {entries}
