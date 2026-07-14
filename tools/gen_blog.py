@@ -20,17 +20,44 @@ def fragment_path(slug):
     return os.path.join(POSTS_DIR, slug + '.html')
 
 
+_STOP = set('a an and are as at be but by for from how in is it like of on or that the '
+            'to we what when where which who why with without you your '
+            'business businesses small need needs actually real right guide step '
+            'most every one two three every explained plain english'.split())
+
+
+def _tokens(p):
+    import re
+    text = ' '.join([p['title'], p['description']] + p['chips']).lower()
+    return {w for w in re.findall(r'[a-z0-9]+', text) if w not in _STOP and len(w) > 2}
+
+
+def related_posts(p, live_slugs, count=5):
+    """Top posts by shared vocabulary across title/description/chips.
+    Same-lane gets a small nudge; cross-lane links happen naturally when
+    content overlaps (docker <-> hosting, backups <-> ransomware)."""
+    mine = _tokens(p)
+    scored = []
+    for q in POSTS:
+        if q['slug'] == p['slug'] or q['slug'] not in live_slugs:
+            continue
+        score = len(mine & _tokens(q)) + (1.5 if q['lane'] == p['lane'] else 0)
+        scored.append((-score, q['slug'], q))
+    scored.sort()
+    return [q for _, _, q in scored[:count]]
+
+
 def post_page(p, live_slugs):
     num, color, lane_title = LANES[p['lane']]
     body = open(fragment_path(p['slug']), encoding='utf-8').read().strip()
     mailto = 'mailto:mason@hurbs.io?subject=' + quote('Question about ' + lane_title)
 
-    related = [q for q in POSTS if q['lane'] == p['lane'] and q['slug'] != p['slug']
-               and q['slug'] in live_slugs][:3]
+    related = related_posts(p, live_slugs)
     related_html = '\n'.join(
         f'''    <a href="/blog/{q['slug']}" class="other-row">
-      <div class="ledger-sq sq-{color}"></div>
+      <div class="ledger-sq sq-{LANES[q['lane']][1]}"></div>
       <span class="other-title">{e(q['title'])}</span>
+      <span class="ledger-hint">{TYPE_LABEL[q['type']].title()}</span>
       <span class="other-arrow">→</span>
     </a>''' for q in related)
     related_section = f'''  <section class="others">
