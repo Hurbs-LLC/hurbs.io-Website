@@ -39,8 +39,21 @@ def post_page(p, live_slugs):
   </section>
 ''' if related else ''
 
+    jsonld = {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        'headline': p['title'],
+        'description': p['description'],
+        'datePublished': '2026-07',
+        'url': f"https://hurbs.io/blog/{p['slug']}",
+        'image': 'https://hurbs.io/img/og.png',
+        'articleSection': lane_title,
+        'author': {'@type': 'Organization', 'name': 'Hurbs LLC', 'url': 'https://hurbs.io'},
+        'publisher': {'@type': 'Organization', 'name': 'Hurbs LLC', 'url': 'https://hurbs.io',
+                      'logo': {'@type': 'ImageObject', 'url': 'https://hurbs.io/img/hurbs.svg'}},
+    }
     return head(f"{p['title']} | Hurbs LLC", p['description'],
-                canonical=f"/blog/{p['slug']}") + f'''
+                canonical=f"/blog/{p['slug']}", og_type='article', jsonld=jsonld) + f'''
 <div class="page">
 {nav('blog')}
 
@@ -123,6 +136,59 @@ def sitemap(live_slugs):
 '''
 
 
+def strip_html(fragment):
+    import re
+    text = re.sub(r'<pre><code>(.*?)</code></pre>', lambda m: '\n```\n' + m.group(1) + '\n```\n', fragment, flags=re.S)
+    text = re.sub(r'<h2>(.*?)</h2>', r'\n## \1\n', text)
+    text = re.sub(r'<h3>(.*?)</h3>', r'\n### \1\n', text)
+    text = re.sub(r'<li>', '- ', text)
+    text = re.sub(r'<[^>]+>', '', text)
+    text = text.replace('&amp;', '&').replace('&lt;', '<').replace('&gt;', '>').replace('&#x27;', "'").replace('&quot;', '"')
+    return re.sub(r'\n{3,}', '\n\n', text).strip()
+
+
+SITE_BLURB = ('Hurbs LLC (hurbs.io) is Mason Herbel\'s hands-on IT shop in Houston, TX, '
+              'serving businesses nationwide (on-site anywhere in the US). Services: IT support '
+              '& managed services, cloud setup & migration, cybersecurity, custom software, '
+              'networks & infrastructure, data & AI analytics, digital transformation, and IT '
+              'staffing & recruiting. No contact forms: email mason@hurbs.io or call (832) 457-4317. '
+              'Hurbs is part of the Lepida family (Lepida is the holding company).')
+
+
+def llms_txt(live_slugs):
+    lines = ['# Hurbs LLC', '', f'> {SITE_BLURB}', '',
+             '## Pages', '',
+             '- [Home](https://hurbs.io/): services overview and contact',
+             '- [About](https://hurbs.io/about): who Hurbs is, how we work',
+             '- [Contact](https://hurbs.io/contact): email mason@hurbs.io, (832) 457-4317',
+             '']
+    for lane, (num, color, lane_title) in LANES.items():
+        lines += [f'## {lane_title}', '',
+                  f'- [Service page](https://hurbs.io/services/{lane})']
+        for p in POSTS:
+            if p['lane'] == lane and p['slug'] in live_slugs:
+                lines.append(f"- [{p['title']}](https://hurbs.io/blog/{p['slug']}): {p['description']}")
+        lines.append('')
+    lines += ['## Full content', '',
+              '- [llms-full.txt](https://hurbs.io/llms-full.txt): every blog post in full, as plain text', '']
+    return '\n'.join(lines)
+
+
+def llms_full_txt(live_slugs):
+    parts = ['# Hurbs LLC: full blog content', '', f'> {SITE_BLURB}', '']
+    for p in POSTS:
+        if p['slug'] not in live_slugs:
+            continue
+        lane_title = LANES[p['lane']][2]
+        body = strip_html(open(fragment_path(p['slug']), encoding='utf-8').read())
+        parts += [f"# {p['title']}", '',
+                  f"URL: https://hurbs.io/blog/{p['slug']}",
+                  f"Service: {lane_title} (https://hurbs.io/services/{p['lane']})",
+                  f"Summary: {p['description']}", '',
+                  body, '', '---', '']
+    return '\n'.join(parts)
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     live_slugs = {p['slug'] for p in POSTS if os.path.exists(fragment_path(p['slug']))}
@@ -139,7 +205,13 @@ def main():
     with open(os.path.join(REPO, 'public', 'sitemap.xml'), 'w', encoding='utf-8') as f:
         f.write(sitemap(live_slugs))
     with open(os.path.join(REPO, 'public', 'robots.txt'), 'w', encoding='utf-8') as f:
-        f.write('User-agent: *\nAllow: /\n\nSitemap: https://hurbs.io/sitemap.xml\n')
+        f.write('User-agent: *\nAllow: /\n\nSitemap: https://hurbs.io/sitemap.xml\n\n'
+                '# Machine-readable site guide for LLMs and AI crawlers\n'
+                '# https://hurbs.io/llms.txt\n')
+    with open(os.path.join(REPO, 'public', 'llms.txt'), 'w', encoding='utf-8') as f:
+        f.write(llms_txt(live_slugs))
+    with open(os.path.join(REPO, 'public', 'llms-full.txt'), 'w', encoding='utf-8') as f:
+        f.write(llms_full_txt(live_slugs))
 
     print(f'built {len(live_slugs)} posts; missing fragments: {len(missing)}')
     if missing:

@@ -2,3 +2,6 @@ User-agent: *
 Allow: /
 
 Sitemap: https://hurbs.io/sitemap.xml
+
+# Machine-readable site guide for LLMs and AI crawlers
+# https://hurbs.io/llms.txt

@@ -11,21 +11,33 @@ FONTS = '''  <link rel="icon" href="/img/hurbs.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/css/styles.css">'''
 
 
-def head(title, description, canonical=None):
+def head(title, description, canonical=None, og_type='website', jsonld=None):
     canon = f'\n  <link rel="canonical" href="https://hurbs.io{canonical}">' if canonical else ''
     og = ''
     if canonical:
         og = (f'\n  <meta property="og:title" content="{e(title)}">'
               f'\n  <meta property="og:description" content="{e(description)}">'
-              f'\n  <meta property="og:type" content="article">'
-              f'\n  <meta property="og:url" content="https://hurbs.io{canonical}">')
+              f'\n  <meta property="og:type" content="{og_type}">'
+              f'\n  <meta property="og:url" content="https://hurbs.io{canonical}">'
+              f'\n  <meta property="og:site_name" content="Hurbs LLC">'
+              f'\n  <meta property="og:image" content="https://hurbs.io/img/og.png">'
+              f'\n  <meta property="og:image:width" content="1200">'
+              f'\n  <meta property="og:image:height" content="630">'
+              f'\n  <meta name="twitter:card" content="summary_large_image">'
+              f'\n  <meta name="twitter:title" content="{e(title)}">'
+              f'\n  <meta name="twitter:description" content="{e(description)}">'
+              f'\n  <meta name="twitter:image" content="https://hurbs.io/img/og.png">')
+    ld = ''
+    if jsonld:
+        import json
+        ld = f'\n  <script type="application/ld+json">{json.dumps(jsonld, separators=(",", ":"))}</script>'
     return f'''<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{e(title)}</title>
-  <meta name="description" content="{e(description)}">{canon}{og}
+  <meta name="description" content="{e(description)}">{canon}{og}{ld}
 {FONTS}
 </head>
 <body>'''

@@ -1,0 +1,165 @@
+# Hurbs LLC
+
+> Hurbs LLC (hurbs.io) is Mason Herbel's hands-on IT shop in Houston, TX, serving businesses nationwide (on-site anywhere in the US). Services: IT support & managed services, cloud setup & migration, cybersecurity, custom software, networks & infrastructure, data & AI analytics, digital transformation, and IT staffing & recruiting. No contact forms: email mason@hurbs.io or call (832) 457-4317. Hurbs is part of the Lepida family (Lepida is the holding company).
+
+## Pages
+
+- [Home](https://hurbs.io/): services overview and contact
+- [About](https://hurbs.io/about): who Hurbs is, how we work
+- [Contact](https://hurbs.io/contact): email mason@hurbs.io, (832) 457-4317
+
+## IT Support & Managed Services
+
+- [Service page](https://hurbs.io/services/it-support)
+- [Microsoft 365 for small business: what you actually need](https://hurbs.io/blog/microsoft-365-small-business): Business Basic, Standard, or Premium? What each Microsoft 365 plan includes and which one most small businesses should buy.
+- [Google Workspace or Microsoft 365? How to pick](https://hurbs.io/blog/google-workspace-vs-microsoft-365): An honest comparison for small teams: mail, files, meetings, price, and the switching cost nobody mentions.
+- [Running Windows and Mac in one office](https://hurbs.io/blog/windows-and-mac-one-office): Mixed fleets are normal now. How we manage both without doubling the work.
+- [Remote monitoring, explained: how we see problems before you do](https://hurbs.io/blog/what-is-remote-monitoring): What RMM software watches, what alerts mean, and why the quiet fixes are the ones you pay for.
+- [Automated patching: the boring habit that prevents ugly weeks](https://hurbs.io/blog/automated-patching): Most breaches exploit patches released months earlier. How automated patching works and what we patch first.
+- [What good help desk looks like (a person answers)](https://hurbs.io/blog/what-good-help-desk-looks-like): Ticket queues, SLAs, and why the metric that matters is time-to-human.
+- [Device management basics: MDM without the acronym soup](https://hurbs.io/blog/device-management-basics): Intune, profiles, and remote wipe: what managing company devices actually means.
+- [The employee IT onboarding and offboarding checklist we use](https://hurbs.io/blog/onboarding-offboarding-checklist): Accounts, devices, licenses, and access, in order. Copy this checklist before your next hire or exit.
+- [Set up SPF, DKIM, and DMARC records that actually pass](https://hurbs.io/blog/spf-dkim-dmarc-setup): Step-by-step DNS records that stop spoofing and keep your mail out of spam folders.
+- [The 3-2-1 backup rule, and why restore is the part that matters](https://hurbs.io/blog/321-backup-rule): Three copies, two media, one offsite. And the restore drill most businesses skip.
+- [License management: stop paying for seats nobody uses](https://hurbs.io/blog/software-license-management): The audit that usually finds 20% waste in software spend, and how to keep it from creeping back.
+- [Vendor wrangling: one throat to choke for ISP calls](https://hurbs.io/blog/it-vendor-management): ISPs, printer leases, software renewals. Why one owner for vendor calls saves hours and money.
+- [Asset tracking: know what you own and where it is](https://hurbs.io/blog/it-asset-tracking): Serial numbers, warranties, and assignment records. The boring list that saves you at tax time and exit time.
+- [Troubleshoot a network printer like a tech](https://hurbs.io/blog/troubleshoot-network-printer): The diagnostic order we use: driver, queue, IP, VLAN, firmware. Fix it in minutes instead of rebooting everything twice.
+- [IT documentation: the cheapest insurance you can buy](https://hurbs.io/blog/it-documentation): Network maps, passwords, and runbooks. What to document, where to keep it, and who gets access.
+- [Server care: what maintaining a server actually involves](https://hurbs.io/blog/server-care-basics): Updates, disk health, backup checks, and logs. The monthly routine that keeps servers boring.
+
+## Cloud Setup & Migration
+
+- [Service page](https://hurbs.io/services/cloud)
+- [Azure, AWS, or Google Cloud: an honest comparison](https://hurbs.io/blog/azure-vs-aws-vs-google-cloud): Where each cloud wins for small and mid-size businesses, and why the answer is usually the one your stack already leans toward.
+- [What Cloudflare actually does for your website](https://hurbs.io/blog/what-cloudflare-does): DNS, CDN, DDoS protection, and Workers, in plain English.
+- [Your first Terraform project: one server on AWS](https://hurbs.io/blog/terraform-first-project): Install Terraform, write your first config, plan, apply, destroy. Infrastructure as code from zero.
+- [You probably don’t need Kubernetes](https://hurbs.io/blog/do-you-need-kubernetes): What Kubernetes solves, what it costs in complexity, and the simpler options that fit most businesses.
+- [Install Docker on Ubuntu and run your first container](https://hurbs.io/blog/install-docker-ubuntu): Repository setup, install, permissions, hello-world, and a real service in a container.
+- [Lift-and-shift, explained: move servers to the cloud without rewriting](https://hurbs.io/blog/lift-and-shift-explained): When rehosting beats rebuilding, what changes after the move, and the gotchas we plan around.
+- [How we cut over systems without downtime](https://hurbs.io/blog/zero-downtime-cutovers): Parallel runs, DNS TTLs, rollback plans. The playbook for switching systems while the business keeps running.
+- [Hybrid cloud for small business: keep the server, add the cloud](https://hurbs.io/blog/hybrid-cloud-small-business): Some things belong in the closet, some in the cloud. How to split them sensibly.
+- [Why your cloud bill is high, and how we shrink it](https://hurbs.io/blog/cloud-cost-optimization): Right-sizing, reserved pricing, orphaned resources, and egress. Where the waste hides and how to cut it.
+- [Cloud backups and disaster recovery: the plan you hope you never use](https://hurbs.io/blog/cloud-backup-disaster-recovery): RPO, RTO, and what a realistic DR plan costs at small-business scale.
+- [Serverless, explained: paying for work instead of waiting](https://hurbs.io/blog/what-is-serverless): Functions, cold starts, and when serverless is cheaper than a server that idles all night.
+- [Host a static site on Cloudflare Workers](https://hurbs.io/blog/host-static-site-cloudflare-workers): Wrangler setup, assets config, custom domain, and deploy. A fast site with no server to babysit.
+- [Set up a WireGuard VPN between two offices](https://hurbs.io/blog/wireguard-site-to-site-vpn): Keys, configs, routing, and firewall rules for a fast site-to-site tunnel.
+- [Identity and access: one login, fewer passwords, less risk](https://hurbs.io/blog/identity-access-basics): SSO, roles, and least privilege, explained for people who just want fewer password resets.
+- [Set up uptime monitoring and alerts that wake the right person](https://hurbs.io/blog/uptime-monitoring-alerts): Health checks, status pages, and escalation. Know your site is down before your customers tell you.
+- [First 30 minutes on a new Ubuntu server](https://hurbs.io/blog/new-ubuntu-server-checklist): Users, SSH keys, firewall, fail2ban, and updates. The hardening checklist we run on every fresh box.
+- [Email migration without losing a single message](https://hurbs.io/blog/email-migration-guide): Cutover vs staged migration, MX timing, and the archive question. How mailbox moves go smoothly.
+
+## Cybersecurity
+
+- [Service page](https://hurbs.io/services/cybersecurity)
+- [EDR, XDR, antivirus: what actually protects endpoints now](https://hurbs.io/blog/what-is-edr): Signatures are dead. What modern endpoint protection watches for and why detection beats prevention alone.
+- [Who’s watching your network at 3 a.m.?](https://hurbs.io/blog/who-watches-at-3am): What 24/7 monitoring and threat hunting actually involve, and what size business needs them.
+- [Ransomware defense: the five layers that matter](https://hurbs.io/blog/ransomware-defense-layers): Email filtering, patching, EDR, backups, and training. Why no single product saves you.
+- [How to actually test your backups: a restore drill](https://hurbs.io/blog/test-your-backups): Pick a file, a folder, and a full system. Restore all three, time it, and write down what broke.
+- [The first 24 hours after a breach: what to do, in order](https://hurbs.io/blog/first-24-hours-after-breach): Isolate, preserve, notify, recover. The incident response sequence, before you need it.
+- [Phishing training that people don’t hate](https://hurbs.io/blog/phishing-training-that-works): Simulations, not shame. How to build click-awareness without turning IT into the villain.
+- [Roll out MFA to a small business without a mutiny](https://hurbs.io/blog/mfa-rollout-guide): App-based codes, hardware keys, and the rollout order that gets adoption instead of eye-rolls.
+- [Set up a company password manager the right way](https://hurbs.io/blog/password-manager-rollout): Vault structure, sharing, emergency access, and the migration from the spreadsheet nobody admits exists.
+- [Zero trust, minus the buzzwords](https://hurbs.io/blog/what-is-zero-trust): Verify every request, trust no network. What zero trust means in practice for a 20-person company.
+- [What your firewall actually does (and what it can’t)](https://hurbs.io/blog/what-firewalls-do): Ports, rules, and inspection. Why a firewall is necessary but nowhere near sufficient.
+- [Do you still need a VPN?](https://hurbs.io/blog/do-you-need-a-vpn): Remote access VPNs vs zero-trust access, and what we set up for small teams today.
+- [Vulnerability scans vs penetration tests: which first](https://hurbs.io/blog/vuln-scan-vs-pentest): One is a smoke detector, one is a break-in drill. Costs, cadence, and which your insurer actually wants.
+- [Dark web monitoring: useful signal or scare tactic?](https://hurbs.io/blog/dark-web-monitoring): What credential monitoring actually finds and what to do when your domain shows up.
+- [HIPAA IT compliance: the checklist without the lawyer bill](https://hurbs.io/blog/hipaa-it-checklist): Access controls, encryption, audit logs, and BAAs. The technical safeguards, in plain English.
+- [PCI DSS for small business: what taking cards commits you to](https://hurbs.io/blog/pci-dss-small-business): SAQ types, network segmentation, and the shortcuts that make compliance manageable.
+- [SOC 2 prep without the panic](https://hurbs.io/blog/soc2-prep): Trust criteria, evidence collection, and the 6-month runway. What Type I and Type II actually require.
+- [NIST CSF: a map, not a mandate](https://hurbs.io/blog/nist-csf-small-business): Identify, protect, detect, respond, recover. Using the framework to find your gaps without drowning in it.
+- [Okta vs Microsoft Entra: picking an identity provider](https://hurbs.io/blog/okta-vs-entra): If you live in Microsoft 365 the answer is usually Entra. When Okta earns its price.
+
+## Custom Software
+
+- [Service page](https://hurbs.io/services/software)
+- [Why we build in TypeScript](https://hurbs.io/blog/why-typescript): Types catch the bugs your tests miss. Why TypeScript is our default for anything past a script.
+- [Python: the duct tape of business automation](https://hurbs.io/blog/python-business-automation): Reports, file moves, API glue. Why Python is usually the fastest path from annoyance to automation.
+- [When React makes sense (and when plain HTML wins)](https://hurbs.io/blog/when-react-makes-sense): Interactive app? React. Marketing site? Static HTML. How we decide, and what it means for your budget.
+- [Build a REST API with Node.js and Express](https://hurbs.io/blog/build-rest-api-node): Project setup, routes, middleware, error handling, and deployment. A working API from an empty folder.
+- [Back up and restore PostgreSQL with pg_dump](https://hurbs.io/blog/postgres-backup-pgdump): Logical dumps, compressed formats, scheduled backups with cron, and the restore you should rehearse.
+- [REST or GraphQL: how we choose](https://hurbs.io/blog/rest-vs-graphql): Most business apps want REST. Where GraphQL earns its complexity.
+- [Web app or website: which are you actually asking for?](https://hurbs.io/blog/web-app-vs-website): One shows information, one does work. Why the distinction changes the price by 10x.
+- [Native, React Native, or just a good website?](https://hurbs.io/blog/mobile-app-options): Most businesses asking for an app need a responsive site. When a real app is worth the store hassle.
+- [The internal tool that pays for itself](https://hurbs.io/blog/internal-tools-that-pay): A form that replaces a spreadsheet-and-email loop can save hours a week. How we scope small tools with real ROI.
+- [Customer portals: let clients help themselves](https://hurbs.io/blog/customer-portal-basics): Status, invoices, documents, requests. What a portal should do first and what to leave for phase two.
+- [System integrations: make your apps talk to each other](https://hurbs.io/blog/system-integrations): APIs, webhooks, and middle layers. How we stop the re-typing between systems.
+- [Workflow automation: five real examples from real businesses](https://hurbs.io/blog/workflow-automation-examples): Invoice routing, lead intake, report generation, inventory alerts, onboarding packets. What automation looks like in practice.
+- [Adding AI to your app without the hype](https://hurbs.io/blog/ai-features-without-hype): Summarize, extract, draft, classify. The four AI features that reliably work and how to ship one safely.
+- [Take payments with Stripe Checkout](https://hurbs.io/blog/stripe-checkout-guide): Products, checkout sessions, webhooks, and test mode. Payments in an afternoon, done correctly.
+- [Send SMS and email alerts from your app](https://hurbs.io/blog/twilio-sendgrid-alerts): Twilio for texts, SendGrid for email. API keys, first sends, and the delivery pitfalls to avoid.
+- [Set up CI/CD with GitHub Actions](https://hurbs.io/blog/github-actions-cicd): A workflow file that tests every push and deploys on merge. Automation your future self will thank you for.
+- [Where to host your app: VPS, PaaS, or serverless](https://hurbs.io/blog/where-to-host-your-app): A $6 VPS, a platform that deploys from git, or functions that scale to zero. Honest tradeoffs.
+- [Rescuing legacy software: modernize without the rewrite](https://hurbs.io/blog/legacy-software-rescue): The full rewrite usually fails. Strangler patterns, API wrappers, and incremental rescue that ships.
+- [Data migrations: the plan that prevents the horror story](https://hurbs.io/blog/data-migration-planning): Mapping, cleaning, dry runs, and cutover. How data moves between systems without losing rows.
+- [Testing that fits a small app budget](https://hurbs.io/blog/testing-qa-small-apps): You don’t need 100% coverage. The tests that catch real regressions and the ones that waste money.
+
+## Networks & Infrastructure
+
+- [Service page](https://hurbs.io/services/networks)
+- [Why we reach for Ubiquiti in small offices](https://hurbs.io/blog/why-ubiquiti): Enterprise features at small-business prices, one controller, no license fees. And its honest limits.
+- [Cisco, Meraki, or Ubiquiti: matching gear to the job](https://hurbs.io/blog/cisco-meraki-ubiquiti): License costs, cloud management, and support. Which gear tier your office actually needs.
+- [Set up a pfSense firewall for a small office](https://hurbs.io/blog/pfsense-firewall-setup): Installation, WAN/LAN setup, firewall rules, and the first five things to configure after install.
+- [VLANs, explained like a floor plan](https://hurbs.io/blog/vlans-explained): One switch, separate networks. Why guest Wi-Fi, cameras, and payments should never share a room.
+- [Business Wi-Fi that reaches the back office](https://hurbs.io/blog/business-wifi-design): AP placement, channels, and coverage mapping. Why more access points on lower power beats one loud one.
+- [Cat6, fiber, and doing cable runs right the first time](https://hurbs.io/blog/cabling-done-right): When copper is fine, when fiber is worth it, and why cheap cabling is the most expensive option.
+- [Build a clean network rack: layout, labeling, patch panels](https://hurbs.io/blog/clean-network-rack): Rack order, cable management, labeling scheme, and photos. The closet the next tech thanks you for.
+- [The server room checklist: cooling, power, access](https://hurbs.io/blog/server-room-checklist): Temperature, UPS runtime, physical access, and fire suppression. What a proper closet needs.
+- [Cameras and access control on your own network](https://hurbs.io/blog/cameras-access-control): PoE cameras, NVRs, badge systems, and why surveillance gear belongs on its own VLAN.
+- [VoIP for small business: what changes, what it costs](https://hurbs.io/blog/voip-for-business): Desk phones, softphones, and call flows. Moving off the phone company without dropping calls.
+- [Failover internet: stay online when your ISP isn’t](https://hurbs.io/blog/failover-internet): Dual-WAN routers, LTE backup, and automatic failover. Business continuity for a few dollars a day.
+- [Switches and routers: what each box actually does](https://hurbs.io/blog/switches-and-routers): Routing, switching, and where the firewall fits. The 10-minute mental model of your network.
+- [Do you still need Active Directory?](https://hurbs.io/blog/do-you-need-active-directory): On-prem AD, Entra ID, or nothing at all. How identity management looks for small offices now.
+- [Virtualization in 2026: Proxmox, VMware, and bare metal](https://hurbs.io/blog/virtualization-2026): VMware’s pricing pushed small business to Proxmox. What virtualizing your servers buys you.
+- [NAS for small business: your own private cloud](https://hurbs.io/blog/nas-private-cloud): Shared drives, snapshots, and offsite sync. When a NAS beats cloud storage bills.
+- [UPS and power: the $200 box that saves the $20,000 server](https://hurbs.io/blog/ups-power-protection): Runtime math, clean shutdowns, and surge protection. Power is the outage cause everyone forgets.
+
+## Data & AI Analytics
+
+- [Service page](https://hurbs.io/services/data-ai)
+- [Build your first Power BI dashboard from a spreadsheet](https://hurbs.io/blog/first-power-bi-dashboard): Import, model, chart, publish. A working dashboard from the Excel file you already have.
+- [Free dashboards with Looker Studio](https://hurbs.io/blog/looker-studio-dashboards): Connect Google Sheets or Analytics, build charts, share with the team. Zero-dollar reporting, step by step.
+- [SQL: the 40-year-old skill that still runs your business](https://hurbs.io/blog/sql-still-runs-business): Every system you own speaks SQL underneath. Why a few queries beat hours of spreadsheet exports.
+- [When your Excel file becomes a database problem](https://hurbs.io/blog/excel-becomes-database): The 40-tab workbook everyone fears. Signs the spreadsheet outgrew itself and what graduation looks like.
+- [Dashboards people actually open](https://hurbs.io/blog/dashboards-people-open): One page, five numbers, updated live. Why most dashboards die and how we build ones that stick.
+- [Forecasting from your own data: simpler than you think](https://hurbs.io/blog/forecasting-from-your-data): Seasonality, trends, and honest error bars. Useful forecasts without a data science team.
+- [Data cleanup: why every analytics project starts here](https://hurbs.io/blog/data-cleanup-first): Duplicate customers, three date formats, mystery columns. Cleaning is 80% of the work and worth every hour.
+- [Do you need a data warehouse yet?](https://hurbs.io/blog/do-you-need-data-warehouse): When reports across systems get painful, a warehouse helps. What it is and the size where it makes sense.
+- [ETL pipelines, explained with a coffee run](https://hurbs.io/blog/etl-pipelines-explained): Extract, transform, load. How data moves from your systems into reports without hand-copying.
+- [Build your first LLM feature with the Claude API](https://hurbs.io/blog/first-claude-api-feature): API key, first call, prompt structure, and a working document summarizer in under an hour.
+- [AI assistants that actually help (and the ones that don’t)](https://hurbs.io/blog/ai-assistants-that-help): Where assistants save real hours: drafts, lookups, triage. And where they quietly make work.
+- [Turn PDFs into data: document processing with AI](https://hurbs.io/blog/pdfs-into-data): Invoices, forms, and contracts into spreadsheet rows. What document AI gets right and where humans stay in the loop.
+- [The five numbers every small business should watch](https://hurbs.io/blog/five-numbers-to-watch): Cash position, pipeline, utilization, churn, and margin by job. Simple analytics that change decisions.
+
+## Digital Transformation
+
+- [Service page](https://hurbs.io/services/digital)
+- [SharePoint without the sprawl](https://hurbs.io/blog/sharepoint-without-sprawl): Site structure, permissions, and naming that hold up past year one. Fixing the folder chaos for good.
+- [Slack or Teams: pick one, set it up right](https://hurbs.io/blog/slack-or-teams): Channel structure, notification hygiene, and why running both is the worst answer.
+- [Your first Power Automate flow: an approval that emails itself](https://hurbs.io/blog/first-power-automate-flow): Trigger, condition, approval, notification. Kill one email chain today, step by step.
+- [Automate the boring stuff with Zapier or Make](https://hurbs.io/blog/zapier-make-automation): Connect the form to the sheet to the email. Your first three zaps and when Make’s pricing wins.
+- [Airtable: when a spreadsheet needs to grow up](https://hurbs.io/blog/airtable-grown-up-spreadsheet): Linked records, views, and forms. The middle ground between Excel and custom software.
+- [Getting off paper: forms, signatures, and workflows](https://hurbs.io/blog/getting-off-paper): Digital forms, e-signatures, and routing. Where the paper habit costs you and the painless way out.
+- [Approval workflows: kill the email chain](https://hurbs.io/blog/approval-workflows): Requests, approvers, and audit trails in one place. Nobody hunts through inboxes for the yes.
+- [A small-business intranet that people actually use](https://hurbs.io/blog/intranet-small-business): One home page for the team: links, announcements, documents. Simple beats fancy here.
+- [Scheduling tools: stop playing calendar tennis](https://hurbs.io/blog/scheduling-booking-tools): Booking pages, round-robins, and reminders. The 30-minute setup that ends the back-and-forth.
+- [Connect QuickBooks to everything else](https://hurbs.io/blog/quickbooks-integrations): Invoices from your CRM, hours from your PM tool, receipts from your bank. Bookkeeping without re-typing.
+- [New tools stick when people like them](https://hurbs.io/blog/new-tools-that-stick): Training, champions, and killing the old way. Change management for teams of ten, not ten thousand.
+
+## Staffing & Recruiting
+
+- [Service page](https://hurbs.io/services/staffing)
+- [W-2 or 1099: hiring techs without the compliance headache](https://hurbs.io/blog/w2-vs-1099-techs): Control, tools, and schedule decide the classification, not preference. What misclassification costs.
+- [Contract, contract-to-hire, or direct: which fits](https://hurbs.io/blog/contract-vs-direct-hire): Project work wants contracts. Core roles want direct hires. The decision tree we walk clients through.
+- [What to look for when hiring help desk techs](https://hurbs.io/blog/hiring-help-desk-techs): Patience beats certifications. The screening questions that predict who your users will love.
+- [Hiring sysadmins and network engineers: questions that matter](https://hurbs.io/blog/hiring-sysadmins-network-engineers): Scenario questions beat trivia. How we vet infrastructure people before they touch yours.
+- [Hiring developers when you’re not technical](https://hurbs.io/blog/hiring-developers-not-technical): Portfolio walkthroughs, paid trials, and red flags. How to hire a dev you can’t personally evaluate.
+- [Staffing multi-site rollouts: field techs in 50 states](https://hurbs.io/blog/multi-site-rollouts): One crew or fifty locals? How national rollouts get staffed, scheduled, and quality-checked.
+- [Why techs should screen techs](https://hurbs.io/blog/techs-screen-techs): Keyword-matching recruiters pass people who can’t subnet. What technical screening by practitioners catches.
+- [Background checks for IT hires: what to run and why](https://hurbs.io/blog/background-checks-it-hires): These people hold your passwords. The checks that matter for privileged access, and the ones that are theater.
+- [When your only IT person quits: backfill fast](https://hurbs.io/blog/when-your-it-person-quits): Lock down access, capture knowledge, bridge the gap. The two-week plan that keeps the lights on.
+
+## Full content
+
+- [llms-full.txt](https://hurbs.io/llms-full.txt): every blog post in full, as plain text
