@@ -2,6 +2,10 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "hurbs-io-website",
   "compatibility_date": "2026-07-13",
+  "routes": [
+    { "pattern": "hurbs.io", "custom_domain": true },
+    { "pattern": "www.hurbs.io", "custom_domain": true }
+  ],
   "assets": {
     "directory": "./public",
     "not_found_handling": "404-page",
