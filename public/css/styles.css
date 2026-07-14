@@ -601,8 +601,10 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
 .ledger-row--blog { padding: 16px 8px; }
 .ledger-title--blog { font-size: 20px; }
 
+/* Post content centers in a ~860px column on wide screens while section
+   borders stay full-bleed: gutter grows past the column width. */
 .post-hero {
-  padding: 64px var(--gutter) 48px;
+  padding: 64px max(var(--gutter), calc((100% - 860px) / 2)) 48px;
   border-bottom: 2px solid var(--ink);
 }
 
@@ -641,8 +643,7 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
 }
 
 .post {
-  padding: 56px var(--gutter) 64px;
-  max-width: 760px;
+  padding: 56px max(var(--gutter), calc((100% - 860px) / 2)) 64px;
   font: 400 18px/1.7 Archivo, sans-serif;
   color: var(--body);
 }
@@ -666,6 +667,7 @@ a.chip:hover { background: var(--row-hover); color: var(--brick); }
 
 .post a { color: var(--denim); }
 .post a:hover { color: var(--brick); }
+.post a.btn, .post a.btn:hover { color: var(--cream); }
 
 .post code {
   font: 500 15px ui-monospace, Menlo, monospace;
